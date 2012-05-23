@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/backgroundwidget/gray">
+        <file alias="background">gray/background.png</file>
+        <file alias="stylesheet">gray/stylesheet.css</file>
+    </qresource>
+</RCC>

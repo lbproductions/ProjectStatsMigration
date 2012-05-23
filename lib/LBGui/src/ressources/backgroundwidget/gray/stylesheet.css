@@ -1,0 +1,7 @@
+QScrollArea {
+    background: transparent;
+    border-top: 43px transparent;
+    border-image: url(:/backgroundwidget/gray/background) 43px 0px 0px 0px repeat;
+    margin: 0px;
+    padding-top: -43px;
+}

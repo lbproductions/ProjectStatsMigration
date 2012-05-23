@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/tabwidget/itunes_white">
+        <file alias="background">itunes_white/background.png</file>
+        <file alias="button">itunes_white/button.png</file>
+        <file alias="stylesheet">itunes_white/stylesheet.css</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,7 @@
+LBGui--Sheet {
+    background: transparent;
+    border: 8 8 8 8 transparent;
+    border-image: url(:/sheet/background) 8 8 8 8;
+    margin: 20px;
+    padding: 8 8 8 8;
+}"

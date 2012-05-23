@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/sidebar/macos_lionmail">
+        <file alias="stylesheet">macos_lionmail/stylesheet.css</file>
+        <file alias="branch_open">macos_lionmail/branch_open.png</file>
+        <file alias="branch_closed_selected">macos_lionmail/branch_closed_selected.png</file>
+        <file alias="branch_closed">macos_lionmail/branch_closed.png</file>
+        <file alias="branch_open_selected">macos_lionmail/branch_open_selected.png</file>
+    </qresource>
+</RCC>

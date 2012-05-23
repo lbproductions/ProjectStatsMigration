@@ -1,0 +1,39 @@
+QTreeView {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 rgba(238, 240, 244, 255),
+                                        stop:1 rgba(210, 216, 224, 255) );
+    }
+
+QTreeView::branch:open:has-children:!has-siblings:!selected,
+QTreeView::branch:open:has-children:has-siblings:!selected  {
+    border-image: none;
+    image: none; /*url(:/sidebar/macos_lionmail/branch_open);*/
+}
+
+QTreeView::branch:open:has-children:!has-siblings:selected,
+QTreeView::branch:open:has-children:has-siblings:selected  {
+    border-image: none;
+    image: none;
+}
+
+QTreeView::branch:has-children:!has-siblings:closed,
+QTreeView::branch:closed:has-children:has-siblings {
+    border-image: none;
+    image: none;
+}
+
+QTreeView {
+    selection-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                                stop:0 rgba(196, 203, 224, 255),
+                                                stop:1 rgba(158, 169, 197, 255)
+                                                );
+}
+
+QTreeView::item:selected {
+    border-top: 1px solid #b9c0d3;
+    border-bottom: 1px solid #959fb9;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 rgba(196, 203, 224, 255),
+                                        stop:1 rgba(158, 169, 197, 255)
+                                        );
+}

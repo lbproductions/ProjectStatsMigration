@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/graphics/icons/mainwindow">
+        <file alias="newgame">graphics/icons/mainwindow/newgame.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/groupbox/itunes_white">
+        <file alias="stylesheet">itunes_white/stylesheet.css</file>
+        <file alias="checkbox_checked">itunes_white/checkbox_checked.png</file>
+        <file alias="checkbox_unchecked">itunes_white/checkbox_unchecked.png</file>
+    </qresource>
+</RCC>

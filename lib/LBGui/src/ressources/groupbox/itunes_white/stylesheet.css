@@ -1,0 +1,30 @@
+QGroupBox {
+    background-color: #F7F7F7;
+    border: 1px solid #C5C5C5;
+    margin-top: 51px; /* leave space at the top for the title */
+    color: #525e6e;
+    font-weight: bold;
+    font-size: 17px;
+    max-width: 792px;
+    padding: 17px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left; /* position at the top center */
+    background: transparent;
+    margin-top: 24px;
+}
+
+QGroupBox::indicator {
+    width: 17px;
+    height: 17px;
+}
+
+QGroupBox::indicator:unchecked {
+    image: url(:/groupbox/itunes_white/checkbox_unchecked);
+}
+
+QGroupBox::indicator:checked {
+    image: url(:/groupbox/itunes_white/checkbox_checked);
+}

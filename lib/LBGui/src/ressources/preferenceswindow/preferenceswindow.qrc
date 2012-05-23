@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/preferenceswindow/mac">
+        <file alias="apple-update">apple-update.png</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/listwidget/itunes_white">
+        <file alias="stylesheet">itunes_white/stylesheet.css</file>
+    </qresource>
+</RCC>

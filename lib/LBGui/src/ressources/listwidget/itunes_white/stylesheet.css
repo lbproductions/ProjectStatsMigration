@@ -1,0 +1,12 @@
+QListWidget {
+    font-size: 13px;
+    background-color: #f5f5f5;
+    alternate-background-color: #ebebeb;
+    selection-background-color: #Dbdbdb;
+    selection-color: black;
+    border: 1px solid #c5c5c5;
+}
+
+QListWidget::item {
+    height: 22px;
+}

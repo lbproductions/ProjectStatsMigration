@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/sheet">
+        <file alias="background">background.png</file>
+        <file alias="stylesheet">stylesheet.css</file>
+    </qresource>
+</RCC>
