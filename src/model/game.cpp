@@ -111,7 +111,7 @@ void Game::setPosition(const Player *player, int position)
 	//START
 QString Game::displayName() const
 {
-    return Entity::displayName();
+    return name();
 }
 int Game::points(const Player *player) const
 {

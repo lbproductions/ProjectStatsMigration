@@ -236,7 +236,7 @@ void DoppelkopfLiveGame::setDoko_mitSchwarzsolo(bool doko_mitSchwarzsolo)
 	//START
 QString DoppelkopfLiveGame::displayName() const
 {
-    return Entity::displayName();
+    return Game::displayName();
 }
 
 const QString DoppelkopfLiveGame::GameName(QObject::tr("Doppelkopf"));
