@@ -29,7 +29,7 @@ public:
     virtual bool isEditable() const = 0;
 
 Q_SIGNALS:
-    void dataChanged(QVariant data);
+    void changed();
 
 protected:
     friend class StoragePrivate;

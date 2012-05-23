@@ -153,6 +153,7 @@ public:
         int id = relation()->storage()->driver()->addRelatedEntity(this, data);
 
         addOtherEntity(entity, id);
+        emit changed();
     }
 
 private:

@@ -508,13 +508,12 @@ void Context::onPropertyDisplayNameChanged(QString displayName)
   \internal
   Listens to changes of PropertyValues and updates the model accordingly.
   */
-void Context::onPropertyValueDataChanged(QVariant data)
+void Context::onPropertyValueChanged()
 {
     Q_D(const Context);
-    Q_UNUSED(data);
 
     PropertyValue *v = static_cast<PropertyValue *>(sender());
-    QModelIndex i = index(d->entities.indexOf(v->entity()), d->properties.indexOf(v->property()));
+    QModelIndex i = index(d->entities.indexOf(v->entity()), d->properties.indexOf(v->property()) + 2);
     emit dataChanged(i, i);
 }
 

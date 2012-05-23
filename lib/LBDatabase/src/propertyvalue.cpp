@@ -1,5 +1,8 @@
 #include "propertyvalue.h"
 
+#include "context.h"
+#include "entity.h"
+
 namespace LBDatabase {
 
 //! \cond PRIVATE

@@ -47,7 +47,7 @@ public:
 private Q_SLOTS:
     void onEntityTypeNameChanged(QString identifier);
     void onPropertyDisplayNameChanged(QString displayName);
-    void onPropertyValueDataChanged(QVariant data);
+    void onPropertyValueChanged();
 
 protected:
     friend class StoragePrivate;

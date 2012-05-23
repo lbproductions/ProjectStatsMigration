@@ -23,6 +23,9 @@ public:
 
     bool isEditable() const;
 
+Q_SIGNALS:
+    void dataChanged(QVariant data);
+
 private:
     friend class AttributePrivate;
     friend class LocalStorageDriver;

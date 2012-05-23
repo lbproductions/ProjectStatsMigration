@@ -17,8 +17,6 @@ namespace LBDatabase {
 //! \cond PRIVATE
 void RelationValueBasePrivate::init()
 {
-    Q_Q(RelationValueBase);
-    QObject::connect(q, SIGNAL(dataChanged(QVariant)), entity->context(), SLOT(onPropertyValueDataChanged(QVariant)));
 }
 
 void RelationValueBasePrivate::fetchValue()
@@ -57,6 +55,7 @@ RelationValueBase::RelationValueBase(Relation *relation, Entity *parent) :
     d->relation = relation;
     d->entity = parent;
     d->init();
+    connect(this, SIGNAL(changed()), entity()->context(), SLOT(onPropertyValueChanged()));
 }
 
 /*!

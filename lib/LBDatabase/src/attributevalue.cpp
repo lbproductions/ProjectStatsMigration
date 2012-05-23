@@ -35,8 +35,6 @@ class AttributeValuePrivate {
 
 void AttributeValuePrivate::init()
 {
-    Q_Q(AttributeValue);
-    QObject::connect(q, SIGNAL(dataChanged(QVariant)), entity->context(), SLOT(onPropertyValueDataChanged(QVariant)));
 }
 
 void AttributeValuePrivate::fetchValue()
@@ -84,6 +82,7 @@ AttributeValue::AttributeValue(Attribute *attribute, Entity *parent) :
     d->attribute = attribute;
     d->entity = parent;
     d->init();
+    connect(this, SIGNAL(changed()), entity()->context(), SLOT(onPropertyValueChanged()));
 }
 
 /*!
@@ -144,6 +143,7 @@ bool AttributeValue::setData(const QVariant &data)
         d->cachedData = data;
         d->cached = true;
     }
+    emit changed();
     emit dataChanged(data);
     return true;
 }

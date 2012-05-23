@@ -39,8 +39,6 @@ class FunctionValuePrivate {
 
 void FunctionValuePrivate::init()
 {
-    Q_Q(FunctionValue);
-    QObject::connect(q, SIGNAL(dataChanged(QVariant)), entity->context(), SLOT(onPropertyValueDataChanged(QVariant)));
 }
 
 void FunctionValuePrivate::fetchValue()
@@ -81,6 +79,7 @@ FunctionValue::FunctionValue(Function *function, Entity *parent) :
     d->function = function;
     d->entity = parent;
     d->init();
+    connect(this, SIGNAL(changed()), entity()->context(), SLOT(onPropertyValueChanged()));
 }
 
 void FunctionValue::fetchValue()
@@ -204,6 +203,7 @@ void FunctionValue::setValue(const Entity *key, const QVariant &value)
     d->entity->storage()->driver()->setFunctionValue(this, data);
     d->values.insert(key, value);
     emit valueChanged(key, value);
+    emit changed();
 }
 
 bool FunctionValue::isEditable() const
