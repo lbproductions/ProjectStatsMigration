@@ -127,7 +127,7 @@ void Sidebar::setSelectedCategorie(int parent, int child)
 
 void Sidebar::expandAll()
 {
-    m_treeView->expandAll(); //TODO nur toplevel expanden...
+    m_treeView->expandAll(); //TODO: nur toplevel expanden...
 }
 
 } // namespace LBGui

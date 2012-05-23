@@ -46,6 +46,7 @@ public:
 
 
 	QList<Game *> games() const;
+    void addGame(Game *game);
 	QList<Player *> players() const;
 
 	// Write anything you want to remain unchanged between these comments: 

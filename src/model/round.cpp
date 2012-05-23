@@ -133,6 +133,7 @@ DoppelkopfRound *RoundsContext::createDoppelkopfRound()
     DoppelkopfRound *round = static_cast<DoppelkopfRound *>(insertEntity(psstorage->entityType(DoppelkopfRound::EntityTypeId)));
     round->setState(Round::Running);
     round->setStartTime(QDateTime::currentDateTime());
+    round->setNumber(0);
     return round;
 }
 

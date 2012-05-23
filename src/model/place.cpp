@@ -91,7 +91,12 @@ void Place::setComment(const QString &comment)
 
 QList<Game *> Place::games() const
 {
-	return relation<Game>(PlaceProperties::GamesRelation)->entities();
+    return relation<Game>(PlaceProperties::GamesRelation)->entities();
+}
+
+void Place::addGame(Game *game)
+{
+    return relation<Game>(PlaceProperties::GamesRelation)->addEntity(game);
 }
 
 QList<Player *> Place::players() const

@@ -5,6 +5,7 @@
 
 #include "../../model/game.h"
 #include "../../model/doppelkopflivegame.h"
+#include "../../model/place.h"
 #include "../../model/projectstatsstorage.h"
 
 #include <QDebug>
@@ -49,6 +50,31 @@ ProjectStatsStorage *NewGameWizard::storage() const
 void NewGameWizard::on_accepted()
 {
     DoppelkopfLiveGame *game = m_storage->gamesContext()->createDoppelkopfGame();
+    m_liveGameGeneralOptionsWidget->selectedPlace()->addGame(game);
+
+    int position = 1;
+    foreach(Player *player, m_liveGameGeneralOptionsWidget->selectedPlayers()) {
+        game->addPlayer(player);
+        game->setPosition(player, position++);
+    }
+    game->setDoko_mitHochzeit(field("doko_mitHochzeit").toBool());
+    game->setDoko_mitSolo(field("doko_mitSolo").toBool());
+    game->setDoko_mitTrumpfabgabe(field("doko_mitTrumpfabgabe").toBool());
+    game->setDoko_mitSchweinerei(field("doko_mitSchweinerei").toBool());
+    game->setDoko_mitSchmeisserei(field("doko_mitSchmeisserei").toBool());
+
+    game->setDoko_mitPflichtsolo(field("doko_mitPflichtsolo").toBool());
+    game->setDoko_mitBubensolo(field("doko_mitBubenSolo").toBool());
+    game->setDoko_mitDamensolo(field("doko_mitDamenSolo").toBool());
+    game->setDoko_mitFarbsolo(field("doko_mitFarbsolo").toBool());
+    game->setDoko_mitFleischlos(field("doko_mitFleischlos").toBool());
+    game->setDoko_mitTrumpfsolo(field("doko_mitTrumpfsolo").toBool());
+    game->setDoko_mitSchwarzsolo(field("doko_mitSchwarzsolo").toBool());
+
+    game->setDoko_mitFuenfKoenige(field("doko_mitFuenfKoenige").toBool());
+    game->setDoko_mitZuWenigTrumpf(field("doko_mitZuWenigTrumpf").toBool());
+    game->setDoko_mitNeunzigPunkte(field("doko_mitNeunzigPunkte").toBool());
+    game->setDoko_mitTrumpfabgabeSchmeisserei(field("doko_mitTrumpfabgabeSchmeisserei").toBool());
 
 
 //    Database::Game* game = 0;
@@ -92,25 +118,25 @@ void NewGameWizard::on_accepted()
 //Database::DokoLiveGame *NewGameWizard::createDokoLiveGame()
 //{
 //    Database::DokoLiveGame *game = new Database::DokoLiveGame(
-//                field("doko_mitHochzeit").toBool(),
-//                field("doko_mitSolo").toBool(),
-//                field("doko_mitTrumpfabgabe").toBool(),
-//                field("doko_mitSchweinerei").toBool(),
-//                field("doko_mitSchmeisserei").toBool(),
+//field("doko_mitHochzeit").toBool(),
+//field("doko_mitSolo").toBool(),
+//field("doko_mitTrumpfabgabe").toBool(),
+//field("doko_mitSchweinerei").toBool(),
+//field("doko_mitSchmeisserei").toBool(),
 
-//                field("doko_mitPflichtsolo").toBool(),
-//                field("doko_mitBubenSolo").toBool(),
-//                field("doko_mitDamenSolo").toBool(),
-//                field("doko_mitFarbsolo").toBool(),
-//                field("doko_mitFleischlos").toBool(),
-//                field("doko_mitTrumpfsolo").toBool(),
-//                field("doko_mitSchwarzsolo").toBool(),
+//field("doko_mitPflichtsolo").toBool(),
+//field("doko_mitBubenSolo").toBool(),
+//field("doko_mitDamenSolo").toBool(),
+//field("doko_mitFarbsolo").toBool(),
+//field("doko_mitFleischlos").toBool(),
+//field("doko_mitTrumpfsolo").toBool(),
+//field("doko_mitSchwarzsolo").toBool(),
 
-//                field("doko_mitFuenfKoenige").toBool(),
-//                field("doko_mitZuWenigTrumpf").toBool(),
-//                field("doko_mitNeunzigPunkte").toBool(),
-//                field("doko_mitTrumpfabgabeSchmeisserei").toBool()
-//                );
+//field("doko_mitFuenfKoenige").toBool(),
+//field("doko_mitZuWenigTrumpf").toBool(),
+//field("doko_mitNeunzigPunkte").toBool(),
+//field("doko_mitTrumpfabgabeSchmeisserei").toBool()
+//);
 
 //    return game;
 //}

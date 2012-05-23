@@ -139,6 +139,7 @@ DoppelkopfLiveGame *GamesContext::createDoppelkopfGame()
     DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(insertEntity(psstorage->entityType(DoppelkopfLiveGame::EntityTypeId)));
     DoppelkopfRound *round1 = psstorage->roundsContext()->createDoppelkopfRound();
     game->addRound(round1);
+    game->setDate(QDateTime::currentDateTime());
     return game;
 }
 
