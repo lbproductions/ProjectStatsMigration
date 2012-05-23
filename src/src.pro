@@ -95,7 +95,8 @@ SOURCES += main.cpp \
     wizards/newgame/livedokogameoptionswidget.cpp \
     wizards/newgame/chooseunfinishedgamedialog.cpp \
     widgets/placescombobox.cpp \
-    widgets/playerslistwidget.cpp
+    widgets/playerslistwidget.cpp \
+    windows/livegame/livegamewindow.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -130,13 +131,15 @@ HEADERS  += \
     wizards/newgame/livedokogameoptionswidget.h \
     wizards/newgame/chooseunfinishedgamedialog.h \
     widgets/placescombobox.h \
-    widgets/playerslistwidget.h
+    widgets/playerslistwidget.h \
+    windows/livegame/livegamewindow.h
 
 macx {
     HEADERS  += \
         misc/sparkleupdater.h \
         misc/cocoainitializer.h
     LIBS += \
+        -F$$PWD/../frameworks/ \
         -framework AppKit \
         -framework Sparkle
     OBJECTIVE_SOURCES += \

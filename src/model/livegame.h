@@ -32,6 +32,7 @@ public:
 	};
 
 	State state() const;
+    void setState(State state);
 
 
 	int points(const Player *player) const;
@@ -45,6 +46,7 @@ public:
 	// END
 
 signals:
+    void stateChanged(State);
 };
 
 #endif // LIVEGAME_H

@@ -6,6 +6,7 @@
 
 #include <QSqlQuery>
 #include <QSqlRecord>
+#include <QDebug>
 
 namespace LBDatabase {
 
@@ -106,7 +107,7 @@ int Row::id() const
 QVariant Row::data(int column) const
 {
     Q_D(const Row);
-    return d->table->data(d->table->index(d->index, column));
+    return d->table->value(d->index, column);
 }
 
 /*!

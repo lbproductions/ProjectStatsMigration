@@ -2,4 +2,13 @@
     <qresource prefix="/graphics/icons/mainwindow">
         <file alias="newgame">graphics/icons/mainwindow/newgame.png</file>
     </qresource>
+    <qresource prefix="/graphics/icons/livegame">
+        <file alias="bierbutton">graphics/icons/livegame/bierbutton.png</file>
+        <file alias="closegame">graphics/icons/livegame/closegame.png</file>
+        <file alias="fullscreen">graphics/icons/livegame/fullscreen.png</file>
+        <file alias="newround">graphics/icons/livegame/newround.png</file>
+        <file alias="normalmode">graphics/icons/livegame/normalmode.png</file>
+        <file alias="pause">graphics/icons/livegame/pause.png</file>
+        <file alias="play">graphics/icons/livegame/play.png</file>
+    </qresource>
 </RCC>

@@ -31,6 +31,7 @@ TreeView::TreeView(QWidget *parent) :
 
     connect(this,SIGNAL(activated(QModelIndex)), this, SIGNAL(selectionChanged()));
     connect(this,SIGNAL(pressed(QModelIndex)), this, SIGNAL(selectionChanged()));
+    connect(this, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(on_doubleClicked(QModelIndex)));
 }
 
 int TreeView::doubleClickActions() const

@@ -13,7 +13,15 @@ LiveGame::LiveGame(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Con
 
 LiveGame::State LiveGame::state() const
 {
-	return static_cast<State>(value(LiveGameProperties::StateAttribute).value<int>());
+    return static_cast<State>(value(LiveGameProperties::StateAttribute).value<int>());
+}
+
+void LiveGame::setState(LiveGame::State state)
+{
+    if(state == this->state())
+        return;
+    setValue(LiveGameProperties::StateAttribute,QVariant::fromValue<int>(state));
+    emit stateChanged(state);
 }
 
 QList<Round *> LiveGame::rounds() const

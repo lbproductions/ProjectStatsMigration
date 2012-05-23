@@ -24,7 +24,7 @@ void ContextTreeViewPrivate::init()
     q->setSortingEnabled(true);
     q->setUniformRowHeights(true);
     q->setSelectionMode(QAbstractItemView::ExtendedSelection);
-    q->setDoubleClickActions(LBGui::TreeView::EditAttributeAction);
+    q->setDoubleClickActions(LBGui::TreeView::EmitSignalAction);
 
     contextSortProxyModel = new QSortFilterProxyModel(q);
     q->setModel(contextSortProxyModel);

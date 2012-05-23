@@ -393,6 +393,11 @@ Qt::ItemFlags Table::flags(const QModelIndex &index) const
     return QSqlTableModel::flags(index);
 }
 
+QVariant Table::value(int row, int column) const
+{
+    return record(row).value(column);
+}
+
 bool Table::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     bool ret = QSqlTableModel::setData(index,value, role);

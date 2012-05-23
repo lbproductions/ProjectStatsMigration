@@ -5,8 +5,10 @@
 
 #include "../model/projectstatsstorage.h"
 #include "../model/game.h"
+#include "../model/doppelkopflivegame.h"
 #include "../preferences/updaterpreferences.h"
 #include "../wizards/newgame/newgamewizard.h"
+#include "../windows/livegame/livegamewindow.h"
 
 #ifdef Q_WS_MAC
 #   include "../misc/sparkleupdater.h"
@@ -102,8 +104,10 @@ void Controller::showWidget(QWidget *widget)
 
 void Controller::openEntityWindow(LBDatabase::Entity *entity)
 {
-    if(entity->entityType()->identifier() == Game::Name) {
-        //open game window
+    if(entity->entityType()->id() == DoppelkopfLiveGame::EntityTypeId) {
+        LiveGameWindow *window = new LiveGameWindow();
+        window->setGame(static_cast<LiveGame *>(entity));
+        window->show();
     }
 }
 

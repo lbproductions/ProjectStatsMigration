@@ -312,21 +312,13 @@ QList<FunctionReimplementationMetaData> LocalStorageDriver::functionReimplementa
 QVariant LocalStorageDriver::attributeValue(const AttributeValue *value) const
 {
     Q_D(const LocalStorageDriver);
-    if(value->attribute()->type() == Attribute::Enum) {
+    if(!value->attribute()->isCalculated()) {
         Table *contextTable = d->database->table(value->entity()->context()->tableName());
         Row *row = contextTable->row(value->entity()->id());
-        return static_cast<EnumAttribute *>(value->attribute())->stringValue(row->data(value->attribute()->identifier()).toInt());
+        return row->data(value->attribute()->identifier());
     }
-    else {
-        if(!value->attribute()->isCalculated()) {
-            Table *contextTable = d->database->table(value->entity()->context()->tableName());
-            Row *row = contextTable->row(value->entity()->id());
-            return row->data(value->attribute()->identifier());
-        }
 
-        return const_cast<AttributeValue*>(value)->calculate();
-    }
-    return QVariant();
+    return const_cast<AttributeValue*>(value)->calculate();
 }
 
 void LocalStorageDriver::setAttributeValue(const AttributeValue *attribute, const QVariant &value)
