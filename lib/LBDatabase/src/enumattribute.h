@@ -12,10 +12,6 @@ class EnumAttribute : public LBDatabase::Attribute
 {
     Q_OBJECT
 public:
-    static const QString EnumsTable;
-    static const QString AttributeColumn;
-    static const QString IdentifierColumn;
-    static const QString ValueColumn;
 
     QString stringValue(int value) const;
 
