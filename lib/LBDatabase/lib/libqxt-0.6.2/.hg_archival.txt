@@ -1,0 +1,4 @@
+repo: d520d637f1e731a6944031b7d4fd6d18de48d2b2
+node: af08f520f71c1ae102448f68e03418552eced3af
+branch: 0.6
+tag: v0.6.2

@@ -31,16 +31,35 @@ defineReplace( nl  ) {
 }
 
 macx {
+    HEADERS  += \
+        misc/sparkleupdater.h \
+        misc/cocoainitializer.h
+    LIBS += \
+        -F$$PWD/../frameworks/ \
+        -F$$PWD/../lib/LBDatabase/frameworks/ \
+        -framework AppKit \
+        -framework Sparkle \
+        -framework QxtCore \
+        -framework QxtNetwork \
+        -framework QxtWeb
+
+    INCLUDEPATH += $$PWD/../frameworks/Sparkle.framework/Headers
+
+    CONFIG += qxt
+    QXT     += core web network
+    QXT_DIR = $${PWD}/../lib/LBDatabase/lib/libqxt-0.6.2
+    LIBS += -F$${QXT_DIR}/lib
+    INCLUDEPATH += $${QXT_DIR}/include
+
+    OBJECTIVE_SOURCES += \
+        misc/sparkleupdater.mm \
+        misc/cocoainitializer.mm
+
     LIBS += -L$$OUT_PWD/../lib/LBDatabase/
     LIBS += -llbdatabase
 
     LIBS += -L$$OUT_PWD/../lib/LBGui/
     LIBS += -llbgui
-
-    LIBS += -F$$PWD/../lib/LBDatabase/frameworks/ \
-            -framework QxtCore \
-            -framework QxtNetwork \
-            -framework QxtWeb
 
     copyFrameworks.target = frameworks
     copyFrameworks.commands += rm -Rf $$DESTDIR/$${TARGET}.app/Contents/Frameworks/
@@ -59,7 +78,20 @@ macx {
     QMAKE_POST_LINK += install_name_tool -id @executable_path/liblbgui.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbgui.1.dylib &&
     QMAKE_POST_LINK += install_name_tool -change liblbdatabase.1.dylib @executable_path/liblbdatabase.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
     QMAKE_POST_LINK += install_name_tool -change liblbgui.1.dylib @executable_path/liblbgui.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
-    QMAKE_POST_LINK += install_name_tool -change liblbdatabase.1.dylib @executable_path/liblbgui.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbgui.1.dylib
+    QMAKE_POST_LINK += install_name_tool -change liblbdatabase.1.dylib @executable_path/liblbgui.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbgui.1.dylib &&
+
+    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtCore.framework/QxtCore &&
+    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
+    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtWeb.framework/QxtWeb $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
+    QMAKE_POST_LINK += install_name_tool -change QxtWeb.framework/Versions/0/QxtWeb @executable_path/../Frameworks/QxtWeb.framework/QxtWeb $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
+    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtNetwork.framework/QxtNetwork &&
+    QMAKE_POST_LINK += install_name_tool -change QxtNetwork.framework/Versions/0/QxtNetwork @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
+    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtNetwork.framework/QxtNetwork &&
+    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
+    QMAKE_POST_LINK += install_name_tool -change QxtNetwork.framework/Versions/0/QxtNetwork @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
+    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbdatabase.1.dylib &&
+    QMAKE_POST_LINK += install_name_tool -change QxtNetwork.framework/Versions/0/QxtNetwork @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbdatabase.1.dylib &&
+    QMAKE_POST_LINK += install_name_tool -change QxtWeb.framework/Versions/0/QxtWeb @executable_path/../Frameworks/QxtWeb.framework/QxtWeb $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbdatabase.1.dylib
 
     QMAKE_EXTRA_TARGETS += copyFrameworks copyDylibs
     PRE_TARGETDEPS += frameworks dylibs
@@ -141,19 +173,6 @@ HEADERS  += \
     widgets/playerslistwidget.h \
     windows/livegame/livegamewindow.h
 
-macx {
-    HEADERS  += \
-        misc/sparkleupdater.h \
-        misc/cocoainitializer.h
-    LIBS += \
-        -F$$PWD/../frameworks/ \
-        -framework AppKit \
-        -framework Sparkle
-    OBJECTIVE_SOURCES += \
-        misc/sparkleupdater.mm \
-        misc/cocoainitializer.mm
-}
-
 RESOURCES += \
     resources/resources.qrc
 
@@ -163,17 +182,3 @@ FORMS += \
     wizards/newgame/livedokogameoptionswidget.ui \
     wizards/newgame/dokolivegamegroupbox.ui \
     wizards/newgame/chooseunfinishedgamedialog.ui
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -9,11 +9,11 @@
 #include "../relationvalue.h"
 #include "../storage.h"
 
-#include <QxtHttpServerConnector>
-#include <QxtHttpSessionManager>
-#include <QxtAbstractWebService>
-#include <QxtWebPageEvent>
-#include <QxtWebRequestEvent>
+#include <QxtWeb/QxtHttpServerConnector>
+#include <QxtWeb/QxtHttpSessionManager>
+#include <QxtWeb/QxtAbstractWebService>
+#include <QxtWeb/QxtWebPageEvent>
+#include <QxtWeb/QxtWebRequestEvent>
 
 #include <QDebug>
 
