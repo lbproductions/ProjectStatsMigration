@@ -9,6 +9,11 @@
 
 namespace LBDatabase {
 
+const QString EnumAttribute::EnumsTable("lbmeta_enums");
+const QString EnumAttribute::AttributeColumn("attribute");
+const QString EnumAttribute::IdentifierColumn("name");
+const QString EnumAttribute::ValueColumn("value");
+
 
 class EnumAttributePrivate : public AttributePrivate {
     QMap<int, QString> enumValues;
