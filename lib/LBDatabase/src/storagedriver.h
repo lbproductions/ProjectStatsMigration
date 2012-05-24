@@ -32,7 +32,7 @@ class StorageDriver : public QObject
 public:
     explicit StorageDriver(QObject *parent = 0);
 
-    virtual void init() = 0;
+    virtual bool init() = 0;
 
     // MetaData
     virtual QList<ContextMetaData> contexts() const = 0;

@@ -98,7 +98,7 @@ class LocalStorageDriverPrivate
     LocalStorageDriverPrivate()
     {}
 
-    void init();
+    bool init();
 
     Database *database;
 
@@ -115,45 +115,46 @@ class LocalStorageDriverPrivate
     Q_DECLARE_PUBLIC(LocalStorageDriver)
 };
 
-void LocalStorageDriverPrivate::init()
+bool LocalStorageDriverPrivate::init()
 {
     database = Database::instance(fileName);
 
     if(!database)
-        return;
+        return false;
 
     QFile file(fileName);
     if(!file.exists()) {
-        file.open(QFile::ReadOnly);
-        file.close();
+        return false;
     }
 
     if(!database->open())
-        return;
+        return false;
 
     metaDataTable = database->table(MetaDataTableName);
     if(!metaDataTable)
-        return;
+        return false;
 
     contextsTable = database->table(ContextsTableName);
     if(!contextsTable)
-        return;
+        return false;
 
     entityTypesTable = database->table(EntitiesTableName);
     if(!entityTypesTable)
-        return;
+        return false;
 
     attributesTable = database->table(AttributesTableName);
     if(!attributesTable)
-        return;
+        return false;
 
     relationsTable = database->table(RelationsTableName);
     if(!relationsTable)
-        return;
+        return false;
 
     functionsTable = database->table(FunctionsTableName);
     if(!functionsTable)
-        return;
+        return false;
+
+    return true;
 }
 
 LocalStorageDriver::LocalStorageDriver(const QString &fileName, QObject *parent) :
@@ -163,17 +164,16 @@ LocalStorageDriver::LocalStorageDriver(const QString &fileName, QObject *parent)
     Q_D(LocalStorageDriver);
     d->fileName = fileName;
     d->q_ptr = this;
-    d->init();
 }
 
 LocalStorageDriver::~LocalStorageDriver()
 {
 }
 
-void LocalStorageDriver::init()
+bool LocalStorageDriver::init()
 {
     Q_D(LocalStorageDriver);
-    d->init();
+    return d->init();
 }
 
 QList<ContextMetaData> LocalStorageDriver::contexts() const

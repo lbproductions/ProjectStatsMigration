@@ -51,7 +51,14 @@ Controller::Controller(MainWindow *mainWindow) :
                     storageLocation,
                     m_storage)
                 );
-    m_storage->open();
+    if(!m_storage->open()) {
+        QMessageBox msgBox;
+        msgBox.setText(tr("The storage could not be opened! ProjectStats will be terminated"));
+        msgBox.setInformativeText(QDesktopServices::storageLocation(QDesktopServices::DataLocation).append("/storage.lbstorage"));
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+        exit(-1);
+    }
 }
 
 MainWindow *Controller::mainWindow() const

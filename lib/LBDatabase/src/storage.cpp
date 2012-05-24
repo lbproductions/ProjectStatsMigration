@@ -76,7 +76,8 @@ bool StoragePrivate::open()
     if(!driver)
         return false;
 
-    driver->init();
+    if(!driver->init())
+        return false;
 
     QList<ContextMetaData> contextMetaDatas = driver->contexts();
     QList<EntityTypeMetaData> entityTypeMetaDatas = driver->entityTypes();

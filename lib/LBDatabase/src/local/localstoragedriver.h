@@ -12,7 +12,7 @@ public:
     LocalStorageDriver(const QString &fileName, QObject *parent);
     ~LocalStorageDriver();
 
-    void init();
+    bool init();
 
     // MetaData
     QList<ContextMetaData> contexts() const;
