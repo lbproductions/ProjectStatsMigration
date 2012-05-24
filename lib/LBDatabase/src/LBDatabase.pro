@@ -11,17 +11,18 @@ INCLUDEPATH += $$PWD/include
 
 macx {
     QMAKE_LFLAGS += -F$$PWD/../frameworks/
-    LIBS += -F$$PWD/../frameworks/ \
-            -framework QxtCore \
-            -framework QxtNetwork \
-            -framework QxtWeb
 
-    INCLUDEPATH += $$PWD/../include/QxtCore \
-                    $$PWD/../include/QxtWeb \
-                    $$PWD/../include/QxtNetwork \
-                    $$PWD/../frameworks/QxtCore.framework/Headers \
-                    $$PWD/../frameworks/QxtWeb.framework/Headers \
-                    $$PWD/../frameworks/QxtNetwork.framework/Headers
+    CONFIG += qxt
+    QXT     += core web network
+    QXT_DIR = $${PWD}/../lib/libqxt-0.6.2
+    LIBS += -F$${QXT_DIR}/lib \
+        -framework QxtCore \
+        -framework QxtNetwork \
+        -framework QxtWeb
+    INCLUDEPATH += $${QXT_DIR}/include
+    INCLUDEPATH += $${QXT_DIR}/src/core
+    INCLUDEPATH += $${QXT_DIR}/src/web
+    INCLUDEPATH += $${QXT_DIR}/src/network
 }
 
 HEADERS += \

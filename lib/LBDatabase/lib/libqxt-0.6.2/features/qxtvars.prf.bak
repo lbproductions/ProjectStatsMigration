@@ -1,0 +1,7 @@
+QXT_MODULES = docs berkeley core designer gui network sql web zeroconf
+QXT_INSTALL_PREFIX = /usr/local/Qxt
+QXT_INSTALL_LIBS = /Library/Frameworks
+QXT_INSTALL_BINS = /usr/local/Qxt/bin
+QXT_INSTALL_HEADERS = /usr/local/Qxt/include
+QXT_INSTALL_FEATURES = /usr/local/Qt4.8/mkspecs/features
+QXT_INSTALL_DOCS = /usr/local/Qxt/doc
