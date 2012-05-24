@@ -3,10 +3,8 @@
 
 #include "graphpoint.h"
 
-namespace Database{
-    class Player;
-    class DokoRound;
-}
+class Player;
+class DoppelkopfRound;
 
 namespace Gui
 {
@@ -23,18 +21,18 @@ class DokoGraphPoint : public GraphPoint
 {
     Q_OBJECT
 public:
-    DokoGraphPoint(QPoint point, DokoLiveGamePlayerPointsGraph* graph, ::Database::DokoRound* r);
+    DokoGraphPoint(QPoint point, DokoLiveGamePlayerPointsGraph* graph, DoppelkopfRound* r);
 
     /*!
       Zeichnet den Punkt.
       */
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    Database::DokoRound* round() const;
+    DoppelkopfRound* round() const;
 private:
 
-    Database::DokoRound* m_dokoround;
-    Database::Player* m_player;
+    DoppelkopfRound* m_dokoRound;
+    Player* m_player;
 };
 
 }}}

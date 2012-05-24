@@ -1,16 +1,12 @@
 #ifndef DOKOLIVEGAMEPLAYERPOINTSGRAPH_H
 #define DOKOLIVEGAMEPLAYERPOINTSGRAPH_H
 
-#include <Gui/Graphs/Items/livegameplayerpointsgraph.h>
+#include "livegameplayerpointsgraph.h"
 
-namespace Database
-{
 
 class Player;
-
-class DokoLiveGame;
-class DokoRound;
-}
+class DoppelkopfLiveGame;
+class DoppelkopfRound;
 
 namespace Gui
 {
@@ -27,14 +23,15 @@ class DokoLiveGamePlayerPointsGraph : public LiveGamePlayerPointsGraph
 {
     Q_OBJECT
 public:
-    DokoLiveGamePlayerPointsGraph(Database::Player *player, Database::DokoLiveGame *liveGame, LiveGameCoordinateSystem *coordinateSystem);
+    DokoLiveGamePlayerPointsGraph(Player *player, DoppelkopfLiveGame *liveGame, LiveGameCoordinateSystem *coordinateSystem);
 
-    void addPoint(const QPoint &point, ::Database::DokoRound* r);
+    void addPoint(const QPoint &point);
+    void addPoint(const QPoint &point, DoppelkopfRound* r);
 
 public slots:
     void update();
 
-    void addRound(::Database::Round*);
+    void addRound(Round*);
 };
 
 }}}

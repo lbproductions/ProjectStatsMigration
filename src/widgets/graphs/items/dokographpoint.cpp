@@ -3,47 +3,44 @@
 #include "dokolivegameplayerpointsgraph.h"
 #include "dokolivegamecoordinatesystem.h"
 
-#include <Database/Doppelkopf/dokoround.h>
-#include <Database/player.h>
-#include <Database/Doppelkopf/schmeisserei.h>
+#include <model/doppelkopfround.h>
+#include <model/player.h>
+#include <model/schmeisserei.h>
 
 #include <QPainter>
 
 using namespace Gui::Graphs::Items;
 
-DokoGraphPoint::DokoGraphPoint(QPoint point, DokoLiveGamePlayerPointsGraph* graph, ::Database::DokoRound* r):
+DokoGraphPoint::DokoGraphPoint(QPoint point, DokoLiveGamePlayerPointsGraph* graph, DoppelkopfRound* r):
     GraphPoint(point,graph)
 {
     m_radius = 7;
-    m_dokoround = r;
+    m_dokoRound = r;
     m_player = graph->player();
 
-    QString tooltip = "<h1>"+m_player->name->value()+"</h1>"+
-            "<span style=\"font-size: 18pt;\">"+tr("Round")+" "+QString::number(r->number->value()+1)+"<br></span>"
+    QString tooltip = "<h1>"+m_player->name()+"</h1>"+
+            "<span style=\"font-size: 18pt;\">"+tr("Round")+" "+QString::number(r->number()+1)+"<br></span>"
             "<span style=\"font-size: 22pt;\">"
-            "<b>"+tr("Points")+":</b> "+QString::number(r->points->value(m_player))+"<br>"+
+            "<b>"+tr("Points")+":</b> "+QString::number(r->points(m_player))+"<br>"+
             "<b>"+tr("Total")+":</b> "+QString::number(point.y())+"<br>"+
             "<br>";
-    if (m_dokoround->doko_hochzeitPlayerId->value() == m_player->id()){
+    if (m_dokoRound->hochzeitPlayer() == m_player){
         tooltip += "Hochzeit<br>";
     }
-    if (m_dokoround->doko_soloPlayerId->value() == m_player->id()){
-        tooltip += m_dokoround->doko_soloType->value()+"-Solo<br>";
+    if (m_dokoRound->dokoSoloPlayer() == m_player){
+        tooltip += m_dokoRound->doko_soloType()+"-Solo<br>";
     }
-    if (m_dokoround->doko_trumpfabgabePlayerId->value() == m_player->id()){
+    if (m_dokoRound->trumpfabgabePlayer() == m_player){
         tooltip+= "Trumpfabgabe<br>";
     }
-    if (m_dokoround->doko_schweinereiPlayerId->value() == m_player->id()){
+    if (m_dokoRound->schweinereiPlayer() == m_player){
         tooltip+= "Schweinerei<br>";
     }
 
     bool hasSchmeisserei = false;
-    foreach(Database::Schmeisserei* s, m_dokoround->doko_schmeissereien->value())
-    {
-        if(s->playerId->value() == m_player->id())
-        {
+    foreach(Schmeisserei* s, m_dokoRound->schmeissereienPerRound()) {
+        if(s->player() == m_player)
             hasSchmeisserei = true;
-        }
     }
 
     if (hasSchmeisserei){
@@ -53,14 +50,15 @@ DokoGraphPoint::DokoGraphPoint(QPoint point, DokoLiveGamePlayerPointsGraph* grap
     setToolTip(tooltip);
 }
 
-Database::DokoRound* DokoGraphPoint::round() const
+DoppelkopfRound* DokoGraphPoint::round() const
 {
-    return m_dokoround;
+    return m_dokoRound;
 }
 
 void DokoGraphPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem * /*option*/, QWidget * /*widget*/)
 {
-    painter->setPen(m_player->color->value());
+    painter->setPen(QColor(255,255,255));
+    painter->setPen(m_player->color());
     painter->setBrush(Qt::black);
     painter->drawEllipse(QPointF(  m_point.x()*m_graph->coordinateSystem()->xScale(),
                                     -m_point.y()*m_graph->coordinateSystem()->yScale()),
@@ -72,21 +70,22 @@ void DokoGraphPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem * /
     painter->setFont(font);
 
     QString text;
-    if (m_dokoround->doko_soloPlayerId->value() == m_player->id()){
+    if (m_dokoRound->dokoSoloPlayer() == m_player){
         text = "S";
     }
-    else if(m_dokoround->doko_hochzeitPlayerId->value() == m_player->id()){
+    else if(m_dokoRound->hochzeitPlayer() == m_player){
         text = "H";
     }
-    else if(m_dokoround->doko_trumpfabgabePlayerId->value() == m_player->id()){
+    else if(m_dokoRound->trumpfabgabePlayer() == m_player){
         text = "T";
     }
-    else if(m_dokoround->doko_re->value(m_player)){
+    else if(m_dokoRound->rePlayer1() == m_player || m_dokoRound->rePlayer2() == m_player){
         text = "R";
     }
-    else if (m_dokoround->currentPlayingPlayers->value().contains(m_player)){
-        text = "C";
-    }
+//TODO: wenn round->currentPlayingPlayers implementiert ist anpassen:
+//    else if (m_dokoRound->currentplayingplayers.contains(player)){
+//        text = "C";
+//    }
     else{
         text = "-";
     }

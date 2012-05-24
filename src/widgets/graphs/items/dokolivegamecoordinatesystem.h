@@ -3,9 +3,8 @@
 
 #include "livegamecoordinatesystem.h"
 
-namespace Database{
-    class DokoLiveGame;
-}
+
+class DoppelkopfLiveGame;
 
 namespace Gui
 {
@@ -20,7 +19,7 @@ class DokoLiveGameCoordinateSystem  : public LiveGameCoordinateSystem
 {
     Q_OBJECT
 public:
-    DokoLiveGameCoordinateSystem(Database::DokoLiveGame* dokogame);
+    DokoLiveGameCoordinateSystem(DoppelkopfLiveGame *dokogame);
 
     void addGraphsForPlayers();
 };

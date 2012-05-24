@@ -3,14 +3,6 @@
 
 #include "livegamegraphview.h"
 
-namespace Database{
-    namespace Doppelkopf{
-
-        class DokoLiveGame;
-
-    }
-}
-
 namespace Gui
 {
 namespace Graphs
@@ -27,7 +19,7 @@ class DokoLiveGameGraphView :public LiveGameGraphView
 public:
     DokoLiveGameGraphView(QWidget *parent);
 
-    void setLiveGame(Database::LiveGame *liveGame);
+    void setLiveGame(LiveGame *liveGame);
 };
 
 }}

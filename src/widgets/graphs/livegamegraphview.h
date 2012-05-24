@@ -5,11 +5,8 @@
 
 #include <QPointer>
 
-namespace Database
-{
 class LiveGame;
 class Player;
-}
 
 namespace Gui
 {
@@ -41,12 +38,12 @@ public:
     /*!
       Ändert das angezeigte LiveGame auf \\pliveGame.
       */
-    virtual void setLiveGame(Database::LiveGame *liveGame);
+    virtual void setLiveGame(LiveGame *liveGame);
 
     /*!
       MUSS(!) aufgerufen werden, wenn eine neue Instanz dieses Objekts erstellt wird.
       */
-    void setupView(Database::LiveGame *liveGame);
+    void setupView(LiveGame *liveGame);
 
 private slots:
     /*!

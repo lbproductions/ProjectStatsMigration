@@ -3,12 +3,9 @@
 
 #include "graph.h"
 
-namespace Database
-{
 class LiveGame;
 class Player;
 class Round;
-}
 
 namespace Gui
 {
@@ -33,20 +30,20 @@ public:
     /*!
       Erstellt einen Graphen, der die Punkte des Spielers \p player im Spiel \p liveGame im Koordinaten \p coordinateSystem darstellt.
       */
-    LiveGamePlayerPointsGraph(Database::Player *player, Database::LiveGame *liveGame, LiveGameCoordinateSystem *coordinateSystem);
+    LiveGamePlayerPointsGraph(Player *player, LiveGame *liveGame, LiveGameCoordinateSystem *coordinateSystem);
 
     /*!
       MUSS(!) aufgerufen werden, wenn eine neues Instanz dieses Objekts erstellt wird.
       */
     void setupGraph();
 
-    Database::Player* player();
+    Player* player();
 
 public slots:
     /*!
       Dieser Slot wird aufgerufen, wenn im Spiel eine Runde beendet wird. Dann wird die Punktzahl des Spielers berechnet und als Punkt hinzugefügt.
       */
-    virtual void addRound(::Database::Round*);
+    virtual void addRound(Round*);
 
 protected:
     /*!
@@ -54,8 +51,8 @@ protected:
       */
     void readPlayerPoints();
 
-    QPointer<Database::Player> m_player; //!< Der Spieler, den dieser Graph anzeigt.
-    QPointer<Database::LiveGame> m_liveGame; //!< Das LiveGame dessen Punkte angezeigt werden.
+    Player *m_player; //!< Der Spieler, den dieser Graph anzeigt.
+    LiveGame *m_liveGame; //!< Das LiveGame dessen Punkte angezeigt werden.
     int m_totalPoints; //!< Wird gebraucht, um die Gesamtpunktzahl des Spielers zu speichern.
 };
 

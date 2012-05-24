@@ -2,9 +2,6 @@
 
 #include "Items/livegamecoordinatesystem.h"
 
-#include <Database/livegame.h>
-#include <Database/player.h>
-
 using namespace Gui::Graphs;
 
 LiveGameGraphView::LiveGameGraphView(QWidget *parent) :
@@ -12,12 +9,12 @@ LiveGameGraphView::LiveGameGraphView(QWidget *parent) :
 {
 }
 
-void LiveGameGraphView::setupView(Database::LiveGame *liveGame){
+void LiveGameGraphView::setupView(LiveGame *liveGame){
     setLiveGame(liveGame);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
-void LiveGameGraphView::setLiveGame(Database::LiveGame *liveGame)
+void LiveGameGraphView::setLiveGame(LiveGame *liveGame)
 {
     if(!m_liveGameCoordinateSystem.isNull())
     {

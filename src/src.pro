@@ -135,7 +135,19 @@ SOURCES += main.cpp \
     wizards/newgame/chooseunfinishedgamedialog.cpp \
     widgets/placescombobox.cpp \
     widgets/playerslistwidget.cpp \
-    windows/livegame/livegamewindow.cpp
+    windows/livegame/livegamewindow.cpp \
+    widgets/graphs/livegamegraphview.cpp \
+    widgets/graphs/items/livegameplayerpointsgraph.cpp \
+    widgets/graphs/items/livegamecoordinatesystem.cpp \
+    widgets/graphs/items/graphpoint.cpp \
+    widgets/graphs/items/graph.cpp \
+    widgets/graphs/items/dokolivegameplayerpointsgraph.cpp \
+    widgets/graphs/items/dokolivegamecoordinatesystem.cpp \
+    widgets/graphs/items/dokographpoint.cpp \
+    widgets/graphs/items/coordinatesystem.cpp \
+    widgets/graphs/items/abstractitem.cpp \
+    widgets/graphs/graphview.cpp \
+    widgets/graphs/dokolivegamegraphview.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -171,7 +183,21 @@ HEADERS  += \
     wizards/newgame/chooseunfinishedgamedialog.h \
     widgets/placescombobox.h \
     widgets/playerslistwidget.h \
-    windows/livegame/livegamewindow.h
+    windows/livegame/livegamewindow.h \
+    widgets/graphs/roundgraphview.h \
+    widgets/graphs/livegamegraphview.h \
+    widgets/graphs/items/playergraph.h \
+    widgets/graphs/items/livegameplayerpointsgraph.h \
+    widgets/graphs/items/livegamecoordinatesystem.h \
+    widgets/graphs/items/graphpoint.h \
+    widgets/graphs/items/graph.h \
+    widgets/graphs/items/dokolivegameplayerpointsgraph.h \
+    widgets/graphs/items/dokolivegamecoordinatesystem.h \
+    widgets/graphs/items/dokographpoint.h \
+    widgets/graphs/items/coordinatesystem.h \
+    widgets/graphs/items/abstractitem.h \
+    widgets/graphs/graphview.h \
+    widgets/graphs/dokolivegamegraphview.h
 
 RESOURCES += \
     resources/resources.qrc

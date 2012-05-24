@@ -3,16 +3,14 @@
 #include "livegameplayerpointsgraph.h"
 #include "dokolivegameplayerpointsgraph.h"
 
-#include <Database/livegame.h>
-#include <Database/Doppelkopf/dokolivegame.h>
-#include <Database/player.h>
+#include <model/livegame.h>
 
 #include <QDebug>
 #include <QPainter>
 
 using namespace Gui::Graphs::Items;
 
-LiveGameCoordinateSystem::LiveGameCoordinateSystem(Database::LiveGame *liveGame) :
+LiveGameCoordinateSystem::LiveGameCoordinateSystem(LiveGame *liveGame) :
     CoordinateSystem(),
     m_liveGame(liveGame),
     m_horizontalLineInterval(10)
@@ -27,8 +25,7 @@ LiveGameCoordinateSystem::LiveGameCoordinateSystem(Database::LiveGame *liveGame)
 
 void LiveGameCoordinateSystem::addGraphsForPlayers()
 {
-    foreach(Database::Player *player, m_liveGame->playersSortedByPosition->value())
-    {
+    foreach(Player *player, m_liveGame->players()) {
         LiveGamePlayerPointsGraph* graph = new LiveGamePlayerPointsGraph(player,m_liveGame,this);
         graph->setupGraph();
         addGraph(graph);
@@ -87,11 +84,11 @@ void LiveGameCoordinateSystem::paint(QPainter *painter, const QStyleOptionGraphi
 		       (m_xMax+1) * m_xScale,0);
 
     //Zeichne die einen grauen Strich, wenn alle Spieler einmal gegeben haben.
-    int playerCount = m_liveGame->playersSortedByPosition->value().size();
-    for(float i = playerCount; i < m_liveGame->rounds->value().size() && i > 0; i+=playerCount)
+    int playerCount = m_liveGame->players().size();
+    for(float i = playerCount; i < m_liveGame->rounds().size() && i > 0; i+=playerCount)
     {
-	pen.setColor(QColor(204,204,204));
-	pen.setWidth(0);
+    pen.setColor(QColor(204,204,204));
+    pen.setWidth(0);
         painter->setPen(pen);
         painter->drawLine((i+0.5) * m_xScale,-(max+2) * m_yScale,
                            (i+0.5) * m_xScale,-(min-2) * m_yScale);

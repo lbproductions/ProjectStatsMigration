@@ -10,6 +10,8 @@
 #include "../wizards/newgame/newgamewizard.h"
 #include "../windows/livegame/livegamewindow.h"
 
+#include <widgets/graphs/dokolivegamegraphview.h>
+
 #ifdef Q_WS_MAC
 #   include "../misc/sparkleupdater.h"
 #elif defined Q_WS_WIN
@@ -105,9 +107,14 @@ void Controller::showWidget(QWidget *widget)
 void Controller::openEntityWindow(LBDatabase::Entity *entity)
 {
     if(entity->entityType()->id() == DoppelkopfLiveGame::EntityTypeId) {
+        LiveGame *game = static_cast<LiveGame *>(entity);
         LiveGameWindow *window = new LiveGameWindow();
-        window->setGame(static_cast<LiveGame *>(entity));
+        window->setGame(game);
         window->show();
+
+        Gui::Graphs::DokoLiveGameGraphView *graph = new Gui::Graphs::DokoLiveGameGraphView(window);
+        graph->setLiveGame(game);
+        window->setCentralWidget(graph);
     }
 }
 

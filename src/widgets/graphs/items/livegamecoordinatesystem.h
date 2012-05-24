@@ -3,11 +3,8 @@
 
 #include "coordinatesystem.h"
 
-namespace Database
-{
 class LiveGame;
 class Player;
-}
 
 namespace Gui
 {
@@ -29,7 +26,7 @@ public:
     /*!
       Erstellt ein Koordinatensystem und Graphen, die die Punktzahl aller Spieler anzeigen.
       */
-    LiveGameCoordinateSystem(Database::LiveGame *liveGame);
+    LiveGameCoordinateSystem(LiveGame *liveGame);
 
     /*!
       MUSS(!) aufgerufen werden, wenn eine neues Instanz dieses Objekts erstellt wird.
@@ -47,7 +44,7 @@ protected:
       */
     virtual void addGraphsForPlayers();
 
-    Database::LiveGame* m_liveGame; //!< Das Spiel, welches das Koordinatensystem widerspiegelt.
+    LiveGame* m_liveGame; //!< Das Spiel, welches das Koordinatensystem widerspiegelt.
     int m_horizontalLineInterval;
 };
 
