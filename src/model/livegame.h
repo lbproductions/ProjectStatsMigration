@@ -49,4 +49,6 @@ signals:
     void stateChanged(State);
 };
 
+Q_DECLARE_METATYPE(QList<LiveGame *>);
+
 #endif // LIVEGAME_H

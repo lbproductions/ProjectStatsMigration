@@ -15,13 +15,15 @@ class AttributeValue : public PropertyValue
 public:
     ~AttributeValue();
 
+    // PropertyValue implementation
     Entity *entity() const;
     Property *property() const;
+    bool isEditable() const;
+
+
     Attribute *attribute() const;
     QVariant data(int role = Qt::DisplayRole) const;
     bool setData(const QVariant &data);
-
-    bool isEditable() const;
 
 Q_SIGNALS:
     void dataChanged(QVariant data);

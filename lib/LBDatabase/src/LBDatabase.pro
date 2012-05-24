@@ -11,7 +11,8 @@ INCLUDEPATH += $$PWD/include
 
 macx {
     QMAKE_LFLAGS += -F$$PWD/../frameworks/
-    LIBS += -framework QxtCore \
+    LIBS += -F$$PWD/../frameworks/ \
+            -framework QxtCore \
             -framework QxtNetwork \
             -framework QxtWeb
 
@@ -43,7 +44,6 @@ HEADERS += \
     function.h \
     functionvalue.h \
     calculator.h \
-    concreterelation.h \
     export/graphvizexporter.h \
     export/cppexporter.h \
     export/storagewriter.h \

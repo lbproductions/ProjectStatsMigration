@@ -22,15 +22,18 @@ class Context : public QAbstractTableModel
 public:
     ~Context();
 
+    // General
     int id() const;
     QString identifier() const;
     QString displayName() const;
     QString tableName() const;
     Storage *storage() const;
 
+    // EntityTypes
     EntityType *baseEntityType() const;
     QList<EntityType *> entityTypes() const;
 
+    // Entities
     Entity *entity(int id) const;
     QList<Entity *> entities() const;
     Entity *insertEntity(EntityType *type);

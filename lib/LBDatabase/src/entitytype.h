@@ -12,68 +12,53 @@ class Attribute;
 class Calculator;
 class Context;
 class Entity;
+class EntityTypeMetaData;
 class Function;
 class Property;
 class Row;
 class Storage;
-
-class EntityTypeMetaData {
-public:
-    int id;
-    int parentEntityTypeId;
-    int contextId;
-    QString identifier;
-    QString displayName;
-    QString displayNamePlural;
-};
 
 class EntityTypePrivate;
 class EntityType : public QObject
 {
     Q_OBJECT
 public:
-    //! \cond PRIVATE
-    static const QString ContextColumn;
-    static const QString IdentifierColumn;
-    static const QString ParentEntityTypeColumn;
-    static const QString DisplayNameColumn;
-    static const QString DisplayNamePluralColumn;
-    //! \endcond
-
     ~EntityType();
 
+    // General
     int id() const;
     QString identifier() const;
     QString displayName() const;
     QString displayNamePlural() const;
     Context *context() const;
+
+    // Inheritance
     EntityType *parentEntityType() const;
-    int parentEntityTypeId() const;
-
     QList<EntityType *> childEntityTypes() const;
+    bool inherits(EntityType *entityType) const;
 
+    // Entities
+    QList<Entity *> entities() const;
+
+    // Properties
     Property *property(const QString &identifier) const;
-
     QList<Property *> properties() const;
     QList<Attribute *> attributes() const;
     QList<Relation *> relations() const;
     QList<Function *> functions() const;
 
+    // Used for export
     QList<Property *> nonInhertitedProperties() const;
     QList<Attribute *> nonInhertitedAttributes() const;
     QList<Relation *> nonInhertitedRelations() const;
     QList<Function *> nonInhertitedFunctions() const;
 
-    QList<Entity *> entities() const;
-
-    bool inherits(EntityType *entityType) const;
-
-    Calculator *calculator() const;
-
 Q_SIGNALS:
     void displayNameChanged(QString);
 
 private:
+    friend class FunctionValuePrivate;
+    friend class AttributeValuePrivate;
     friend class ContextPrivate;
     friend class StoragePrivate;
     friend class AttributePrivate;
@@ -84,6 +69,8 @@ private:
 
     explicit EntityType(EntityTypeMetaData metaData, Storage *parent);
 
+    int parentEntityTypeId() const;
+
     void setContext(Context *context);
     void addChildEntityType(EntityType *type);
     void setParentEntityType(EntityType *type);
@@ -93,11 +80,23 @@ private:
     void inheritProperties(EntityType *parent);
     void inheritCalculator(EntityType *parent);
     void addEntity(Entity *entity);
+
+    Calculator *calculator() const;
     void setCalculator(Calculator *calculator);
 
     QScopedPointer<EntityTypePrivate> d_ptr;
     Q_DECLARE_PRIVATE(EntityType)
     Q_DISABLE_COPY(EntityType)
+};
+
+class EntityTypeMetaData {
+public:
+    int id;
+    int parentEntityTypeId;
+    int contextId;
+    QString identifier;
+    QString displayName;
+    QString displayNamePlural;
 };
 
 } // namespace LBDatabase

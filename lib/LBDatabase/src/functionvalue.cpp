@@ -173,11 +173,6 @@ QVariant FunctionValue::data(int role) const
     return QVariant();
 }
 
-bool FunctionValue::setData(const QVariant &data)
-{
-    return false;
-}
-
 QHash<const Entity *, QVariant> FunctionValue::values() const
 {
     Q_D(const FunctionValue);

@@ -421,7 +421,9 @@ QVariant Context::data(const QModelIndex &index, int role) const
         default:
             Entity *entity = d->entities.at(index.row());
             Property *property = d->properties.at(index.column() - 2);
-            return entity->data(property);
+            PropertyValue *value = entity->propertyValue(property);
+            if(value)
+                return value->data(role);
         }
     }
 
@@ -526,8 +528,9 @@ bool Context::setData(const QModelIndex &index, const QVariant &value, int role)
         Q_D(const Context);
         Entity *e = d->entities.at(index.row());
         PropertyValue *v = e->propertyValue(d->properties.value(index.column() - 2));
-        if(v)
-            return v->setData(value);
+        if(v && (v->property()->propertyType() == Property::Attribute || v->property()->propertyType() == Property::EnumAttribute)) {
+            return static_cast<AttributeValue *>(v)->setData(value);
+        }
     }
     return false;
 }

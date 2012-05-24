@@ -26,7 +26,6 @@ public:
     virtual int id() const = 0;
     virtual QString identifier() const = 0;
     virtual QString displayName() const = 0;
-
     virtual Type propertyType() const = 0;
 
 Q_SIGNALS:

@@ -51,6 +51,8 @@ signals:
 	void orderIndicatorChanged(int orderIndicator);
 };
 
+Q_DECLARE_METATYPE(QList<Category *>);
+
 class CategoriesContext : public LBDatabase::Context
 {
 	Q_OBJECT

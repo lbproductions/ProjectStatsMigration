@@ -19,8 +19,8 @@ protected:
 
     RelationValueBasePrivate() {}
 
-    virtual void init();
-    virtual void fetchValue();
+    void init();
+    void fetchValue();
 
     Entity *entity;
     Relation *relation;

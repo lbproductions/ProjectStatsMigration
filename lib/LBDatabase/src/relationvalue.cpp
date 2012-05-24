@@ -75,15 +75,6 @@ Entity *RelationValueBase::entity() const
 }
 
 /*!
-  Does nothing.
-  */
-bool RelationValueBase::setData(const QVariant &data)
-{
-    Q_UNUSED(data);
-    return false;
-}
-
-/*!
   Returns false
   */
 bool RelationValueBase::isEditable() const

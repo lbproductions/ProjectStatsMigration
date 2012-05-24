@@ -65,6 +65,8 @@ signals:
 	void positionChanged(const Player *player,int position);
 };
 
+Q_DECLARE_METATYPE(QList<Game *>);
+
 class GamesContext : public LBDatabase::Context
 {
 	Q_OBJECT

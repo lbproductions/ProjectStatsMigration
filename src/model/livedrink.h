@@ -43,6 +43,8 @@ signals:
 	void timeChanged(QDateTime time);
 };
 
+Q_DECLARE_METATYPE(QList<LiveDrink *>);
+
 class LiveDrinksContext : public LBDatabase::Context
 {
 	Q_OBJECT

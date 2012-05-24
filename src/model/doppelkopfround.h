@@ -52,4 +52,6 @@ signals:
 	void doko_soloTypeChanged(QString doko_soloType);
 };
 
+Q_DECLARE_METATYPE(QList<DoppelkopfRound *>);
+
 #endif // DOPPELKOPFROUND_H

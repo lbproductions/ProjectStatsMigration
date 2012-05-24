@@ -25,16 +25,14 @@ class RelationValueBase : public PropertyValue
 public:
     ~RelationValueBase();
 
-    virtual Entity *entity() const;
+    // Partial PropertyValue implementation (the rest is in RelationValue)
     Property *property() const;
-    Relation *relation() const;
-
-    Entity *firstEntity() const;
-
     bool isEditable() const;
-    virtual bool setData(const QVariant &data);
-    QVariant data(int role = Qt::DisplayRole) const = 0;
+    Entity *entity() const;
 
+    // General
+    Relation *relation() const;
+    Entity *firstEntity() const;
 
 protected:
     friend class RelationPrivate;
@@ -116,7 +114,7 @@ public:
             return QVariant(QString::number(entities().size())+QLatin1String(" ")+otherEntities.value(0).at(0)->entityType()->displayNamePlural());
         }
         else if(role == PropertyValue::PlainDataRole) {
-            return QVariant::fromValue<QList<Entity *> >(otherEntities.value(0));
+            return QVariant::fromValue<QList<EntityClass *> >(otherEntities.value(0));
         }
 
         return QVariant();
@@ -209,9 +207,6 @@ public:
     SortingDirection m_dir;
 };
 
-
 } // namespace LBDatabase
-
-Q_DECLARE_METATYPE(QList<LBDatabase::Entity *>)
 
 #endif // LBDATABASE_RELATIONVALUE_H

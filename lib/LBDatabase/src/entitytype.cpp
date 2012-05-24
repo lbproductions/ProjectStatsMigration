@@ -16,14 +16,6 @@ namespace LBDatabase {
 /******************************************************************************
 ** EntityTypePrivate
 */
-//! \cond PRIVATE
-const QString EntityType::ContextColumn("context");
-const QString EntityType::IdentifierColumn("identifier");
-const QString EntityType::ParentEntityTypeColumn("parentEntityType");
-const QString EntityType::DisplayNameColumn("displayName");
-const QString EntityType::DisplayNamePluralColumn("displayNamePlural");
-//! \endcond
-
 class EntityTypePrivate {
     EntityTypePrivate() : context(0), parentEntityType(0), calculator(0) {}
 

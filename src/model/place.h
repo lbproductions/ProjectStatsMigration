@@ -61,6 +61,8 @@ signals:
 	void commentChanged(QString comment);
 };
 
+Q_DECLARE_METATYPE(QList<Place *>);
+
 class PlacesContext : public LBDatabase::Context
 {
 	Q_OBJECT

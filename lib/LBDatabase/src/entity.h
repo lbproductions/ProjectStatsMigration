@@ -29,42 +29,35 @@ class Entity : public QObject
 {
     Q_OBJECT
 public:
-    //! \cond PRIVATE
-    static const QString EntityTypeIdColumn;
-    //! \endcond
-
     ~Entity();
 
-    virtual QString displayName() const;
-
+    // General
     int id() const;
+    virtual QString displayName() const;
     EntityType *entityType() const;
     Storage *storage() const;
     Context *context() const;
+
+    // Property values
     QList<PropertyValue *> propertyValues() const;
     PropertyValue *propertyValue(Property *property) const;
-    QVariant value(const QString &name) const;
-    void setValue(const QString &name, const QVariant &data);
-
-    template<class EntityClass>
-    RelationValue<EntityClass> *relation(const QString &name) const
-    {
-        return static_cast<LBDatabase::RelationValue<EntityClass> *>(propertyValue(entityType()->property(name)));
-    }
-
+    AttributeValue *attributeValue(const QString &name) const;
     FunctionValue *function(const QString &name) const;
+    template<class EntityClass>
+    RelationValue<EntityClass> *relation(const QString &name) const;
+
+    void setValue(const QString &name, const QVariant &data);
+    QVariant value(const QString &name) const;
 
 protected:
+    explicit Entity(const EntityMetaData &metaData, Context *parent);
+
+private:
     friend class AttributePrivate;
     friend class ContextPrivate;
     friend class RelationPrivate;
     friend class Context;
     friend class FunctionPrivate;
-
-    explicit Entity(const EntityMetaData &metaData, Context *parent);
-
-    QVariant data(Property *property) const;
-    bool setData(const QVariant &data, Property *property);
 
     void addAttributeValue(AttributeValue *value);
     void addRelationValue(RelationValueBase *value);
@@ -75,6 +68,12 @@ protected:
     Q_DISABLE_COPY(Entity)
 };
 
+template<class EntityClass>
+RelationValue<EntityClass> *Entity::relation(const QString &name) const
+{
+    return static_cast<LBDatabase::RelationValue<EntityClass> *>(propertyValue(entityType()->property(name)));
+}
+
 class EntityMetaData
 {
 public:
@@ -83,5 +82,7 @@ public:
 };
 
 } // namespace LBDatabase
+
+Q_DECLARE_METATYPE(QList<LBDatabase::Entity *>)
 
 #endif // LBDATABASE_ENTITY_H

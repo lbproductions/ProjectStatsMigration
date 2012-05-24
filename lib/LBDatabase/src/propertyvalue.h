@@ -20,12 +20,11 @@ public:
     };
 
     explicit PropertyValue(QObject *parent = 0);
+    virtual ~PropertyValue();
 
     virtual Entity *entity() const = 0;
     virtual Property *property() const = 0;
     virtual QVariant data(int role = Qt::DisplayRole) const = 0;
-    virtual bool setData(const QVariant &data) = 0;
-
     virtual bool isEditable() const = 0;
 
 Q_SIGNALS:

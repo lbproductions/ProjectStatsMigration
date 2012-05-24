@@ -33,7 +33,7 @@ public:
     void setDoubleClickActions(int actions);
 
 signals:
-    void selectionChanged();
+    void selectedItemChanged();
     void doubleClicked();
 
 protected slots:

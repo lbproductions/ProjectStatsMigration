@@ -16,17 +16,17 @@ class FunctionValue : public PropertyValue
 public:
     ~FunctionValue();
 
+    // PropertyValue implementation
     Entity *entity() const;
     Property *property() const;
-    Function *function() const;
-    QVariant value(const Entity *entity) const;
     QVariant data(int role = Qt::DisplayRole) const;
-    bool setData(const QVariant &data);
-    QHash<const Entity *, QVariant> values() const;
-
-    void setValue(const Entity *key, const QVariant &value);
-
     bool isEditable() const;
+
+    // General
+    Function *function() const;
+    QHash<const Entity *, QVariant> values() const;
+    QVariant value(const Entity *entity) const;
+    void setValue(const Entity *key, const QVariant &value);
 
 Q_SIGNALS:
     void valueChanged(const Entity *key, QVariant value);

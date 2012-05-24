@@ -80,108 +80,22 @@ void TablePrivate::init()
     }
 }
 
-Column *TablePrivate::addColumn(const QString &name, const QString &sqlType, const QVariant &defaultValue)
-{
-    Q_Q(Table);
-    if(q->columnNames().contains(name, Qt::CaseInsensitive)) {
-        qWarning() << "TablePrivate::addColumn: Duplicate column name" << name;
-        return columnsByName.value(name);
-    }
-
-    QSqlQuery query(database->sqlDatabase());
-
-    QString queryString = QLatin1String("ALTER TABLE ")+this->name+QLatin1String(" ADD ")+name+
-            QLatin1String(" ")+sqlType;
-    if(!defaultValue.toString().isEmpty()) {
-        queryString += QLatin1String(" DEFAULT ")+defaultValue.toString();
-    }
-    query.exec(queryString);
-    checkSqlError(query);
-    query.finish();
-
-    q->clear();
-    q->setTable(this->name);
-    if(!q->select()) {
-        qDebug() << q->lastError();
-        return 0;
-    }
-
-    QSqlField columnField = q->record().field(name);
-
-    Column *column = new Column(columnField, q);
-    column->setIndex(columns.size());
-    columns.append(column);
-    columnsByName.insert(name, column);
-    return column;
-}
-
-void TablePrivate::changeColumnName(const QString &name, const QString &newName)
-{
-    qWarning() << "TablePrivate::changeColumnName: IMPLEMENT ME";
+//Column *TablePrivate::addColumn(const QString &name, const QString &sqlType, const QVariant &defaultValue)
+//{
 //    Q_Q(Table);
-//    if(!q->columnNames().contains(name)) {
-//        qWarning() << "TablePrivate::addColumn: No such column" << name;
-//        return;
-//    }
-//    if(q->columnNames().contains(newName)) {
-//        qWarning() << "TablePrivate::addColumn: Duplicate column name" << newName;
-//        return;
+//    if(q->columnNames().contains(name, Qt::CaseInsensitive)) {
+//        qWarning() << "TablePrivate::addColumn: Duplicate column name" << name;
+//        return columnsByName.value(name);
 //    }
 
 //    QSqlQuery query(database->sqlDatabase());
-//    query.exec(QLatin1String("SELECT sql FROM sqlite_master WHERE name = '")+this->name+QLatin1String("'"));
-//    checkSqlError(query);
-//    query.first();
-//    QString sql = query.value(0).toString();
-//    QString replacement = QLatin1String(" ")+newName+QLatin1String(" ");
-//    QString search = QLatin1String(" ")+name+QLatin1String(" ");
-//    sql = sql.replace(sql.lastIndexOf(search),search.length(),replacement);
-//    query.exec(QLatin1String("PRAGMA writable_schema = 1;"));
-//    checkSqlError(query);
-//    query.exec(QLatin1String("UPDATE SQLITE_MASTER SET sql = '")+sql+
-//               QLatin1String("' WHERE NAME = '")+this->name+QLatin1String("';"));
-//    checkSqlError(query);
-//    query.exec(QLatin1String("PRAGMA writable_schema = 0;"));
-//    checkSqlError(query);
-//    query.finish();
-//    Column *column = columnsByName.value(name);
-//    int index = columns.indexOf(column);
-//    column->setName(newName);
-//    q->select();
-//    emit q->headerDataChanged(Qt::Horizontal,index,index);
-}
 
-void TablePrivate::removeColumn(const QString &name)
-{
-    qWarning() << "TablePrivate::removeColumn: IMPLEMENT ME";
-//    Q_Q(Table);
-//    if(!q->columnNames().contains(name)) {
-//        qWarning() << "TablePrivate::addColumn: No such column" << name;
-//        return;
+//    QString queryString = QLatin1String("ALTER TABLE ")+this->name+QLatin1String(" ADD ")+name+
+//            QLatin1String(" ")+sqlType;
+//    if(!defaultValue.toString().isEmpty()) {
+//        queryString += QLatin1String(" DEFAULT ")+defaultValue.toString();
 //    }
-//    if(name == QLatin1String("id")) {
-//        qWarning() << "TablePrivate::addColumn: You may not remove the column" << name;
-//        return;
-//    }
-
-//    QSqlQuery query(database->sqlDatabase());
-//    query.exec(QLatin1String("SELECT sql FROM sqlite_master WHERE name = '")+this->name+QLatin1String("'"));
-//    checkSqlError(query);
-//    query.first();
-//    QString sql = query.value(0).toString();
-//    QString search = QLatin1String(" ")+name+QLatin1String(" ");
-//    int from = sql.lastIndexOf(search) - 1;
-//    int to = sql.indexOf(',',from + 1);
-//    if(to == -1) {
-//        to = sql.indexOf(')',from);
-//    }
-//    sql = sql.remove(from,to - from);
-//    query.exec(QLatin1String("PRAGMA writable_schema = 1;"));
-//    checkSqlError(query);
-//    query.exec(QLatin1String("UPDATE SQLITE_MASTER SET sql = '")+sql+
-//               QLatin1String("' WHERE NAME = '")+this->name+QLatin1String("';"));
-//    checkSqlError(query);
-//    query.exec(QLatin1String("PRAGMA writable_schema = 0;"));
+//    query.exec(queryString);
 //    checkSqlError(query);
 //    query.finish();
 
@@ -189,18 +103,104 @@ void TablePrivate::removeColumn(const QString &name)
 //    q->setTable(this->name);
 //    if(!q->select()) {
 //        qDebug() << q->lastError();
-//        return;
+//        return 0;
 //    }
 
-//    Column *column = columnsByName.value(name);
-//    int index = columns.indexOf(column);
-//    for(int i = index; i < columns.size(); ++i) {
-//        columns.at(i)->setIndex(i);
-//    }
-//    columns.removeAt(index);
-//    columnsByName.remove(name);
-//    column->deleteLater();
-}
+//    QSqlField columnField = q->record().field(name);
+
+//    Column *column = new Column(columnField, q);
+//    column->setIndex(columns.size());
+//    columns.append(column);
+//    columnsByName.insert(name, column);
+//    return column;
+//}
+
+//void TablePrivate::changeColumnName(const QString &name, const QString &newName)
+//{
+//    qWarning() << "TablePrivate::changeColumnName: IMPLEMENT ME";
+////    Q_Q(Table);
+////    if(!q->columnNames().contains(name)) {
+////        qWarning() << "TablePrivate::addColumn: No such column" << name;
+////        return;
+////    }
+////    if(q->columnNames().contains(newName)) {
+////        qWarning() << "TablePrivate::addColumn: Duplicate column name" << newName;
+////        return;
+////    }
+
+////    QSqlQuery query(database->sqlDatabase());
+////    query.exec(QLatin1String("SELECT sql FROM sqlite_master WHERE name = '")+this->name+QLatin1String("'"));
+////    checkSqlError(query);
+////    query.first();
+////    QString sql = query.value(0).toString();
+////    QString replacement = QLatin1String(" ")+newName+QLatin1String(" ");
+////    QString search = QLatin1String(" ")+name+QLatin1String(" ");
+////    sql = sql.replace(sql.lastIndexOf(search),search.length(),replacement);
+////    query.exec(QLatin1String("PRAGMA writable_schema = 1;"));
+////    checkSqlError(query);
+////    query.exec(QLatin1String("UPDATE SQLITE_MASTER SET sql = '")+sql+
+////               QLatin1String("' WHERE NAME = '")+this->name+QLatin1String("';"));
+////    checkSqlError(query);
+////    query.exec(QLatin1String("PRAGMA writable_schema = 0;"));
+////    checkSqlError(query);
+////    query.finish();
+////    Column *column = columnsByName.value(name);
+////    int index = columns.indexOf(column);
+////    column->setName(newName);
+////    q->select();
+////    emit q->headerDataChanged(Qt::Horizontal,index,index);
+//}
+
+//void TablePrivate::removeColumn(const QString &name)
+//{
+//    qWarning() << "TablePrivate::removeColumn: IMPLEMENT ME";
+////    Q_Q(Table);
+////    if(!q->columnNames().contains(name)) {
+////        qWarning() << "TablePrivate::addColumn: No such column" << name;
+////        return;
+////    }
+////    if(name == QLatin1String("id")) {
+////        qWarning() << "TablePrivate::addColumn: You may not remove the column" << name;
+////        return;
+////    }
+
+////    QSqlQuery query(database->sqlDatabase());
+////    query.exec(QLatin1String("SELECT sql FROM sqlite_master WHERE name = '")+this->name+QLatin1String("'"));
+////    checkSqlError(query);
+////    query.first();
+////    QString sql = query.value(0).toString();
+////    QString search = QLatin1String(" ")+name+QLatin1String(" ");
+////    int from = sql.lastIndexOf(search) - 1;
+////    int to = sql.indexOf(',',from + 1);
+////    if(to == -1) {
+////        to = sql.indexOf(')',from);
+////    }
+////    sql = sql.remove(from,to - from);
+////    query.exec(QLatin1String("PRAGMA writable_schema = 1;"));
+////    checkSqlError(query);
+////    query.exec(QLatin1String("UPDATE SQLITE_MASTER SET sql = '")+sql+
+////               QLatin1String("' WHERE NAME = '")+this->name+QLatin1String("';"));
+////    checkSqlError(query);
+////    query.exec(QLatin1String("PRAGMA writable_schema = 0;"));
+////    checkSqlError(query);
+////    query.finish();
+
+////    q->clear();
+////    q->setTable(this->name);
+////    if(!q->select()) {
+////        qDebug() << q->lastError();
+////        return;
+////    }
+
+////    Column *column = columnsByName.value(name);
+////    int index = columns.indexOf(column);
+////    for(int i = index; i < columns.size(); ++i) {
+////        columns.at(i)->setIndex(i);
+////    }
+////    columns.removeAt(index);
+////    columnsByName.remove(name);
+////    column->deleteLater();
+//}
 
 Row *TablePrivate::appendRow()
 {
@@ -323,13 +323,13 @@ Database *Table::database() const
 
   \sa Column::typeNames()
   */
-Column *Table::addColumn(const QString &name, const QString &sqlType, const QVariant &defaultValue)
-{
-    Q_D(Table);
-    Column *col = d->addColumn(name, sqlType, defaultValue);
-    database()->setDirty(true);
-    return col;
-}
+//Column *Table::addColumn(const QString &name, const QString &sqlType, const QVariant &defaultValue)
+//{
+//    Q_D(Table);
+//    Column *col = d->addColumn(name, sqlType, defaultValue);
+//    database()->setDirty(true);
+//    return col;
+//}
 
 /*!
   Removes the column named \a name from the table. Does nothing if no such
@@ -339,12 +339,12 @@ Column *Table::addColumn(const QString &name, const QString &sqlType, const QVar
   of the "ALTER TABLE" SQL command. This method uses a dirty workaround by
   manipulating ther sqlite_master table directly.
   */
-void Table::removeColumn(const QString &name)
-{
-    Q_D(Table);
-    d->removeColumn(name);
-    database()->setDirty(true);
-}
+//void Table::removeColumn(const QString &name)
+//{
+//    Q_D(Table);
+//    d->removeColumn(name);
+//    database()->setDirty(true);
+//}
 
 /*!
   Deletes the row with ID \a id.
@@ -366,14 +366,14 @@ void Table::deleteRow(int id)
   of the "ALTER TABLE" SQL command. This method uses a dirty workaround by
   manipulating ther sqlite_master table directly.
   */
-void Table::changeColumnName(const QString &name, const QString &newName)
-{
-    Q_D(Table);
-    if(name == newName)
-        return;
-    d->changeColumnName(name, newName);
-    database()->setDirty(true);
-}
+//void Table::changeColumnName(const QString &name, const QString &newName)
+//{
+//    Q_D(Table);
+//    if(name == newName)
+//        return;
+//    d->changeColumnName(name, newName);
+//    database()->setDirty(true);
+//}
 
 QVariant Table::headerData(int section, Qt::Orientation orientation, int role) const
 {

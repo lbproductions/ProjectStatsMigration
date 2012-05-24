@@ -1,5 +1,6 @@
 #include "restserver.h"
 
+#include "../attributevalue.h"
 #include "../context.h"
 #include "../entity.h"
 #include "../function.h"
@@ -157,7 +158,7 @@ void MyService::respondEntity(QxtWebRequestEvent *event)
             json += QLatin1String("\"");
             json += attribute->identifier();
             json += QLatin1String("\": \"");
-            json += entity->value(attribute->identifier()).toString().replace("\"","\\\"");
+            json += entity->attributeValue(attribute->identifier())->data().toString().replace("\"","\\\"");
             json += QLatin1String("\"");
         }
         json += QLatin1String("\n},\n\"functions\": {\n");

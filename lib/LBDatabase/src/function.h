@@ -15,45 +15,30 @@ class FunctionPrivate;
 class Function : public Property
 {
 public:
-    static const QString IdentifierColumn;
-    static const QString DisplayNameColumn;
-    static const QString TableNameColumn;
-    static const QString EntityColumnNameColumn;
-    static const QString KeyEntityColumnNameColumn;
-    static const QString ValueColumnNameColumn;
-    static const QString EntityTypeColumn;
-    static const QString KeyEntityTypeRightColumn;
-    static const QString CalculatedColumn;
-    static const QString CacheDataColumn;
-    static const QString TypeColumn;
-    static const QString EditableColumn;
-
-
-    static const QString FunctionReimplementationsTable;
-    static const QString ReimplementedFunctionColumn;
-    static const QString ReimplementingEntityTypeColumn;
-
     ~Function();
 
+    // Property implementation
     int id() const;
     QString displayName() const;
     QString identifier() const;
+    Property::Type propertyType() const;
 
+    // General
+    bool isCalculated() const;
+    bool cacheData() const;
+    bool isEditable() const;
+
+    EntityType *keyEntityType() const;
+
+    // Used by drivers
     QString tableName() const;
     QString entityColumnName() const;
     QString keyEntityColumnName() const;
     QString valueColumnName() const;
 
-    EntityType *keyEntityType() const;
+    // Used for export
     QString qtTypeName() const;
-
-    bool isCalculated() const;
-    bool cacheData() const;
-    bool isEditable() const;
-
     QList<EntityType *> reimplementingEntityTypes() const;
-
-    Property::Type propertyType() const;
 
 private:
     friend class StoragePrivate;

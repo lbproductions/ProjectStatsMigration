@@ -26,10 +26,6 @@ public:
     QList<Column *> columns() const;
     QStringList columnNames() const;
 
-    Column *addColumn(const QString &name, const QString &sqlType, const QVariant &defaultValue = QVariant());
-    void removeColumn(const QString &name);
-    void changeColumnName(const QString &name, const QString &newName);
-
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
     QVariant value(int row, int column) const;

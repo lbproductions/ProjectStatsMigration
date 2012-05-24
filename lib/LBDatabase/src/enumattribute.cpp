@@ -16,17 +16,10 @@ const QString EnumAttribute::ValueColumn("value");
 
 
 class EnumAttributePrivate : public AttributePrivate {
-    void init();
-
     QMap<int, QString> enumValues;
 
     Q_DECLARE_PUBLIC(EnumAttribute)
 };
-
-void EnumAttributePrivate::init()
-{
-    AttributePrivate::init();
-}
 
 EnumAttribute::EnumAttribute(const AttributeMetaData &metaData, Storage *parent) :
     Attribute(*new EnumAttributePrivate, metaData, parent)

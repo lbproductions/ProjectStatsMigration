@@ -60,6 +60,8 @@ signals:
 	void alcChanged(double alc);
 };
 
+Q_DECLARE_METATYPE(QList<Drink *>);
+
 class DrinksContext : public LBDatabase::Context
 {
 	Q_OBJECT

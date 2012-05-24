@@ -35,6 +35,7 @@ ActionsManager *ActionsManager::globalInstance()
 
 void ActionsManager::addAction(Action *action, ActionsManager::Context context)
 {
+    Q_UNUSED(context);
     if(!m_actions.contains(action)) {
         m_actions.append(action);
     }

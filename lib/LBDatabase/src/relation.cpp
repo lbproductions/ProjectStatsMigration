@@ -16,21 +16,10 @@ namespace LBDatabase {
 /******************************************************************************
 ** RelationPrivate
 */
-//! \cond PRIVATE
-const QString Relation::IdentifierColumn("identifier");
-const QString Relation::IdentifierRightColumn("identifierRight");
-const QString Relation::DisplayNameLeftColumn("displayName");
-const QString Relation::DisplayNameRightColumn("displayNameRight");
-const QString Relation::EntityTypeLeftColumn("entitytypeleft");
-const QString Relation::EntityTypeRightColumn("entitytyperight");
-const QString Relation::CardinalityColumn("cardinality");
-const QString Relation::TableNameColumn("tableName");
-const QString Relation::ColumnNameColumn("columnName");
-const QString Relation::ColumnNameRightColumn("columnNameRight");
-const QString Relation::EditableColumn("editable");
-const QString Relation::DirectionColumn("direction");
-
 class RelationPrivate {
+public:
+    virtual ~RelationPrivate() {}
+
 protected:
     RelationPrivate() :transposeRelation(0)
     {}
@@ -115,8 +104,6 @@ void RelationPrivate::addPropertyValue(Entity *entity)
     Q_Q(Relation);
     entity->addRelationValue(new RelationValue<Entity>(q, entity));
 }
-
-//! \endcond
 
 /******************************************************************************
 ** Relation

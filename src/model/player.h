@@ -106,6 +106,8 @@ signals:
 	void nameChanged(QString name);
 };
 
+Q_DECLARE_METATYPE(QList<Player *>);
+
 class PlayersContext : public LBDatabase::Context
 {
 	Q_OBJECT

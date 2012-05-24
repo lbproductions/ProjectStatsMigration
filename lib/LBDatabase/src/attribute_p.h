@@ -9,7 +9,7 @@ class AttributePrivate {
 protected:
     AttributePrivate() {}
 
-    virtual void init();
+    void init();
     void addPropertyValueToEntities();
     void addPropertyValue(Entity *entity);
     void fetchValues();

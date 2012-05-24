@@ -147,59 +147,59 @@ void LiveGameGeneralOptionsWidget::generatePlayerPositions()
 //    }
 }
 
- QList<Player*> LiveGameGeneralOptionsWidget::minimumPlayerConstellation()
- {
-//     qDebug() << "LiveGameGeneralOptionsWidget::minimumPlayerConstellation() started";
+// QList<Player*> LiveGameGeneralOptionsWidget::minimumPlayerConstellation()
+// {
+////     qDebug() << "LiveGameGeneralOptionsWidget::minimumPlayerConstellation() started";
 
-//     QList<Database::Player*> players = this->selectedPlayers();
-//     AttributeVariant v;
-//     v.setValue(players);
-//     QString displayVariant = v.displayVariant().toString();
+////     QList<Database::Player*> players = this->selectedPlayers();
+////     AttributeVariant v;
+////     v.setValue(players);
+////     QString displayVariant = v.displayVariant().toString();
 
-//     QMap<QString,int> map = Database::Games::instance()->playerPositionCount->value();
-//     qDebug() << "Count of original constellation: " << map.value(displayVariant);
+////     QMap<QString,int> map = Database::Games::instance()->playerPositionCount->value();
+////     qDebug() << "Count of original constellation: " << map.value(displayVariant);
 
-//     if(map.value(displayVariant) > 1){ //Get all Lists that contains only selected Players
-//         QList<QString> lists; //contains just lists that contains only selected Players
-//         foreach(QString string, map.keys()){
-//             QList<Database::Player*> list = stringToPlayerList(string);
-//             if(list.size()==players.size()){
-//                 bool allPlayersInside = true;
-//                 foreach(Database::Player* player, list){
-//                     if(!players.contains(player)){
-//                         allPlayersInside = false;
-//                     }
-//                 }
-//                 if(allPlayersInside){
-//                     lists.append(string);
-//                 }
-//             }
-//         }
-//         if(lists.size() == 0){
-//             qWarning() << "No games found with this players!";
-//             return QList<Database::Player*>();
-//         }
+////     if(map.value(displayVariant) > 1){ //Get all Lists that contains only selected Players
+////         QList<QString> lists; //contains just lists that contains only selected Players
+////         foreach(QString string, map.keys()){
+////             QList<Database::Player*> list = stringToPlayerList(string);
+////             if(list.size()==players.size()){
+////                 bool allPlayersInside = true;
+////                 foreach(Database::Player* player, list){
+////                     if(!players.contains(player)){
+////                         allPlayersInside = false;
+////                     }
+////                 }
+////                 if(allPlayersInside){
+////                     lists.append(string);
+////                 }
+////             }
+////         }
+////         if(lists.size() == 0){
+////             qWarning() << "No games found with this players!";
+////             return QList<Database::Player*>();
+////         }
 
-//         //Get minimum count
-//         QString generationList = displayVariant;
-//         foreach(QString string, lists){
-//             if(map.value(string) < map.value(generationList)){
-//                 generationList = string;
-//             }
-//         }
+////         //Get minimum count
+////         QString generationList = displayVariant;
+////         foreach(QString string, lists){
+////             if(map.value(string) < map.value(generationList)){
+////                 generationList = string;
+////             }
+////         }
 
-//         qDebug() << generationList << " : " << map.value(generationList);
+////         qDebug() << generationList << " : " << map.value(generationList);
 
-//         //Get final PlayerList
-//         QList<Database::Player*> finalList = stringToPlayerList(generationList);
+////         //Get final PlayerList
+////         QList<Database::Player*> finalList = stringToPlayerList(generationList);
 
-//         return finalList;
-//     }
-//     else{  //selected Players is already the minimum
-//        qDebug() << "Original constellation used!";
-//        return players;
-//     }
- }
+////         return finalList;
+////     }
+////     else{  //selected Players is already the minimum
+////        qDebug() << "Original constellation used!";
+////        return players;
+////     }
+// }
 
 void LiveGameGeneralOptionsWidget::on_pushButtonGeneratePositions_clicked()
 {

@@ -15,8 +15,8 @@ namespace MainWindowNS {
 
 ListView::ListView(Controller *controller, MainWindow *parent) :
     QWidget(parent),
-    m_context(0),
-    m_controller(controller)
+    m_controller(controller),
+    m_context(0)
 {
     setLayout(new QHBoxLayout(this));
     layout()->setContentsMargins(0,0,0,0);
@@ -27,7 +27,7 @@ ListView::ListView(Controller *controller, MainWindow *parent) :
     layout()->addWidget(m_horizontalSplitter);
 
     m_contextTreeView = new ContextTreeView(this);
-    connect(m_contextTreeView, SIGNAL(selectionChanged()), this, SLOT(onSelectionChanged()));
+    connect(m_contextTreeView, SIGNAL(selectedItemChanged()), this, SLOT(onSelectionChanged()));
     connect(m_contextTreeView, SIGNAL(doubleClicked()), this, SLOT(onDoubleClick()));
     m_horizontalSplitter->addWidget(m_contextTreeView);
     m_horizontalSplitter->setStyle(LBGui::Splitter::MacOSStyle);

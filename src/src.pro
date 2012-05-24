@@ -15,6 +15,8 @@ DEFINES +=  'APPCASTURL=\'\"$$APPCASTURL\"\''
 INCLUDEPATH += $$PWD/../lib/LBDatabase/include
 INCLUDEPATH += $$PWD/../lib/LBGui/include
 
+CXXFLAGS+=-Wpedantic
+
 # add a build command
 defineReplace( nc  ) {
     return( $$escape_expand(\\n\\t)$$1    )
@@ -34,6 +36,11 @@ macx {
 
     LIBS += -L$$OUT_PWD/../lib/LBGui/
     LIBS += -llbgui
+
+    LIBS += -F$$PWD/../lib/LBDatabase/frameworks/ \
+            -framework QxtCore \
+            -framework QxtNetwork \
+            -framework QxtWeb
 
     copyFrameworks.target = frameworks
     copyFrameworks.commands += rm -Rf $$DESTDIR/$${TARGET}.app/Contents/Frameworks/

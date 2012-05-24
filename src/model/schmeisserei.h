@@ -39,6 +39,8 @@ signals:
 	void typeChanged(QString type);
 };
 
+Q_DECLARE_METATYPE(QList<Schmeisserei *>);
+
 class SchmeissereienContext : public LBDatabase::Context
 {
 	Q_OBJECT

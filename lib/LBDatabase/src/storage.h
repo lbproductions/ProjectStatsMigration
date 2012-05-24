@@ -19,23 +19,19 @@ class Storage : public QObject
 {
     Q_OBJECT
 public:
-    static void convertSqlliteDatabaseToStorage(const QString &sqliteDatabaseFileName, const QString &storageFileName);
-
     ~Storage();
     bool open();
 
     StorageDriver *driver() const;
     void setDriver(StorageDriver *driver);
 
-
     QString name() const;
 
     Context *context(const QString name) const;
-
     QList<Context *> contexts() const;
-    QList<EntityType *> entityTypes() const;
-    EntityType *entityType(int id) const;
 
+    EntityType *entityType(int id) const;
+    QList<EntityType *> entityTypes() const;
 
 protected:
     explicit Storage(QObject *parent = 0);

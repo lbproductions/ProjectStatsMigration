@@ -321,12 +321,12 @@ QVariant LocalStorageDriver::attributeValue(const AttributeValue *value) const
     return const_cast<AttributeValue*>(value)->calculate();
 }
 
-void LocalStorageDriver::setAttributeValue(const AttributeValue *attribute, const QVariant &value)
+void LocalStorageDriver::setAttributeValue(const AttributeValue *attribute, const QVariant &data)
 {
     Q_D(LocalStorageDriver);
     Table *contextTable = d->database->table(attribute->entity()->context()->tableName());
     Row *row = contextTable->row(attribute->entity()->id());
-    row->setData(attribute->attribute()->identifier(), value);
+    row->setData(attribute->attribute()->identifier(), data);
 }
 
 QList<RelationValueData> LocalStorageDriver::relatedEntities(Relation *relation) const

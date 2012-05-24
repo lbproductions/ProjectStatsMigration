@@ -14,6 +14,7 @@ public:
 
     void init();
 
+    // MetaData
     QList<ContextMetaData> contexts() const;
     QList<EntityTypeMetaData> entityTypes() const;
     QList<AttributeMetaData> attributes() const;
@@ -23,17 +24,20 @@ public:
     QList<EnumAttributeMetaData> enumValues() const;
     QList<FunctionReimplementationMetaData> functionReimplementations() const;
 
-    QVariant attributeValue(const AttributeValue *attribute) const;
-    void setAttributeValue(const AttributeValue *attribute, const QVariant &value);
+    // Attributes
+    QVariant attributeValue(const AttributeValue *value) const;
+    void setAttributeValue(const AttributeValue *value, const QVariant &data);
 
+    // Relations
     QList<RelationValueData> relatedEntities(Relation *relation) const;
     int addRelatedEntity(RelationValueBase *value, const RelationValueData &data);
 
+    // Functions
     QList<FunctionValueData> functionValues(Function *function) const;
-    void setFunctionValue(FunctionValue *function, const FunctionValueData &data);
+    void setFunctionValue(FunctionValue *value, const FunctionValueData &data);
 
+    // Entities
     QList<EntityMetaData> entities(Context *context) const;
-
     EntityMetaData createEntity(EntityType *type);
 
 private:

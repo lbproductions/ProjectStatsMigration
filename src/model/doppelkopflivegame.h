@@ -98,4 +98,6 @@ signals:
 	void doko_mitSchwarzsoloChanged(bool doko_mitSchwarzsolo);
 };
 
+Q_DECLARE_METATYPE(QList<DoppelkopfLiveGame *>);
+
 #endif // DOPPELKOPFLIVEGAME_H

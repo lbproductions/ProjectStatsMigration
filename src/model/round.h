@@ -73,6 +73,8 @@ signals:
 	void pointsChanged(const Player *player,int points);
 };
 
+Q_DECLARE_METATYPE(QList<Round *>);
+
 class RoundsContext : public LBDatabase::Context
 {
 	Q_OBJECT

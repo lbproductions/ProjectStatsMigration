@@ -18,21 +18,6 @@ class Relation : public Property
 {
     Q_OBJECT
 public:
-    //! \cond PRIVATE
-    static const QString IdentifierColumn;
-    static const QString IdentifierRightColumn;
-    static const QString DisplayNameLeftColumn;
-    static const QString DisplayNameRightColumn;
-    static const QString EntityTypeLeftColumn;
-    static const QString EntityTypeRightColumn;
-    static const QString CardinalityColumn;
-    static const QString TableNameColumn;
-    static const QString ColumnNameColumn;
-    static const QString ColumnNameRightColumn;
-    static const QString EditableColumn;
-    static const QString DirectionColumn;
-    //! \endcond
-
     enum Cardinality {
         OneToOne,
         OneToMany,
@@ -46,9 +31,13 @@ public:
 
     ~Relation();
 
+    // Property implementation
     int id() const;
     QString displayName() const;
     QString identifier() const;
+    Property::Type propertyType() const;
+
+    // Genereal
     EntityType *entityType() const;
     EntityType *entityTypeOther() const;
     Cardinality cardinality() const;
@@ -59,11 +48,10 @@ public:
 
     Storage* storage() const;
 
+    // Used by drivers
     QString tableName() const;
     QString leftEntityIdColumnName() const;
     QString rightEntityIdColumnName() const;
-
-    Property::Type propertyType() const;
 
 protected:
     friend class StoragePrivate;

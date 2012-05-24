@@ -14,14 +14,6 @@ class Attribute : public Property
 {
     Q_OBJECT
 public:
-    static const QString IdentifierColumn;
-    static const QString DisplayNameColumn;
-    static const QString EntityTypeIdColumn;
-    static const QString CalculatedColumn;
-    static const QString CacheDataColumn;
-    static const QString TypeColumn;
-    static const QString EditableColumn;
-
     enum Type {
         Unkown,     // 0
         Text,       // 1
@@ -38,18 +30,19 @@ public:
 
     ~Attribute();
 
+
+    // Property implementation
     int id() const;
     QString displayName() const;
-    int columnIndex() const;
-
     QString identifier() const;
+    Property::Type propertyType() const;
 
+    // General
     bool isCalculated() const;
     bool cacheData() const;
     bool isEditable() const;
 
-    Property::Type propertyType() const;
-
+    // Used for export
     Type type() const;
     virtual QString typeName() const;
     static QString typeToName(Type type);
@@ -58,6 +51,9 @@ public:
     virtual QString qtType() const;
     static QStringList qtTypeNames();
     static QString typeToQtType(Type type);
+
+    // Used by drivers
+    int columnIndex() const;
 
 protected:
     friend class StoragePrivate;

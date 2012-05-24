@@ -5,6 +5,7 @@
 #include "context.h"
 #include "entitytype.h"
 #include "functionvalue.h"
+#include "property.h"
 #include "relation.h"
 #include "relationvalue.h"
 #include "storage.h"
@@ -16,10 +17,6 @@ namespace LBDatabase {
 /******************************************************************************
 ** EntityPrivate
 */
-//! \cond PRIVATE
-const QString Entity::EntityTypeIdColumn("entityTypeId");
-//! \endcond
-
 class EntityPrivate {
     EntityPrivate() {}
 
@@ -112,38 +109,6 @@ int Entity::id() const
 }
 
 /*!
-  Returns the data for the Property \a property or an invalid QVariant, when the
-  entity's EntityType has no such property.
-  */
-QVariant Entity::data(Property *property) const
-{
-    Q_D(const Entity);
-    PropertyValue *propertyValue = d->propertyValues.value(property, 0);
-    if(!propertyValue)
-        return QVariant();
-
-    return propertyValue->data();
-}
-
-/*!
-  Sets the data for the Property \a propery to \a data and returns true upon
-  success.
-
-  Returns false, if no such property exists in the EntityType of this entity or
-  if the property is not editable.
-  */
-bool Entity::setData(const QVariant &data, Property *property)
-{
-    Q_D(const Entity);
-
-    PropertyValue *propertyValue = d->propertyValues.value(property, 0);
-    if(!propertyValue)
-        return false;
-
-    return propertyValue->setData(data);
-}
-
-/*!
   Returns the EntityType of the entity.
   */
 EntityType *Entity::entityType() const
@@ -189,6 +154,16 @@ PropertyValue *Entity::propertyValue(Property *property) const
     return d->propertyValues.value(property, 0);
 }
 
+AttributeValue *Entity::attributeValue(const QString &name) const
+{
+    return static_cast<LBDatabase::AttributeValue *>(propertyValue(entityType()->property(name)));
+}
+
+FunctionValue *Entity::function(const QString &name) const
+{
+    return static_cast<LBDatabase::FunctionValue *>(propertyValue(entityType()->property(name)));
+}
+
 QVariant Entity::value(const QString &name) const
 {
     Q_D(const Entity);
@@ -203,15 +178,13 @@ void Entity::setValue(const QString &name, const QVariant &data)
 {
     Q_D(const Entity);
     PropertyValue *value = d->propertyValues.value(d->entityType->property(name), 0);
-    if(!value || !value->isEditable())
+    if(!value || !value->isEditable() ||
+            !(value->property()->propertyType() == Property::Attribute ||
+              value->property()->propertyType() == Property::EnumAttribute)
+            )
         return;
 
-    value->setData(data);
-}
-
-FunctionValue *Entity::function(const QString &name) const
-{
-    return static_cast<LBDatabase::FunctionValue *>(propertyValue(entityType()->property(name)));
+    static_cast<LBDatabase::AttributeValue *>(value)->setData(data);
 }
 
 /*!

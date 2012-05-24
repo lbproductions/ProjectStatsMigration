@@ -39,6 +39,8 @@ public:
 signals:
 };
 
+Q_DECLARE_METATYPE(QList<Rule *>);
+
 class RulesContext : public LBDatabase::Context
 {
 	Q_OBJECT

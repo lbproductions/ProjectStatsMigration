@@ -18,10 +18,9 @@ class Calculator : public QObject
 public:
     explicit Calculator(QObject *parent = 0);
     
-    QVariant calculate(const Entity *entity, AttributeValue *attributeValue);
-
-    QHash<const Entity *, QVariant> calculate(const Entity *entity, FunctionValue *functionValue);
-    QVariant calculate(const Entity *entity, FunctionValue *functionValue, const Entity *key);
+    QVariant calculate(const Entity *entity, AttributeValue *attributeValue); // AttributeValue
+    QHash<const Entity *, QVariant> calculate(const Entity *entity, FunctionValue *functionValue); // FunctionValue
+    QVariant calculate(const Entity *entity, FunctionValue *functionValue, const Entity *key); // FunctionValue
 };
 
 } // namespace LBDatabase

@@ -10,6 +10,11 @@ PropertyValue::PropertyValue(QObject *parent) :
     QObject(parent)
 {
 }
+
+PropertyValue::~PropertyValue()
+{
+}
+
 //! \endcond
 
 } // namespace LBDatabase
