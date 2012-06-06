@@ -5,7 +5,7 @@
 #include "entity.h"
 #include "entitytype.h"
 #include "relationvalue.h"
-#include "relationvalue_p.h"
+#include "relationvaluebase_p.h"
 #include "storage.h"
 #include "storagedriver.h"
 

@@ -34,7 +34,6 @@ private:
 
     explicit AttributeValue(Attribute *attribute, Entity *parent);
 
-    void fetchValue();
     QVariant calculate();
 
     QScopedPointer<AttributeValuePrivate> d_ptr;

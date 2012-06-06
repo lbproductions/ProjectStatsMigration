@@ -36,9 +36,6 @@ private:
 
     explicit FunctionValue(Function *function, Entity *parent);
 
-    void fetchValue();
-    QVariant calculate();
-
     void addValue(Entity *key, const FunctionValueData &data);
 
     QScopedPointer<FunctionValuePrivate> d_ptr;

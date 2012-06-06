@@ -29,15 +29,6 @@ public:
 
 Q_SIGNALS:
     void changed();
-
-protected:
-    friend class StoragePrivate;
-    friend class ContextPrivate;
-    friend class EntityTypePrivate;
-    friend class RelationPrivate;
-
-    virtual void fetchValue() = 0;
-    virtual QVariant calculate() = 0;
 };
 //! \endcond
 

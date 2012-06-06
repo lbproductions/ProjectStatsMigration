@@ -41,7 +41,6 @@ HEADERS += \
     property.h \
     propertyvalue.h \
     relationvalue.h \
-    relationvalue_p.h \
     function.h \
     functionvalue.h \
     calculator.h \
@@ -56,7 +55,9 @@ HEADERS += \
     attribute_p.h \
     server/restserver.h \
     storagedriver.h \
-    local/localstoragedriver.h
+    local/localstoragedriver.h \
+    relationvaluebase.h \
+    relationvaluebase_p.h
 
 SOURCES += \
     local/column.cpp \
@@ -72,7 +73,6 @@ SOURCES += \
     relation.cpp \
     property.cpp \
     propertyvalue.cpp \
-    relationvalue.cpp \
     function.cpp \
     functionvalue.cpp \
     calculator.cpp \
@@ -86,7 +86,9 @@ SOURCES += \
     enumattribute.cpp \
     server/restserver.cpp \
     storagedriver.cpp \
-    local/localstoragedriver.cpp
+    local/localstoragedriver.cpp \
+    relationvaluebase.cpp \
+    relationvalue.cpp
 
 OTHER_FILES +=
 

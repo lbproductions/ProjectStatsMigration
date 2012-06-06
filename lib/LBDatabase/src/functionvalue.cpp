@@ -20,8 +20,6 @@ namespace LBDatabase {
 class FunctionValuePrivate {
     FunctionValuePrivate() : cached(false) {}
 
-    void init();
-    void fetchValue();
     QHash<const Entity *, QVariant> calculate();
     QVariant calculate(const Entity *key);
 
@@ -36,14 +34,6 @@ class FunctionValuePrivate {
     FunctionValue * q_ptr;
     Q_DECLARE_PUBLIC(FunctionValue)
 };
-
-void FunctionValuePrivate::init()
-{
-}
-
-void FunctionValuePrivate::fetchValue()
-{
-}
 
 QVariant FunctionValuePrivate::calculate(const Entity *key)
 {
@@ -78,19 +68,7 @@ FunctionValue::FunctionValue(Function *function, Entity *parent) :
     d->q_ptr = this;
     d->function = function;
     d->entity = parent;
-    d->init();
     connect(this, SIGNAL(changed()), entity()->context(), SLOT(onPropertyValueChanged()));
-}
-
-void FunctionValue::fetchValue()
-{
-    Q_D(FunctionValue);
-    d->fetchValue();
-}
-
-QVariant FunctionValue::calculate()
-{
-    return QVariant();
 }
 
 void FunctionValue::addValue(Entity *key, const FunctionValueData& data)

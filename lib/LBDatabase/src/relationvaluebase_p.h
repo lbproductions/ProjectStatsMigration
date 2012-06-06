@@ -1,5 +1,5 @@
-#ifndef LBDATABASE_RELATIONVALUE_P_H
-#define LBDATABASE_RELATIONVALUE_P_H
+#ifndef LBDATABASE_RELATIONVALUEBASE_P_H
+#define LBDATABASE_RELATIONVALUEBASE_P_H
 
 #include <QObject>
 
@@ -19,9 +19,6 @@ protected:
 
     RelationValueBasePrivate() {}
 
-    void init();
-    void fetchValue();
-
     Entity *entity;
     Relation *relation;
 
@@ -32,4 +29,4 @@ protected:
 
 } // namespace LBDatabase
 
-#endif // LBDATABASE_RELATIONVALUE_P_H
+#endif // LBDATABASE_RELATIONVALUEBASE_P_H

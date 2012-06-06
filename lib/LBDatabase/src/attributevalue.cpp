@@ -19,8 +19,6 @@ namespace LBDatabase {
 class AttributeValuePrivate {
     AttributeValuePrivate() : cached(false) {}
 
-    void init();
-    void fetchValue();
     QVariant calculate();
 
     Entity *entity;
@@ -32,14 +30,6 @@ class AttributeValuePrivate {
     AttributeValue * q_ptr;
     Q_DECLARE_PUBLIC(AttributeValue)
 };
-
-void AttributeValuePrivate::init()
-{
-}
-
-void AttributeValuePrivate::fetchValue()
-{
-}
 
 QVariant AttributeValuePrivate::calculate()
 {
@@ -81,7 +71,6 @@ AttributeValue::AttributeValue(Attribute *attribute, Entity *parent) :
     d->q_ptr = this;
     d->attribute = attribute;
     d->entity = parent;
-    d->init();
     connect(this, SIGNAL(changed()), entity()->context(), SLOT(onPropertyValueChanged()));
 }
 
@@ -170,15 +159,6 @@ Attribute *AttributeValue::attribute() const
 {
     Q_D(const AttributeValue);
     return d->attribute;
-}
-
-/*!
-  Reads the value of the attribute from the database.
-  */
-void AttributeValue::fetchValue()
-{
-    Q_D(AttributeValue);
-    d->fetchValue();
 }
 
 QVariant AttributeValue::calculate()

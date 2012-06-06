@@ -153,9 +153,9 @@ Entity *ContextPrivate::insertEntity(EntityType *type)
     foreach(Property *property, type->properties()) {
         property->addPropertyValue(entity);
     }
-    foreach(PropertyValue *value, entity->propertyValues()) {
-        value->fetchValue();
-    }
+
+    //TODO: PropertyValues initialisieren
+
     q->endInsertRows();
 
     return entity;
