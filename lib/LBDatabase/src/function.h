@@ -22,11 +22,11 @@ public:
     QString displayName() const;
     QString identifier() const;
     Property::Type propertyType() const;
+    bool isEditable() const;
+    bool isCalculated() const;
 
     // General
-    bool isCalculated() const;
     bool cacheData() const;
-    bool isEditable() const;
 
     EntityType *keyEntityType() const;
 

@@ -171,14 +171,18 @@ QVariant Entity::value(const QString &name) const
     if(!value)
         return QVariant();
 
-    return value->data();
+    return value->dataForModel();
 }
 
 void Entity::setValue(const QString &name, const QVariant &data)
 {
     Q_D(const Entity);
-    PropertyValue *value = d->propertyValues.value(d->entityType->property(name), 0);
-    if(!value || !value->isEditable() ||
+    Property *p = d->entityType->property(name);
+    if(!p || !p->isEditable())
+        return;
+
+    PropertyValue *value = d->propertyValues.value(p, 0);
+    if(!value ||
             !(value->property()->propertyType() == Property::Attribute ||
               value->property()->propertyType() == Property::EnumAttribute)
             )

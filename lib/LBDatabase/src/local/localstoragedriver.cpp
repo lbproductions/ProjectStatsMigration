@@ -82,6 +82,7 @@ const QString TableName("tableName");
 const QString ColumnName("columnName");
 const QString ColumnNameRight("columnNameRight");
 const QString Editable("editable");
+const QString Calculated("calculated");
 const QString Direction("direction");
 }
 namespace EnumAttributeColumns {
@@ -270,6 +271,7 @@ QList<RelationMetaData> LocalStorageDriver::relations() const
         metaData.cardinality = static_cast<Relation::Cardinality>(row->data(RelationColumns::Cardinality).toInt());
         metaData.direction = static_cast<Relation::Direction>(row->data(RelationColumns::Direction).toInt());
         metaData.editable = row->data(RelationColumns::Editable).toBool();
+        metaData.calculated = row->data(RelationColumns::Calculated).toBool();
         metaData.entityTypeId = row->data(RelationColumns::EntityTypeLeft).toInt();
         metaData.entityTypeOtherId = row->data(RelationColumns::EntityTypeRight).toInt();
         metaData.leftEntityIdColumnName = row->data(RelationColumns::ColumnName).toString();
@@ -312,13 +314,9 @@ QList<FunctionReimplementationMetaData> LocalStorageDriver::functionReimplementa
 QVariant LocalStorageDriver::attributeValue(const AttributeValue *value) const
 {
     Q_D(const LocalStorageDriver);
-    if(!value->attribute()->isCalculated()) {
-        Table *contextTable = d->database->table(value->entity()->context()->tableName());
-        Row *row = contextTable->row(value->entity()->id());
-        return row->data(value->attribute()->identifier());
-    }
-
-    return const_cast<AttributeValue*>(value)->calculate();
+    Table *contextTable = d->database->table(value->entity()->context()->tableName());
+    Row *row = contextTable->row(value->entity()->id());
+    return row->data(value->attribute()->identifier());
 }
 
 void LocalStorageDriver::setAttributeValue(const AttributeValue *attribute, const QVariant &data)

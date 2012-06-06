@@ -423,7 +423,7 @@ QVariant Context::data(const QModelIndex &index, int role) const
             Property *property = d->properties.at(index.column() - 2);
             PropertyValue *value = entity->propertyValue(property);
             if(value)
-                return value->data(role);
+                return value->dataForModel(role);
         }
     }
 
@@ -542,9 +542,9 @@ Qt::ItemFlags Context::flags(const QModelIndex &index) const
 {
     Q_D(const Context);
     if(index.column() > 1) {
-        Entity *e = d->entities.at(index.row());
-        PropertyValue *v = e->propertyValue(d->properties.value(index.column() - 2));
-        if(v && v->isEditable()) {
+        Property *p = d->properties.value(index.column() - 2);
+
+        if(p && p->isEditable()) {
             return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
         }
     }

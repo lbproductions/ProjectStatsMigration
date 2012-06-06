@@ -251,6 +251,12 @@ bool Relation::isEditable() const
     return d->metaData.editable;
 }
 
+bool Relation::isCalculated() const
+{
+    Q_D(const Relation);
+    return d->metaData.calculated;
+}
+
 bool Relation::isTranspose() const
 {
     Q_D(const Relation);

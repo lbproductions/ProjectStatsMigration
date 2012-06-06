@@ -37,7 +37,7 @@ class RelationValue : public RelationValueBase
 public:
     RelationValue(Relation *relation, Entity *parent);
 
-    QVariant data(int role) const;
+    QVariant dataForModel(int role) const;
 
     EntityClass *firstEntity() const;
     QList<EntityClass *> entities() const;

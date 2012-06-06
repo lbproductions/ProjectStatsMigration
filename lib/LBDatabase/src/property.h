@@ -27,6 +27,8 @@ public:
     virtual QString identifier() const = 0;
     virtual QString displayName() const = 0;
     virtual Type propertyType() const = 0;
+    virtual bool isEditable() const = 0;
+    virtual bool isCalculated() const = 0;
 
 Q_SIGNALS:
     void displayNameChanged(QString);

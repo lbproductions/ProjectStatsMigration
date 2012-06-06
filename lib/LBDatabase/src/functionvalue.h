@@ -19,7 +19,7 @@ public:
     // PropertyValue implementation
     Entity *entity() const;
     Property *property() const;
-    QVariant data(int role = Qt::DisplayRole) const;
+    QVariant dataForModel(int role = Qt::DisplayRole) const;
     bool isEditable() const;
 
     // General
@@ -36,7 +36,7 @@ private:
 
     explicit FunctionValue(Function *function, Entity *parent);
 
-    void addValue(Entity *key, const FunctionValueData &data);
+    void addValue(Entity *key, const FunctionValueData &dataForModel);
 
     QScopedPointer<FunctionValuePrivate> d_ptr;
     Q_DECLARE_PRIVATE(FunctionValue)

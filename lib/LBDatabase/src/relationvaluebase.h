@@ -17,7 +17,6 @@ public:
 
     // Partial PropertyValue implementation (the rest is in RelationValue)
     Property *property() const;
-    bool isEditable() const;
     Entity *entity() const;
 
     // General

@@ -36,6 +36,8 @@ public:
     QString displayName() const;
     QString identifier() const;
     Property::Type propertyType() const;
+    bool isEditable() const;
+    bool isCalculated() const;
 
     // Genereal
     EntityType *entityType() const;
@@ -43,7 +45,6 @@ public:
     Cardinality cardinality() const;
     Direction direction() const;
 
-    bool isEditable() const;
     bool isTranspose() const;
 
     Storage* storage() const;
@@ -86,6 +87,7 @@ public:
     int entityTypeId;
     int entityTypeOtherId;
     bool editable;
+    bool calculated;
 };
 
 class TransposeRelation : public Relation

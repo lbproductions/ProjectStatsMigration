@@ -21,7 +21,6 @@ class FunctionValuePrivate {
     FunctionValuePrivate() : cached(false) {}
 
     QHash<const Entity *, QVariant> calculate();
-    QVariant calculate(const Entity *key);
 
     Entity *entity;
     Function *function;
@@ -34,17 +33,6 @@ class FunctionValuePrivate {
     FunctionValue * q_ptr;
     Q_DECLARE_PUBLIC(FunctionValue)
 };
-
-QVariant FunctionValuePrivate::calculate(const Entity *key)
-{
-    Q_Q(FunctionValue);
-    Calculator *calculator = entity->entityType()->calculator();
-
-    if(calculator)
-        return calculator->calculate(entity,q,key);
-
-    return QVariant();
-}
 
 QHash<const Entity *, QVariant> FunctionValuePrivate::calculate()
 {
@@ -68,6 +56,10 @@ FunctionValue::FunctionValue(Function *function, Entity *parent) :
     d->q_ptr = this;
     d->function = function;
     d->entity = parent;
+    if(!function->isCalculated())
+        d->cached = true; // this is not correct yet, but it will be after the storage has been initialized,
+                          // so there is no harm, when we set cached=true right now.
+
     connect(this, SIGNAL(changed()), entity()->context(), SLOT(onPropertyValueChanged()));
 }
 
@@ -102,50 +94,30 @@ Function *FunctionValue::function() const
 
 QVariant FunctionValue::value(const Entity *entity) const
 {
-    Q_D(const FunctionValue);
-
-    if(d->function->isCalculated()) {
-        if(!d->function->cacheData()) {
-            return const_cast<FunctionValuePrivate*>(d)->calculate(entity);
-        }
-        if(!d->cached) {
-            d->values = const_cast<FunctionValuePrivate*>(d)->calculate();
-            d->cached = true;
-        }
-    }
-
-    return d->values.value(entity);
+    return values().value(entity);
 }
 
-QVariant FunctionValue::data(int role) const
+QVariant FunctionValue::dataForModel(int role) const
 {
     Q_D(const FunctionValue);
     Q_UNUSED(role);
 
-    if(d->function->isCalculated()) {
-        if(!d->function->cacheData()) {
-            return QVariant::fromValue<QHash<const Entity *, QVariant> >(const_cast<FunctionValuePrivate*>(d)->calculate());
-        }
-        if(!d->cached) {
-            d->values = const_cast<FunctionValuePrivate*>(d)->calculate();
-            d->cached = true;
-        }
-    }
+    QHash<const Entity *, QVariant> v = values();
 
     if(role == Qt::DisplayRole) {
-        if(d->values.isEmpty())
-            return QVariant();
+        if(v.isEmpty())
+            return QLatin1String("No values");
 
         if(d->values.size() == 1) {
-            const Entity *key = d->values.keys().at(0);
-            QVariant value = d->values.value(key);
-            return QVariant(key->displayName() + QLatin1String("=") + value.toString());
+            const Entity *key = v.keys().at(0);
+            QVariant value = v.value(key);
+            return QVariant(key->displayName() + QLatin1String(" = ") + value.toString());
         }
 
-        return QVariant(QString::number(d->values.size()) +QLatin1String(" values"));
+        return QVariant(QString::number(v.size()) +QLatin1String(" values"));
     }
     else if(role == PropertyValue::PlainDataRole) {
-        return QVariant::fromValue<QHash<const Entity *, QVariant> >(d->values);
+        return QVariant::fromValue<QHash<const Entity *, QVariant> >(v);
     }
 
     return QVariant();
@@ -154,6 +126,13 @@ QVariant FunctionValue::data(int role) const
 QHash<const Entity *, QVariant> FunctionValue::values() const
 {
     Q_D(const FunctionValue);
+
+    if(d->cached)
+        return d->values; // for non calculated functions this should always happen...
+
+    //...so that everything here only applies to calculated functions
+    d->values = const_cast<FunctionValuePrivate*>(d)->calculate();
+    d->cached = true;
 
     return d->values;
 }

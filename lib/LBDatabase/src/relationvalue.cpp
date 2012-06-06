@@ -46,7 +46,7 @@ QList<EntityClass *> RelationValue<EntityClass>::sort(const QString &sortAttribu
 }
 
 template<class EntityClass>
-QVariant RelationValue<EntityClass>::data(int role) const
+QVariant RelationValue<EntityClass>::dataForModel(int role) const
 {
     if(role == Qt::DisplayRole) {
         if(otherEntities.value(0).isEmpty())

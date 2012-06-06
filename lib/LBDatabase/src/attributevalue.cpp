@@ -95,24 +95,15 @@ Entity *AttributeValue::entity() const
 
   The \a role parameter is currently being ignored.
   */
-QVariant AttributeValue::data(int role) const
+QVariant AttributeValue::dataForModel(int role) const
 {
-    Q_UNUSED(role);
     Q_D(const AttributeValue);
+    Q_UNUSED(role);
 
-    if(d->attribute->type() == Attribute::Enum)
-        return d->entity->storage()->driver()->attributeValue(this);
+    if(d->attribute->propertyType() == Property::EnumAttribute)
+        return static_cast<EnumAttribute *>(d->attribute)->stringValue(value().toInt());
 
-    if(d->cached)
-        return d->cachedData;
-
-    QVariant value = d->entity->storage()->driver()->attributeValue(this);
-
-    if(d->attribute->cacheData()) {
-        d->cachedData = value;
-        d->cached = true;
-    }
-    return value;
+    return value();
 }
 
 /*!
@@ -123,8 +114,11 @@ QVariant AttributeValue::data(int role) const
 bool AttributeValue::setData(const QVariant &data)
 {
     Q_D(AttributeValue);
-    if(!isEditable())
+    if(!d->attribute->isEditable())
         return false;
+
+    if(data == d->cachedData)
+        return true;
 
     d->entity->storage()->driver()->setAttributeValue(this, data);
 
@@ -135,15 +129,6 @@ bool AttributeValue::setData(const QVariant &data)
     emit changed();
     emit dataChanged(data);
     return true;
-}
-
-/*!
-  Returns true.
-  */
-bool AttributeValue::isEditable() const
-{
-    Q_D(const AttributeValue);
-    return !d->attribute->isCalculated() && d->attribute->isEditable();
 }
 
 /*!
@@ -159,6 +144,26 @@ Attribute *AttributeValue::attribute() const
 {
     Q_D(const AttributeValue);
     return d->attribute;
+}
+
+QVariant AttributeValue::value() const
+{
+    Q_D(const AttributeValue);
+
+    if(d->cached)
+        return d->cachedData;
+
+    QVariant value;
+    if(d->attribute->isCalculated())
+        value = const_cast<AttributeValue *>(this)->calculate();
+    else
+        value = d->entity->storage()->driver()->attributeValue(this);
+
+    if(d->attribute->cacheData()) {
+        d->cachedData = value;
+        d->cached = true;
+    }
+    return value;
 }
 
 QVariant AttributeValue::calculate()

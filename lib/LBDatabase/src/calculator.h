@@ -20,7 +20,6 @@ public:
     
     QVariant calculate(const Entity *entity, AttributeValue *attributeValue); // AttributeValue
     QHash<const Entity *, QVariant> calculate(const Entity *entity, FunctionValue *functionValue); // FunctionValue
-    QVariant calculate(const Entity *entity, FunctionValue *functionValue, const Entity *key); // FunctionValue
 };
 
 } // namespace LBDatabase

@@ -63,15 +63,6 @@ Entity *RelationValueBase::entity() const
 }
 
 /*!
-  Returns false
-  */
-bool RelationValueBase::isEditable() const
-{
-    Q_D(const RelationValueBase);
-    return d->relation->isEditable();
-}
-
-/*!
   Returns the relation, that describes this value.
   */
 Property *RelationValueBase::property() const

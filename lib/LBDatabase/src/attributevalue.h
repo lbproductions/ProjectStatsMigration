@@ -18,15 +18,17 @@ public:
     // PropertyValue implementation
     Entity *entity() const;
     Property *property() const;
-    bool isEditable() const;
 
-
+    // General
     Attribute *attribute() const;
-    QVariant data(int role = Qt::DisplayRole) const;
+
+    QVariant value() const;
+
+    QVariant dataForModel(int role = Qt::DisplayRole) const;
     bool setData(const QVariant &data);
 
 Q_SIGNALS:
-    void dataChanged(QVariant data);
+    void dataChanged(QVariant dataForModel);
 
 private:
     friend class AttributePrivate;
