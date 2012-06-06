@@ -156,7 +156,9 @@ SOURCES += main.cpp \
     widgets/graphs/items/coordinatesystem.cpp \
     widgets/graphs/items/abstractitem.cpp \
     widgets/graphs/graphview.cpp \
-    widgets/graphs/dokolivegamegraphview.cpp
+    widgets/graphs/dokolivegamegraphview.cpp \
+    model/roundcalculator.cpp \
+    model/doppelkopfroundcalculator.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -206,7 +208,9 @@ HEADERS  += \
     widgets/graphs/items/coordinatesystem.h \
     widgets/graphs/items/abstractitem.h \
     widgets/graphs/graphview.h \
-    widgets/graphs/dokolivegamegraphview.h
+    widgets/graphs/dokolivegamegraphview.h \
+    model/roundcalculator.h \
+    model/doppelkopfroundcalculator.h
 
 RESOURCES += \
     resources/resources.qrc

@@ -10,6 +10,7 @@ namespace LBDatabase {
 class AttributeValue;
 class Entity;
 class FunctionValue;
+class RelationValueBase;
 
 
 class Calculator : public QObject
@@ -20,10 +21,12 @@ public:
     
     QVariant calculate(const Entity *entity, AttributeValue *attributeValue); // AttributeValue
     QHash<const Entity *, QVariant> calculate(const Entity *entity, FunctionValue *functionValue); // FunctionValue
+    QList<Entity *> calculate(const Entity *entity, const RelationValueBase *relationValue); // FunctionValue
 };
 
 } // namespace LBDatabase
 
 typedef QHash<const LBDatabase::Entity *, QVariant> EntityVariantHash;
+typedef QList<LBDatabase::Entity *> RelatedEntities;
 
 #endif // LBDATABASE_CALCULATOR_H

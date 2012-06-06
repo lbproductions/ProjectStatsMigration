@@ -21,7 +21,6 @@ QList<EntityClass *> RelationValue<EntityClass>::sort(FunctionValue *sortFunctio
     if(otherEntities.contains(sortFunction))
         return otherEntities.value(sortFunction);
 
-
     QList<EntityClass *> list = otherEntities.value(0);
 
     qSort(list.begin(), list.end(), FunctionSorter<EntityClass, SortType>(sortFunction, dir));
@@ -48,17 +47,19 @@ QList<EntityClass *> RelationValue<EntityClass>::sort(const QString &sortAttribu
 template<class EntityClass>
 QVariant RelationValue<EntityClass>::dataForModel(int role) const
 {
+    QList<EntityClass *> e = entities();
+
     if(role == Qt::DisplayRole) {
-        if(otherEntities.value(0).isEmpty())
+        if(e.isEmpty())
             return QVariant();
 
-        if(otherEntities.value(0).size() == 1)
-            return static_cast<Entity *>(otherEntities.value(0).at(0))->displayName();
+        if(e.size() == 1)
+            return static_cast<Entity *>(e.at(0))->displayName();
 
-        return QVariant(QString::number(entities().size())+QLatin1String(" ")+otherEntities.value(0).at(0)->entityType()->displayNamePlural());
+        return QVariant(QString::number(e.size())+QLatin1String(" ")+e.at(0)->entityType()->displayNamePlural());
     }
     else if(role == PropertyValue::PlainDataRole) {
-        return QVariant::fromValue<QList<EntityClass *> >(otherEntities.value(0));
+        return QVariant::fromValue<QList<EntityClass *> >(e);
     }
 
     return QVariant();
@@ -73,10 +74,11 @@ QList<EntityClass *> RelationValue<EntityClass>::entities() const
 template<class EntityClass>
 EntityClass *RelationValue<EntityClass>::firstEntity() const
 {
-    if(otherEntities.value(0).isEmpty())
+    QList<EntityClass *> e = entities();
+    if(e.isEmpty())
         return 0;
 
-    return otherEntities.value(0).first();
+    return e.first();
 }
 
 template<class EntityClass>

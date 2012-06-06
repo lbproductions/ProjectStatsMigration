@@ -1,6 +1,7 @@
 #include "relationvaluebase.h"
 #include "relationvaluebase_p.h"
 
+#include "calculator.h"
 #include "context.h"
 #include "entity.h"
 #include "entitytype.h"
@@ -60,6 +61,15 @@ Entity *RelationValueBase::entity() const
 {
     Q_D(const RelationValueBase);
     return d->entity;
+}
+
+QList<Entity *> RelationValueBase::calculate() const
+{
+    Calculator *calculator = entity()->entityType()->calculator();
+    if(!calculator)
+        return QList<Entity *>();
+
+    return calculator->calculate(entity(),this);
 }
 
 /*!

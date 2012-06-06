@@ -29,6 +29,8 @@ protected:
 
     virtual void addOtherEntity(Entity *entity, int rowId) = 0;
 
+    QList<Entity *> calculate() const;
+
     QScopedPointer<RelationValueBasePrivate> d_ptr;
     Q_DECLARE_PRIVATE(RelationValueBase)
     Q_DISABLE_COPY(RelationValueBase)

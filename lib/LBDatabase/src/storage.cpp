@@ -140,6 +140,9 @@ bool StoragePrivate::open()
     foreach(Property *property, properties) {
         property->fetchValues();
     }
+    foreach(Relation *relation, relations) {
+        relation->calculateValues();
+    }
 
     return true;
 }

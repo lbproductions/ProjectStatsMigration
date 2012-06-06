@@ -4,6 +4,8 @@
 #include "schmeisserei.h"
 #include "livegame.h"
 #include "player.h"
+#include "roundcalculator.h"
+#include "doppelkopfroundcalculator.h"
 
 
 #include "doppelkopfround.h"
@@ -125,6 +127,9 @@ RoundsContext::RoundsContext(const ::LBDatabase::ContextMetaData &metaData, LBDa
 {
 	registerEntityClass<Round>();
     registerEntityClass<DoppelkopfRound>();
+
+    registerCalculatorClass<Round,RoundCalculator>();
+    registerCalculatorClass<DoppelkopfRound,DoppelkopfRoundCalculator>();
 }
 
 DoppelkopfRound *RoundsContext::createDoppelkopfRound()

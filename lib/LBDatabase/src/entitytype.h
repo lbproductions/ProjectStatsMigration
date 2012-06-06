@@ -66,6 +66,7 @@ private:
     friend class EntityPrivate;
     friend class FunctionPrivate;
     friend class TransposeRelationPrivate;
+    friend class RelationValueBase;
 
     explicit EntityType(EntityTypeMetaData metaData, Storage *parent);
 

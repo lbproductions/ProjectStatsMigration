@@ -30,16 +30,16 @@ protected:
     void addPropertyValueToEntities();
     void addPropertyValue(Entity *entity);
     void fetchValues();
+    void calculateValues();
 
     Storage *storage;
     bool transpose;
+    Relation *transposeRelation;
 
     RelationMetaData metaData;
 
     EntityType *entityType;
     EntityType *entityTypeOther;
-
-    TransposeRelation *transposeRelation;
 
     Relation * q_ptr;
     Q_DECLARE_PUBLIC(Relation)
@@ -75,27 +75,50 @@ void RelationPrivate::addPropertyValueToEntities()
         entity->addRelationValue(new RelationValue<Entity>(q, entity));
     }
 
-    if(transposeRelation)
+    if(!transpose && transposeRelation)
         transposeRelation->addPropertyValueToEntities();
 }
 
 void RelationPrivate::fetchValues()
 {
     Q_Q(Relation);
-    foreach(RelationValueData entities, storage->driver()->relatedEntities(q)) {
-        Entity *leftEntity = entityType->context()->entity(entities.leftId);
-        Entity *rightEntity = entityTypeOther->context()->entity(entities.rightId);
+    if(!metaData.calculated) {
+        foreach(RelationValueData entities, storage->driver()->relatedEntities(q)) {
+            Entity *leftEntity = entityType->context()->entity(entities.leftId);
+            Entity *rightEntity = entityTypeOther->context()->entity(entities.rightId);
 
-        if(!leftEntity || !rightEntity)
-            continue;
+            if(!leftEntity || !rightEntity)
+                continue;
 
-        RelationValueBase *leftValue = static_cast<RelationValueBase *>(leftEntity->propertyValue(q));
-        if(leftValue)
-            leftValue->addOtherEntity(rightEntity, entities.rowId);
+            RelationValueBase *leftValue = static_cast<RelationValueBase *>(leftEntity->propertyValue(q));
+            if(leftValue)
+                leftValue->addOtherEntity(rightEntity, entities.rowId);
 
-        RelationValueBase *rightValue = static_cast<RelationValueBase *>(rightEntity->propertyValue(transposeRelation));
-        if(rightValue)
-            rightValue->addOtherEntity(leftEntity, entities.rowId);
+            RelationValueBase *rightValue = static_cast<RelationValueBase *>(rightEntity->propertyValue(transposeRelation));
+            if(rightValue)
+                rightValue->addOtherEntity(leftEntity, entities.rowId);
+        }
+    }
+
+}
+
+void RelationPrivate::calculateValues()
+{
+    Q_Q(Relation);
+    if(metaData.calculated) {
+        foreach(Entity *leftEntity, entityType->entities()) {
+            RelationValueBase *leftValue = static_cast<RelationValueBase *>(leftEntity->propertyValue(q));
+            if(!leftValue)
+                continue;
+
+            QList<Entity *> rightEntities = leftValue->calculate();
+            foreach(Entity *rightEntity, rightEntities) {
+                leftValue->addOtherEntity(rightEntity, 0);
+                RelationValueBase *rightValue = static_cast<RelationValueBase *>(rightEntity->propertyValue(transposeRelation));
+                if(rightValue)
+                    rightValue->addOtherEntity(leftEntity, 0);
+            }
+        }
     }
 }
 
@@ -263,6 +286,12 @@ bool Relation::isTranspose() const
     return d->transpose;
 }
 
+Relation *Relation::transposeRelation() const
+{
+    Q_D(const Relation);
+    return d->transposeRelation;
+}
+
 /*!
   \internal
 
@@ -295,6 +324,12 @@ void Relation::fetchValues()
     return d->fetchValues();
 }
 
+void Relation::calculateValues()
+{
+    Q_D(Relation);
+    return d->calculateValues();
+}
+
 Storage* Relation::storage() const
 {
     Q_D(const Relation);
@@ -304,6 +339,8 @@ Storage* Relation::storage() const
 TransposeRelation::TransposeRelation(Relation *relation) :
     Relation(*new TransposeRelationPrivate, relation->d_ptr->metaData, relation->storage())
 {
+    Q_D(Relation);
+    d->transposeRelation = relation;
 }
 
 TransposeRelation::~TransposeRelation()

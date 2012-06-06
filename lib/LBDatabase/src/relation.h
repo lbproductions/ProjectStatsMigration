@@ -46,6 +46,7 @@ public:
     Direction direction() const;
 
     bool isTranspose() const;
+    Relation *transposeRelation() const;
 
     Storage* storage() const;
 
@@ -66,6 +67,7 @@ protected:
     void addPropertyValueToEntities();
     void addPropertyValue(Entity *entity);
     void fetchValues();
+    void calculateValues();
 
     QScopedPointer<RelationPrivate> d_ptr;
     Q_DECLARE_PRIVATE(Relation)
