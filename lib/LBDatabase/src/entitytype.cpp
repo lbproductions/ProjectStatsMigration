@@ -327,7 +327,8 @@ QList<Relation *> EntityType::nonInhertitedRelations() const
     QList<Relation *> list = relations();
     if(parentEntityType()) {
         foreach(Relation *relation, parentEntityType()->relations()) {
-            list.removeAll(relation);
+            if(!relation->reimplementingEntityTypes().contains(const_cast<EntityType*>(this)))
+                list.removeAll(relation);
         }
     }
     return list;

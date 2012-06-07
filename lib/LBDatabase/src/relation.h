@@ -55,6 +55,9 @@ public:
     QString leftEntityIdColumnName() const;
     QString rightEntityIdColumnName() const;
 
+    // Used for export
+    QList<EntityType *> reimplementingEntityTypes() const;
+
 protected:
     friend class StoragePrivate;
     friend class RelationValueRightPrivate;
@@ -66,6 +69,7 @@ protected:
 
     void addPropertyValueToEntities();
     void addPropertyValue(Entity *entity);
+    void addReimplementingEntityType(EntityType *type);
     void fetchValues();
     void calculateValues();
 
@@ -90,6 +94,13 @@ public:
     int entityTypeOtherId;
     bool editable;
     bool calculated;
+};
+
+class RelationReimplementationMetaData
+{
+public:
+    int reimplementedRelationId;
+    int reimplementingEntityTypeId;
 };
 
 class TransposeRelation : public Relation

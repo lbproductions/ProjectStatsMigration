@@ -41,6 +41,8 @@ protected:
     EntityType *entityType;
     EntityType *entityTypeOther;
 
+    QList<EntityType *> reimplementingEntityTypes;
+
     Relation * q_ptr;
     Q_DECLARE_PUBLIC(Relation)
 };
@@ -176,6 +178,12 @@ Relation::Relation(RelationPrivate &dd, const RelationMetaData &metaData, Storag
     d->metaData = metaData;
     d->storage = parent;
     d->init();
+}
+
+void Relation::addReimplementingEntityType(EntityType *type)
+{
+    Q_D(Relation);
+    d->reimplementingEntityTypes.append(type);
 }
 
 /*!
@@ -334,6 +342,12 @@ Storage* Relation::storage() const
 {
     Q_D(const Relation);
     return d->storage;
+}
+
+QList<EntityType *> Relation::reimplementingEntityTypes() const
+{
+    Q_D(const Relation);
+    return d->reimplementingEntityTypes;
 }
 
 TransposeRelation::TransposeRelation(Relation *relation) :

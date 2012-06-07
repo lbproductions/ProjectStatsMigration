@@ -26,6 +26,7 @@ const QString AttributesTableName("lbmeta_attributes");
 const QString RelationsTableName("lbmeta_relations");
 const QString FunctionsTableName("lbmeta_functions");
 const QString FunctionReimplementationsTable("lbmeta_functionreimplementations");
+const QString RelationReimplementationsTable("lbmeta_relationreimplementations");
 
 namespace ContextColumns {
 const QString Identifier("identifier");
@@ -84,6 +85,10 @@ const QString ColumnNameRight("columnNameRight");
 const QString Editable("editable");
 const QString Calculated("calculated");
 const QString Direction("direction");
+}
+namespace RelationReimplementationsColumns {
+const QString ReimplementedRelation("relation");
+const QString ReimplementingEntityType("reimplementingEntityType");
 }
 namespace EnumAttributeColumns {
 const QString Attribute("attribute");
@@ -306,6 +311,20 @@ QList<FunctionReimplementationMetaData> LocalStorageDriver::functionReimplementa
         FunctionReimplementationMetaData metaData;
         metaData.reimplementedFunctionId = row->data(FunctionReimplementationsColumns::ReimplementedFunction).toInt();
         metaData.reimplementingEntityTypeId = row->data(FunctionReimplementationsColumns::ReimplementingEntityType).toInt();
+        metaDatas.append(metaData);
+    }
+    return metaDatas;
+}
+
+QList<RelationReimplementationMetaData> LocalStorageDriver::relationReimplementations() const
+{
+    Q_D(const LocalStorageDriver);
+    QList<RelationReimplementationMetaData> metaDatas;
+    metaDatas.reserve(d->database->table(RelationReimplementationsTable)->rows().count());
+    foreach(Row *row, d->database->table(RelationReimplementationsTable)->rows()) {
+        RelationReimplementationMetaData metaData;
+        metaData.reimplementedRelationId = row->data(RelationReimplementationsColumns::ReimplementedRelation).toInt();
+        metaData.reimplementingEntityTypeId = row->data(RelationReimplementationsColumns::ReimplementingEntityType).toInt();
         metaDatas.append(metaData);
     }
     return metaDatas;

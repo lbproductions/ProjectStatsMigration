@@ -46,7 +46,7 @@ bool CalculatorWriter::isNeeded() const
     }
 
     foreach(Relation *relation, m_entityType->nonInhertitedRelations()) {
-        if(relation->isCalculated()) {
+        if(relation->isCalculated() && !relation->isTranspose()) {
             hasCalculatedProperties = true;
         }
     }

@@ -129,6 +129,12 @@ bool StoragePrivate::open()
         function->addReimplementingEntityType(type);
     }
 
+    foreach(RelationReimplementationMetaData metaData, driver->relationReimplementations()) {
+        Relation *relation = relations.value(metaData.reimplementedRelationId);
+        EntityType *type = entityTypes.value(metaData.reimplementingEntityTypeId);
+        relation->addReimplementingEntityType(type);
+    }
+
     foreach(Context *context, contexts.values()) {
         context->initializeEntityHierarchy();
         context->loadEntities();
