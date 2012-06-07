@@ -32,7 +32,7 @@ void CalculatorWriter::write() const
 bool CalculatorWriter::isNeeded() const
 {
     bool hasCalculatedProperties = false;
-    QString name = m_entityType->identifier();
+
     foreach(Attribute *attribute, m_entityType->nonInhertitedAttributes()) {
         if(attribute->isCalculated()) {
             hasCalculatedProperties = true;
@@ -41,6 +41,12 @@ bool CalculatorWriter::isNeeded() const
 
     foreach(Function *function, m_entityType->nonInhertitedFunctions()) {
         if(function->isCalculated()) {
+            hasCalculatedProperties = true;
+        }
+    }
+
+    foreach(Relation *relation, m_entityType->nonInhertitedRelations()) {
+        if(relation->isCalculated()) {
             hasCalculatedProperties = true;
         }
     }
@@ -73,6 +79,12 @@ void CalculatorWriter::exportHeader() const
     foreach(Function *function, m_entityType->nonInhertitedFunctions()) {
         if(function->isCalculated()) {
             header.append(QLatin1String("\t\n\tQ_INVOKABLE EntityVariantHash ")+makeMethodName(function->identifier())+QLatin1String("(const LBDatabase::Entity *entity) const;\n"));
+        }
+    }
+
+    foreach(Relation *relation, m_entityType->nonInhertitedRelations()) {
+        if(relation->isCalculated()) {
+            header.append(QLatin1String("\t\n\tQ_INVOKABLE RelatedEntities ")+makeMethodName(relation->identifier())+QLatin1String("(const LBDatabase::Entity *entity) const;\n"));
         }
     }
 
@@ -136,6 +148,22 @@ void CalculatorWriter::exportSource() const
                               entityTypeClass+QLatin1String(" *")+makeMethodName(entityTypeClass)+
                               QLatin1String(" = static_cast<const ")+entityTypeClass+QLatin1String(" *>(entity);\n")+
                      QLatin1String("\treturn EntityVariantHash();\n"
+                "}\n\n"));
+            }
+        }
+    }
+
+    foreach(Relation *relation, m_entityType->nonInhertitedRelations()) {
+        if(relation->isCalculated()) {
+            name = calculatorClass+QLatin1String("::")+makeMethodName(relation->identifier());
+
+            if(!source.contains(name)) {
+                source.insert(insertionPoint, QLatin1String("RelatedEntities ")+calculatorClass+QLatin1String("::")+makeMethodName(relation->identifier())+QLatin1String("(const LBDatabase::Entity *entity) const\n"
+                "{\n"
+                     "\t//! \\todo IMPLEMENT ME\n\tconst ")+
+                              entityTypeClass+QLatin1String(" *")+makeMethodName(entityTypeClass)+
+                              QLatin1String(" = static_cast<const ")+entityTypeClass+QLatin1String(" *>(entity);\n")+
+                     QLatin1String("\treturn RelatedEntities();\n"
                 "}\n\n"));
             }
         }
