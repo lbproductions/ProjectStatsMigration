@@ -125,6 +125,11 @@ void Sidebar::setSelectedCategorie(int parent, int child)
     m_treeView->setSelectedIndex(parent,child);
 }
 
+QStandardItemModel *Sidebar::categoriesModel()
+{
+    return m_categoriesModel;
+}
+
 void Sidebar::expandAll()
 {
     m_treeView->expandAll(); //TODO: nur toplevel expanden...

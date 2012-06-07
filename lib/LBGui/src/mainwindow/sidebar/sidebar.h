@@ -39,6 +39,8 @@ public:
 
     void setSelectedCategorie(int parent, int child);
 
+    QStandardItemModel* categoriesModel();
+
 public slots:
     void expandAll();
 
