@@ -413,6 +413,10 @@ void EntityTypeWriter::writeRelationDeclaration(Relation *relation, QString &hea
              !relation->isTranspose())) {
         header.append(QLatin1String("\tQList<") + entityType + QLatin1String(" *> ") +
                   makeMethodName(relationName) + QLatin1String("() const;\n"));
+
+        if(relation->isEditable() && !relation->isTranspose()) {
+            header.append("\tvoid add"+entityType+"("+entityType+" *"+makeMethodName(relationName)+");\n");
+        }
     }
 }
 
@@ -443,6 +447,13 @@ void EntityTypeWriter::writeRelationImplementation(Relation *relation, QString &
                     "\treturn relation<")+entityType+QLatin1String(">(")+m_classname+
                                 QLatin1String("Properties::")+relationName+QLatin1String("Relation)->entities();\n"
               "}\n\n"));
+
+         if(relation->isEditable() && !relation->isTranspose()) {
+             source.append("void "+m_classname+"::add"+entityType+"("+entityType+" *"+makeMethodName(entityType)+")\n"
+             "{\n"
+                           "\nrelation<"+entityType+">("+m_classname+"Properties::"+relationName+"Relation)->addEntity("+makeMethodName(entityType)+");\n"
+             "}\n\n");
+         }
     }
 }
 
