@@ -19,6 +19,7 @@ class Storage : public QObject
 {
     Q_OBJECT
 public:
+    explicit Storage(QObject *parent = 0);
     ~Storage();
     bool open();
 
@@ -34,7 +35,6 @@ public:
     QList<EntityType *> entityTypes() const;
 
 protected:
-    explicit Storage(QObject *parent = 0);
 
     template<class ContextClass>
     void registerContextType();

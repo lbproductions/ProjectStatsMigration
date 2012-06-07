@@ -3,8 +3,8 @@
 #include "calculatorwriter.h"
 #include "entitytypewriter.h"
 
-#include "../context.h"
-#include "../entitytype.h"
+#include <LBDatabase/context.h>
+#include <LBDatabase/entitytype.h>
 
 namespace LBDatabase {
 
@@ -46,9 +46,12 @@ void ContextWriter::writeDeclaration(QString &header) const
                                                                     "public:\n"
                                                                     "\tQ_INVOKABLE "));
 
-    header.append(contextName + QLatin1String("(::LBDatabase::Row *row, ::LBDatabase::Storage *parent);\n"));
+    header.append(contextName + QLatin1String("(const ::LBDatabase::ContextMetaData &metaData, ::LBDatabase::Storage *parent);\n"));
     header.append(QLatin1String("\tstatic const QString Name;\n\n\t"));
     header.append(baseEntityTypeName+QLatin1String(" *")+makeMethodName(baseEntityTypeName)+QLatin1String("(int id) const;\n"));
+
+    QString plural = makeMethodName(m_entityType->displayNamePlural());
+    header.append("\tQList<"+baseEntityTypeName+" *> "+plural+"() const;\n");
     header.append(QLatin1String("};\n\n"));
 }
 
@@ -74,8 +77,8 @@ void ContextWriter::writeImplementation(QString &source) const
 
     source.append(
             contextName+QLatin1String("::")+contextName+QLatin1String(
-    "(LBDatabase::Row *row, LBDatabase::Storage *parent) :\n"
-        "\tContext(row, parent)\n"
+    "(const ::LBDatabase::ContextMetaData &metaData, LBDatabase::Storage *parent) :\n"
+        "\tLBDatabase::Context(metaData, parent)\n"
     "{\n"));
 
     foreach(EntityType *type, m_context->entityTypes()) {
@@ -92,6 +95,15 @@ void ContextWriter::writeImplementation(QString &source) const
     "{\n"
         "\treturn static_cast<")+baseEntityTypeName+QLatin1String(" *>(entity(id));\n"
     "}\n\n"));
+
+    QString plural = makeMethodName(m_entityType->displayNamePlural());
+    source.append("QList<"+baseEntityTypeName +"*> "+contextName+"::"+plural+"() const\n"
+                  "{\n"
+                  "\tQList<"+baseEntityTypeName+" *> "+plural+";\n"
+                  "\tforeach(LBDatabase::Entity *entity, entities())\n"
+                  "\t\t"+plural+".append(static_cast<"+baseEntityTypeName+" *>(entity));\n"
+                  "\treturn "+plural+";\n"
+                  "}");
 }
 
 } // namespace LBDatabase

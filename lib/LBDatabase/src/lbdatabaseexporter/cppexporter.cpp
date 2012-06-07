@@ -2,10 +2,10 @@
 
 #include "storagewriter.h"
 
-#include "../attribute.h"
-#include "../context.h"
-#include "../entitytype.h"
-#include "../storage.h"
+#include <LBDatabase/attribute.h>
+#include <LBDatabase/context.h>
+#include <LBDatabase/entitytype.h>
+#include <LBDatabase/storage.h>
 
 #include <QFile>
 #include <QTextStream>

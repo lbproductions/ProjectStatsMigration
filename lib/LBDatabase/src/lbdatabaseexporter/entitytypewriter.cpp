@@ -2,10 +2,10 @@
 
 #include "calculatorwriter.h"
 
-#include "../attribute.h"
-#include "../entitytype.h"
-#include "../enumattribute.h"
-#include "../function.h"
+#include <LBDatabase/attribute.h>
+#include <LBDatabase/entitytype.h>
+#include <LBDatabase/enumattribute.h>
+#include <LBDatabase/function.h>
 
 #include <QStringList>
 
@@ -162,8 +162,9 @@ void EntityTypeWriter::writeDeclaration(QString &header) const
     "{\n"
         "\tQ_OBJECT\n"
     "public:\n"
-        "\tQ_INVOKABLE ")+m_classname+QLatin1String("(::LBDatabase::Row *row, ::LBDatabase::Context *context);\n"
-        "\tstatic const QString Name;\n\n"));
+        "\tQ_INVOKABLE ")+m_classname+QLatin1String("(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);\n"
+        "\tstatic const QString Name;\n"
+        "\tstatic const int EntityTypeId;\n\n"));
 
     header.append(QLatin1String("\tQString displayName() const;\n\n"));
 
@@ -227,6 +228,8 @@ void EntityTypeWriter::writeDeclaration(QString &header) const
     }
 
     header.append(QLatin1String("};\n\n"));
+
+    header.append(QLatin1String("Q_DECLARE_METATYPE(QList<")+m_classname+QLatin1String(" *>);\n\n"));
 }
 
 void EntityTypeWriter::writeImplementation(QString &source) const
@@ -245,12 +248,13 @@ void EntityTypeWriter::writeImplementation(QString &source) const
     if(m_entityType->parentEntityType())
         baseClass = makeClassname(m_entityType->parentEntityType()->identifier());
 
-    source.append(QLatin1String("const QString ") + m_classname + QLatin1String("::Name(\"") + m_entityType->identifier() + QLatin1String("\");\n\n"));
+    source.append(QLatin1String("const QString ") + m_classname + QLatin1String("::Name(\"") + m_entityType->identifier() + QLatin1String("\");\n"));
+    source.append(QLatin1String("const int ") + m_classname + QLatin1String("::EntityTypeId(") + QString::number(m_entityType->id()) + QLatin1String(");\n\n"));
 
     source.append(
          m_classname+QLatin1String("::")+m_classname+QLatin1String(
-    "(LBDatabase::Row *row, LBDatabase::Context *context) :\n"
-        "\t") + baseClass + QLatin1String("(row, context)\n"
+    "(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Context *context) :\n"
+        "\t") + baseClass + QLatin1String("(metaData, context)\n"
     "{\n"
     "}\n\n"));
 

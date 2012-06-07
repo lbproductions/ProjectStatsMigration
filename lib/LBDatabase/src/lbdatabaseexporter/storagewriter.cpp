@@ -3,9 +3,9 @@
 #include "cppexporter.h"
 #include "contextwriter.h"
 
-#include "../context.h"
-#include "../storage.h"
-#include "../entitytype.h"
+#include <LBDatabase/context.h>
+#include <LBDatabase/storage.h>
+#include <LBDatabase/entitytype.h>
 
 namespace LBDatabase {
 
@@ -45,7 +45,7 @@ void StorageWriter::exportStorageHeader() const
         "\nclass ")+storageClass+QLatin1String(" : public LBDatabase::Storage\n"
         "{\n"
         "public:\n\t")+
-            storageClass+QLatin1String("(const QString &fileName, QObject *parent = 0);\n\n")
+            storageClass+QLatin1String("(QObject *parent = 0);\n\n")
     );
 
     QString methodName;
@@ -78,8 +78,8 @@ void StorageWriter::exportStorageSource() const
 
     source.append(QLatin1String("\n")+
             storageClass+QLatin1String("::")+storageClass+QLatin1String(
-    "(const QString &fileName, QObject *parent) :\n"
-        "\tStorage(fileName, parent)\n"
+    "(QObject *parent) :\n"
+        "\tLBDatabase::Storage(parent)\n"
     "{\n"));
 
     QString contextName;
