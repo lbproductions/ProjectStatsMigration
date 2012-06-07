@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+class QStandardItemModel;
+
 namespace LBDatabase {
 class EntityType;
 }
@@ -23,10 +25,17 @@ public:
     
     void setEntityType(LBDatabase::EntityType *entityType);
 
+private slots:
+    void on_pushButtonEditAttribute_clicked();
+
 private:
     Ui::EntityTypeView *ui;
 
     LBDatabase::EntityType *m_entityType;
+
+    QStandardItemModel *m_attributesModel;
+    QStandardItemModel *m_relationsModel;
+    QStandardItemModel *m_functionsModel;
 };
 
 

@@ -40,13 +40,21 @@ public:
     bool isCalculated() const;
 
     // General
-    bool cacheData() const;
+    void setDisplayName(const QString &displayName);
+    void setIdentifier(const QString &identifier);
+    Type type() const;
+    void setType(Type type);
+    void setEditable(bool editable);
+    void setCalculated(bool calculated);
+    bool isCached() const;
+    void setCached(bool cached);
+
 
     // Used for export
-    Type type() const;
     virtual QString typeName() const;
     static QString typeToName(Type type);
     static QStringList typeNames();
+    static Type typeNameToType(const QString &typeName);
 
     virtual QString qtType() const;
     static QStringList qtTypeNames();
@@ -54,6 +62,13 @@ public:
 
     // Used by drivers
     int columnIndex() const;
+
+Q_SIGNALS:
+    void identifierChanged(QString);
+    void typeChanged(Attribute::Type);
+    void cachedChanged(bool);
+    void editableChanged(bool);
+    void calculatedChanged(bool);
 
 protected:
     friend class StoragePrivate;
@@ -81,7 +96,7 @@ public:
     QString identifier;
     QString displayName;
     bool calculated;
-    bool cacheData;
+    bool cached;
     bool editable;
     Attribute::Type type;
 };

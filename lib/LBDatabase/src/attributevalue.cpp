@@ -122,7 +122,7 @@ bool AttributeValue::setData(const QVariant &data)
 
     d->entity->storage()->driver()->setAttributeValue(this, data);
 
-    if(d->attribute->cacheData()) {
+    if(d->attribute->isCached()) {
         d->cachedData = data;
         d->cached = true;
     }
@@ -159,7 +159,7 @@ QVariant AttributeValue::value() const
     else
         value = d->entity->storage()->driver()->attributeValue(this);
 
-    if(d->attribute->cacheData()) {
+    if(d->attribute->isCached()) {
         d->cachedData = value;
         d->cached = true;
     }

@@ -75,5 +75,8 @@ void Storage::registerContextType()
 } // namespace LBDatabase
 
 Q_DECLARE_METATYPE(LBDatabase::Storage*)
+Q_DECLARE_METATYPE(LBDatabase::Attribute*)
+Q_DECLARE_METATYPE(LBDatabase::Relation*)
+Q_DECLARE_METATYPE(LBDatabase::Function*)
 
 #endif // LBDATABASE_STORAGE_H

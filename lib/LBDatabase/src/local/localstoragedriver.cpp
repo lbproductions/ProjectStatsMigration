@@ -226,7 +226,7 @@ QList<AttributeMetaData> LocalStorageDriver::attributes() const
         metaData.id = row->id();
         metaData.identifier = row->data(AttributeColumns::Identifier).toString();
         metaData.displayName = row->data(AttributeColumns::DisplayName).toString();
-        metaData.cacheData = row->data(AttributeColumns::CacheData).toBool();
+        metaData.cached = row->data(AttributeColumns::CacheData).toBool();
         metaData.calculated = row->data(AttributeColumns::Calculated).toBool();
         metaData.editable = row->data(AttributeColumns::Editable).toBool();
         metaData.entityTypeId = row->data(AttributeColumns::EntityTypeId).toInt();
@@ -344,6 +344,48 @@ void LocalStorageDriver::setAttributeValue(const AttributeValue *attribute, cons
     Table *contextTable = d->database->table(attribute->entity()->context()->tableName());
     Row *row = contextTable->row(attribute->entity()->id());
     row->setData(attribute->attribute()->identifier(), data);
+}
+
+void LocalStorageDriver::setAttributeDisplayName(int id, const QString &displayName)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(AttributesTableName)->row(id);
+    row->setData(AttributeColumns::DisplayName, displayName);
+}
+
+void LocalStorageDriver::setAttributeIdentifier(int id, const QString &identifier)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(AttributesTableName)->row(id);
+    row->setData(AttributeColumns::Identifier, identifier);
+}
+
+void LocalStorageDriver::setAttributeType(int id, Attribute::Type type)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(AttributesTableName)->row(id);
+    row->setData(AttributeColumns::Type, static_cast<int>(type));
+}
+
+void LocalStorageDriver::setAttributeEditable(int id, bool editable)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(AttributesTableName)->row(id);
+    row->setData(AttributeColumns::Editable, QVariant(editable));
+}
+
+void LocalStorageDriver::setAttributeCalculated(int id, bool calculated)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(AttributesTableName)->row(id);
+    row->setData(AttributeColumns::Calculated, QVariant(calculated));
+}
+
+void LocalStorageDriver::setAttributeCached(int id, bool cached)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(AttributesTableName)->row(id);
+    row->setData(AttributeColumns::CacheData, QVariant(cached));
 }
 
 QList<RelationValueData> LocalStorageDriver::relatedEntities(Relation *relation) const

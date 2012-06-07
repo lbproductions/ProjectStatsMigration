@@ -113,6 +113,13 @@
          </spacer>
         </item>
         <item>
+         <widget class="QPushButton" name="pushButtonEditAttribute">
+          <property name="text">
+           <string>Edit</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="pushButtonAddAttribute">
           <property name="text">
            <string>+</string>
@@ -156,6 +163,13 @@
          </spacer>
         </item>
         <item>
+         <widget class="QPushButton" name="pushButtonEditFunction">
+          <property name="text">
+           <string>Edit</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="pushButtonAddFunction">
           <property name="text">
            <string>+</string>
@@ -197,6 +211,13 @@
            </size>
           </property>
          </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonEditRelation">
+          <property name="text">
+           <string>Edit</string>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pushButtonAddRelation">

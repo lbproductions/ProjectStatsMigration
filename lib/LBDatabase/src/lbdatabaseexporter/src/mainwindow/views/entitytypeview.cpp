@@ -1,9 +1,13 @@
 #include "entitytypeview.h"
 #include "ui_entitytypeview.h"
 
-#include "attributesmodel.h"
+#include "attributeeditor.h"
 
 #include <LBDatabase/LBDatabase.h>
+
+#include <QStandardItemModel>
+
+#include <QDebug>
 
 namespace MainWindowNS {
 
@@ -34,29 +38,30 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
         ui->comboBoxParent->addItem("---");
 
     //Attributes
-    QStandardItemModel *attributesModel = new QStandardItemModel(this);
+    m_attributesModel = new QStandardItemModel(this);
     int row = 0;
     foreach(LBDatabase::Attribute *attribute, entityType->attributes()) {
         QStandardItem *itemName = new QStandardItem(attribute->identifier());
-        attributesModel->setItem(row, 0, itemName);
+        itemName->setData(QVariant::fromValue<LBDatabase::Attribute *>(attribute));
+        m_attributesModel->setItem(row, 0, itemName);
         QStandardItem *itemType = new QStandardItem(attribute->qtType());
-        attributesModel->setItem(row, 1, itemType);
+        m_attributesModel->setItem(row, 1, itemType);
         row++;
     }
 
     QStringList attributesHeaderTitles;
     attributesHeaderTitles << tr("Identifier") << tr("Qt-Type");
-    attributesModel->setHorizontalHeaderLabels(attributesHeaderTitles);
+    m_attributesModel->setHorizontalHeaderLabels(attributesHeaderTitles);
 
-    ui->treeViewAttributes->setModel(attributesModel);
+    ui->treeViewAttributes->setModel(m_attributesModel);
     ui->treeViewAttributes->setHeaderHidden(false);
 
     //Functions
-    QStandardItemModel *functionsModel = new QStandardItemModel(this);
+    m_functionsModel = new QStandardItemModel(this);
     row = 0;
     foreach(LBDatabase::Function *function, entityType->functions()) {
         QStandardItem *itemName = new QStandardItem(function->identifier());
-        functionsModel->setItem(row, 0, itemName);
+        m_functionsModel->setItem(row, 0, itemName);
 //        QStandardItem *itemType = new QStandardItem(attribute->qtType());
 //        functionsModel->setItem(row, 1, itemType);
         row++;
@@ -64,17 +69,17 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
 
     QStringList functionsHeaderTitles;
     functionsHeaderTitles << tr("Identifier");
-    functionsModel->setHorizontalHeaderLabels(functionsHeaderTitles);
+    m_functionsModel->setHorizontalHeaderLabels(functionsHeaderTitles);
 
-    ui->treeViewFunctions->setModel(functionsModel);
+    ui->treeViewFunctions->setModel(m_functionsModel);
     ui->treeViewFunctions->setHeaderHidden(false);
 
     //Relations
-    QStandardItemModel *relationsModel = new QStandardItemModel(this);
+    m_relationsModel = new QStandardItemModel(this);
     row = 0;
     foreach(LBDatabase::Relation *relation, entityType->relations()) {
         QStandardItem *itemName = new QStandardItem(relation->identifier());
-        relationsModel->setItem(row, 0, itemName);
+        m_relationsModel->setItem(row, 0, itemName);
 //        QStandardItem *itemType = new QStandardItem(attribute->qtType());
 //        relationsModel->setItem(row, 1, itemType);
         row++;
@@ -82,10 +87,24 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
 
     QStringList relationsHeaderTitles;
     relationsHeaderTitles << tr("Identifier");
-    relationsModel->setHorizontalHeaderLabels(relationsHeaderTitles);
+    m_relationsModel->setHorizontalHeaderLabels(relationsHeaderTitles);
 
-    ui->treeViewRelations->setModel(relationsModel);
+    ui->treeViewRelations->setModel(m_relationsModel);
     ui->treeViewRelations->setHeaderHidden(false);
 }
 
 } // namespace MainWindowNS
+
+void MainWindowNS::EntityTypeView::on_pushButtonEditAttribute_clicked()
+{
+    if(ui->treeViewAttributes->selectionModel()->selectedRows(0).isEmpty())
+        return;
+
+    QStandardItem *item = m_attributesModel->itemFromIndex(ui->treeViewAttributes->selectionModel()->selectedRows(0).at(0));
+    LBDatabase::Attribute *attribute = item->data().value<LBDatabase::Attribute *>();
+    qDebug() << attribute->identifier();
+
+    AttributeEditor *editor = new AttributeEditor();
+    editor->setAttribute(attribute);
+    editor->open();
+}

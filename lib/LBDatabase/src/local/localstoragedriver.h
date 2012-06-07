@@ -29,6 +29,14 @@ public:
     QVariant attributeValue(const AttributeValue *value) const;
     void setAttributeValue(const AttributeValue *value, const QVariant &data);
 
+    void setAttributeDisplayName(int id, const QString &displayName);
+    void setAttributeIdentifier(int id, const QString &identifier);
+    void setAttributeType(int id, Attribute::Type type);
+
+    void setAttributeEditable(int id, bool editable);
+    void setAttributeCalculated(int id, bool calculated);
+    void setAttributeCached(int id, bool cached);
+
     // Relations
     QList<RelationValueData> relatedEntities(Relation *relation) const;
     int addRelatedEntity(RelationValueBase *value, const RelationValueData &data);

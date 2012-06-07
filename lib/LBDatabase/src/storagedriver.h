@@ -5,6 +5,8 @@
 
 #include <QPair>
 
+#include "attribute.h"
+
 namespace LBDatabase {
 
 class AttributeValue;
@@ -49,6 +51,13 @@ public:
     // Attributes
     virtual QVariant attributeValue(const AttributeValue *value) const = 0;
     virtual void setAttributeValue(const AttributeValue *value, const QVariant &data) = 0;
+
+    virtual void setAttributeDisplayName(int id, const QString &displayName) = 0;
+    virtual void setAttributeIdentifier(int id, const QString &identifier) = 0;
+    virtual void setAttributeType(int id, Attribute::Type type) = 0;
+    virtual void setAttributeEditable(int id, bool editable) = 0;
+    virtual void setAttributeCalculated(int id, bool calculated) = 0;
+    virtual void setAttributeCached(int id, bool cached) = 0;
 
     // Relations
     virtual QList<RelationValueData> relatedEntities(Relation *relation) const = 0;

@@ -6,6 +6,7 @@
 #include "entity.h"
 #include "entitytype.h"
 #include "storage.h"
+#include "storagedriver.h"
 
 #include <QStringList>
 #include <QDebug>
@@ -160,10 +161,43 @@ bool Attribute::isCalculated() const
     return d->metaData.calculated;
 }
 
-bool Attribute::cacheData() const
+void Attribute::setDisplayName(const QString &displayName)
+{
+    Q_D(Attribute);
+    if(displayName == d->metaData.displayName)
+        return;
+
+    d->metaData.displayName = displayName;
+    d->storage->driver()->setAttributeDisplayName(d->metaData.id, displayName);
+    emit displayNameChanged(displayName);
+}
+
+void Attribute::setIdentifier(const QString &identifier)
+{
+    Q_D(Attribute);
+    if(identifier == d->metaData.identifier)
+        return;
+
+    d->metaData.identifier = identifier;
+    d->storage->driver()->setAttributeIdentifier(d->metaData.id, identifier);
+    emit identifierChanged(identifier);
+}
+
+bool Attribute::isCached() const
 {
     Q_D(const Attribute);
-    return d->metaData.cacheData;
+    return d->metaData.cached;
+}
+
+void Attribute::setCached(bool cached)
+{
+    Q_D(Attribute);
+    if(cached == d->metaData.cached)
+        return;
+
+    d->metaData.cached = cached;
+    d->storage->driver()->setAttributeCached(d->metaData.id, cached);
+    emit cachedChanged(cached);
 }
 
 bool Attribute::isEditable() const
@@ -193,6 +227,39 @@ Attribute::Type Attribute::type() const
     return d->metaData.type;
 }
 
+void Attribute::setType(Attribute::Type type)
+{
+    Q_D(Attribute);
+    if(type == d->metaData.type)
+        return;
+
+    d->metaData.type = type;
+    d->storage->driver()->setAttributeType(d->metaData.id, type);
+    emit typeChanged(type);
+}
+
+void Attribute::setEditable(bool editable)
+{
+    Q_D(Attribute);
+    if(editable == d->metaData.editable)
+        return;
+
+    d->metaData.editable = editable;
+    d->storage->driver()->setAttributeEditable(d->metaData.id, editable);
+    emit editableChanged(editable);
+}
+
+void Attribute::setCalculated(bool calculated)
+{
+    Q_D(Attribute);
+    if(calculated == d->metaData.calculated)
+        return;
+
+    d->metaData.calculated = calculated;
+    d->storage->driver()->setAttributeCalculated(d->metaData.id, calculated);
+    emit calculatedChanged(calculated);
+}
+
 QString Attribute::typeName() const
 {
     Q_D(const Attribute);
@@ -219,6 +286,11 @@ QStringList Attribute::typeNames()
     "Color" <<
     "Enum";
     return names;
+}
+
+Attribute::Type Attribute::typeNameToType(const QString &typeName)
+{
+    return static_cast<Type>(typeNames().indexOf(typeName));
 }
 
 QString Attribute::qtType() const
