@@ -98,7 +98,8 @@ SOURCES += main.cpp \
     mainwindow/views/sampleview.cpp \
     preferences/updaterpreferences.cpp \
     mainwindow/views/entitytypeview.cpp \
-    mainwindow/views/attributeeditor.cpp
+    mainwindow/views/attributeeditor.cpp \
+    mainwindow/views/functioneditor.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -110,14 +111,16 @@ HEADERS  += \
     misc/updater.h \
     preferences/updaterpreferences.h \
     mainwindow/views/entitytypeview.h \
-    mainwindow/views/attributeeditor.h
+    mainwindow/views/attributeeditor.h \
+    mainwindow/views/functioneditor.h
 
 OTHER_FILES += \
     ../util/deployment/mac/deploy.sh
 
 FORMS += \
     mainwindow/views/entitytypeview.ui \
-    mainwindow/views/attributeeditor.ui
+    mainwindow/views/attributeeditor.ui \
+    mainwindow/views/functioneditor.ui
 
 
 

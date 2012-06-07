@@ -337,6 +337,17 @@ void Context::addAttribute(Attribute *attribute)
     endInsertColumns();
 }
 
+void Context::removeAttribute(Attribute *attribute)
+{
+    Q_D(Context);
+    if(!d->properties.contains(attribute))
+        return;
+
+    beginRemoveColumns(QModelIndex(), d->properties.indexOf(attribute), d->properties.indexOf(attribute));
+    d->properties.removeAll(attribute);
+    endInsertColumns();
+}
+
 void Context::addFunction(Function *function)
 {
     Q_D(Context);

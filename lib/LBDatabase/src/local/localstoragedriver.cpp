@@ -346,6 +346,32 @@ void LocalStorageDriver::setAttributeValue(const AttributeValue *attribute, cons
     row->setData(attribute->attribute()->identifier(), data);
 }
 
+AttributeMetaData LocalStorageDriver::addAttribute(int entityTypeId)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->attributesTable->appendRow();
+
+    row->setData(AttributeColumns::EntityTypeId, QVariant(entityTypeId));
+    row->setData(AttributeColumns::Type, QVariant(static_cast<int>(Attribute::Unkown)));
+
+    AttributeMetaData metaData;
+    metaData.id = row->id();
+    metaData.identifier = row->data(AttributeColumns::Identifier).toString();
+    metaData.displayName = row->data(AttributeColumns::DisplayName).toString();
+    metaData.cached = row->data(AttributeColumns::CacheData).toBool();
+    metaData.calculated = row->data(AttributeColumns::Calculated).toBool();
+    metaData.editable = row->data(AttributeColumns::Editable).toBool();
+    metaData.entityTypeId = row->data(AttributeColumns::EntityTypeId).toInt();
+    metaData.type = static_cast<Attribute::Type>(row->data(AttributeColumns::Type).toInt());
+    return metaData;
+}
+
+void LocalStorageDriver::removeAttribute(int attributeId)
+{
+    Q_D(LocalStorageDriver);
+    d->attributesTable->deleteRow(attributeId);
+}
+
 void LocalStorageDriver::setAttributeDisplayName(int id, const QString &displayName)
 {
     Q_D(LocalStorageDriver);

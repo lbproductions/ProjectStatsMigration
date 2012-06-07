@@ -48,7 +48,7 @@ public:
     void setCalculated(bool calculated);
     bool isCached() const;
     void setCached(bool cached);
-
+    EntityType *entityType() const;
 
     // Used for export
     virtual QString typeName() const;
@@ -73,6 +73,7 @@ Q_SIGNALS:
 protected:
     friend class StoragePrivate;
     friend class EntityTypePrivate;
+    friend class EntityType;
 
     explicit Attribute(const AttributeMetaData &metaData, Storage *parent);
     explicit Attribute(AttributePrivate &dd, const AttributeMetaData &metaData, Storage *parent);

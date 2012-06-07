@@ -54,6 +54,7 @@ private Q_SLOTS:
 
 protected:
     friend class StoragePrivate;
+    friend class EntityType;
     friend class EntityTypePrivate;
     friend class AttributePrivate;
     friend class RelationPrivate;
@@ -72,6 +73,7 @@ private:
     void createBaseEntityType(const QString &identifier);
     void addEntityType(EntityType *type);
     void addAttribute(Attribute *attribute);
+    void removeAttribute(Attribute *attribute);
     void addFunction(Function *function);
     void addRelation(Relation *relation);
 

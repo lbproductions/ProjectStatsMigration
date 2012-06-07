@@ -47,6 +47,9 @@ public:
     QList<Relation *> relations() const;
     QList<Function *> functions() const;
 
+    Attribute *addAttribute();
+    void removeAttribute(Attribute *attribute);
+
     // Used for export
     QList<Property *> nonInhertitedProperties() const;
     QList<Attribute *> nonInhertitedAttributes() const;
@@ -75,12 +78,16 @@ private:
     void setContext(Context *context);
     void addChildEntityType(EntityType *type);
     void setParentEntityType(EntityType *type);
-    void addAttribute(Attribute *attribute);
     void addRelation(Relation *relation);
     void addFunction(Function *function);
     void inheritProperties(EntityType *parent);
     void inheritCalculator(EntityType *parent);
     void addEntity(Entity *entity);
+
+    void addAttribute(Attribute *attribute);
+    void _removeAttribute(Attribute *attribute);
+    void inheritAttribute(Attribute *attribute);
+    void deinheritAttribute(Attribute *attribute);
 
     Calculator *calculator() const;
     void setCalculator(Calculator *calculator);

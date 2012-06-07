@@ -8,6 +8,7 @@
 #include "propertyvalue.h"
 #include "relation.h"
 #include "storage.h"
+#include "storagedriver.h"
 
 #include <QDebug>
 
@@ -300,6 +301,30 @@ QList<Function *> EntityType::functions() const
     return d->functions;
 }
 
+Attribute *EntityType::addAttribute()
+{
+    Q_D(EntityType);
+    Attribute *attribute = new Attribute(d->storage->driver()->addAttribute(id()),d->storage);
+
+    foreach(EntityType *type, d->childEntityTypes) {
+        type->inheritAttribute(attribute);
+    }
+    return attribute;
+}
+
+void EntityType::removeAttribute(Attribute *attribute)
+{
+    Q_D(EntityType);
+    if(attribute->entityType() != this)
+        return;
+
+    d->storage->removeAttribute(attribute);
+    d->context->removeAttribute(attribute);
+    deinheritAttribute(attribute);
+    d->storage->driver()->removeAttribute(attribute->id());
+    attribute->deleteLater();
+}
+
 QList<Property *> EntityType::nonInhertitedProperties() const
 {
     QList<Property *> list = properties();
@@ -392,6 +417,14 @@ void EntityType::addAttribute(Attribute *attribute)
     d->attributes.append(attribute);
 }
 
+void EntityType::_removeAttribute(Attribute *attribute)
+{
+    Q_D(EntityType);
+    qDebug() << "Removed" << d->properties.removeAll(attribute) << "properties";
+    d->propertiesByName.remove(attribute->identifier());
+    qDebug() << "Removed" << d->attributes.removeAll(attribute) << "attribtues";
+}
+
 /*!
   \internal
 
@@ -442,6 +475,27 @@ void EntityType::addEntity(Entity *entity)
     d->entities.append(entity);
     if(d->parentEntityType)
         d->parentEntityType->addEntity(entity);
+}
+
+void EntityType::inheritAttribute(Attribute *attribute)
+{
+    Q_D(EntityType);
+
+    addAttribute(attribute);
+
+    foreach(EntityType *type, d->childEntityTypes) {
+        type->inheritAttribute(attribute);
+    }
+}
+
+void EntityType::deinheritAttribute(Attribute *attribute)
+{
+    Q_D(EntityType);
+    _removeAttribute(attribute);
+
+    foreach(EntityType *type, d->childEntityTypes) {
+        type->deinheritAttribute(attribute);
+    }
 }
 
 void EntityType::setCalculator(Calculator *calculator)

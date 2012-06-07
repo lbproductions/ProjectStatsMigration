@@ -200,6 +200,12 @@ void Attribute::setCached(bool cached)
     emit cachedChanged(cached);
 }
 
+EntityType *Attribute::entityType() const
+{
+    Q_D(const Attribute);
+    return d->entityType;
+}
+
 bool Attribute::isEditable() const
 {
     Q_D(const Attribute);

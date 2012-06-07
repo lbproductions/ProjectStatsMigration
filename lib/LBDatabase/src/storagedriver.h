@@ -52,6 +52,9 @@ public:
     virtual QVariant attributeValue(const AttributeValue *value) const = 0;
     virtual void setAttributeValue(const AttributeValue *value, const QVariant &data) = 0;
 
+    virtual AttributeMetaData addAttribute(int entityTypeId) = 0;
+    virtual void removeAttribute(int attributeId) = 0;
+
     virtual void setAttributeDisplayName(int id, const QString &displayName) = 0;
     virtual void setAttributeIdentifier(int id, const QString &identifier) = 0;
     virtual void setAttributeType(int id, Attribute::Type type) = 0;

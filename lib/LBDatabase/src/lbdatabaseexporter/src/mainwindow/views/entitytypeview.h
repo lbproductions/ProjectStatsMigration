@@ -25,8 +25,15 @@ public:
     
     void setEntityType(LBDatabase::EntityType *entityType);
 
+
 private slots:
     void on_pushButtonEditAttribute_clicked();
+
+    void on_pushButtonAddAttribute_clicked();
+
+    void on_pushButtonRemoveAttribute_clicked();
+
+    void refreshContents();
 
 private:
     Ui::EntityTypeView *ui;

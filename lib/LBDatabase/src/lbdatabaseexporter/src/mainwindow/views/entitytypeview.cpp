@@ -6,6 +6,7 @@
 #include <LBDatabase/LBDatabase.h>
 
 #include <QStandardItemModel>
+#include <QMessageBox>
 
 #include <QDebug>
 
@@ -93,6 +94,14 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
     ui->treeViewRelations->setHeaderHidden(false);
 }
 
+void EntityTypeView::refreshContents()
+{
+    QModelIndexList selmod = ui->treeViewAttributes->selectionModel()->selectedIndexes();
+    setEntityType(m_entityType);
+    foreach(QModelIndex index, selmod)
+    ui->treeViewAttributes->selectionModel()->select(index, QItemSelectionModel::Select);
+}
+
 } // namespace MainWindowNS
 
 void MainWindowNS::EntityTypeView::on_pushButtonEditAttribute_clicked()
@@ -102,9 +111,51 @@ void MainWindowNS::EntityTypeView::on_pushButtonEditAttribute_clicked()
 
     QStandardItem *item = m_attributesModel->itemFromIndex(ui->treeViewAttributes->selectionModel()->selectedRows(0).at(0));
     LBDatabase::Attribute *attribute = item->data().value<LBDatabase::Attribute *>();
-    qDebug() << attribute->identifier();
 
-    AttributeEditor *editor = new AttributeEditor();
+    AttributeEditor *editor = new AttributeEditor(this);
     editor->setAttribute(attribute);
     editor->open();
+    connect(editor, SIGNAL(finished(int)), this, SLOT(refreshContents()));
+}
+
+void MainWindowNS::EntityTypeView::on_pushButtonAddAttribute_clicked()
+{
+    LBDatabase::Attribute *attribute = m_entityType->addAttribute();
+
+    AttributeEditor *editor = new AttributeEditor(this);
+    editor->setAttribute(attribute);
+    editor->setNewAttribute(true);
+    editor->open();
+    connect(editor, SIGNAL(finished(int)), this, SLOT(refreshContents()));
+}
+
+void MainWindowNS::EntityTypeView::on_pushButtonRemoveAttribute_clicked()
+{
+    if(ui->treeViewAttributes->selectionModel()->selectedRows(0).isEmpty())
+        return;
+
+    QStandardItem *item = m_attributesModel->itemFromIndex(ui->treeViewAttributes->selectionModel()->selectedRows(0).at(0));
+    LBDatabase::Attribute *attribute = item->data().value<LBDatabase::Attribute *>();
+
+    QMessageBox msgBox(this);
+    msgBox.setText(tr("Do you really want to delete the attribute \"%1\"?").arg(attribute->identifier()));
+    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::No);
+    msgBox.setIcon(QMessageBox::Warning);
+    msgBox.setWindowModality(Qt::WindowModal);
+    msgBox.setWindowFlags(Qt::Drawer);
+    int ret = msgBox.exec();
+
+    switch (ret) {
+        case QMessageBox::Yes:
+            attribute->entityType()->removeAttribute(attribute);
+            break;
+        case QMessageBox::No:
+            // Don't Save was clicked
+            break;
+        default:
+            // should never be reached
+            break;
+    }
+    refreshContents();
 }

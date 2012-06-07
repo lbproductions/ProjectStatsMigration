@@ -363,6 +363,16 @@ void Storage::insertAttribute(Attribute *attribute)
     d->properties.append(attribute);
 }
 
+void Storage::removeAttribute(Attribute *attribute)
+{
+    Q_D(Storage);
+    if(!d->attributes.contains(attribute->id()))
+        return;
+
+    d->attributes.remove(attribute->id());
+    d->properties.removeAll(attribute);
+}
+
 /*!
   \internal
 

@@ -43,6 +43,7 @@ protected:
     Attribute *attribute(int id) const;
 
 private:
+    friend class EntityType;
     friend class EntityTypePrivate;
     friend class ContextPrivate;
     friend class EntityPrivate;
@@ -54,6 +55,7 @@ private:
 
     void insertEntityType(EntityType *type);
     void insertAttribute(Attribute *attribute);
+    void removeAttribute(Attribute *attribute);
     void insertRelation(Relation *relation);
     void insertFunction(Function *function);
 

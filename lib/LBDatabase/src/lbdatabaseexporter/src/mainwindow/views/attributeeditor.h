@@ -22,14 +22,18 @@ public:
     ~AttributeEditor();
 
     void setAttribute(LBDatabase::Attribute *attribute);
+    void setNewAttribute(bool newAttribute);
     
 private slots:
     void on_buttonBox_accepted();
     void checkCheckboxStates();
 
+    void on_buttonBox_rejected();
+
 private:
     Ui::AttributeEditor *ui;
     LBDatabase::Attribute *m_attribute;
+    bool m_newAttribute;
 };
 
 
