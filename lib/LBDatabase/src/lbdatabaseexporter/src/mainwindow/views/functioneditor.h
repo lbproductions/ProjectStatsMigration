@@ -28,6 +28,11 @@ private slots:
     void on_buttonBox_accepted();
 
     void checkCheckboxStates();
+    void checkLineEditContents();
+
+    void on_lineEditIdentifier_textEdited(const QString &arg1);
+
+    void on_comboBoxKeyEntityType_currentIndexChanged(int index);
 
 private:
     Ui::FunctionEditor *ui;
