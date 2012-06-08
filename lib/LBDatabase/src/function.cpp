@@ -179,6 +179,12 @@ bool Function::cacheData() const
     return d->metaData.cacheData;
 }
 
+Attribute::Type Function::type() const
+{
+    Q_D(const Function);
+    return d->metaData.type;
+}
+
 bool Function::isEditable() const
 {
     Q_D(const Function);

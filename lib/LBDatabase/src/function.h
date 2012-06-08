@@ -27,6 +27,7 @@ public:
 
     // General
     bool cacheData() const;
+    Attribute::Type type() const;
 
     EntityType *keyEntityType() const;
 
