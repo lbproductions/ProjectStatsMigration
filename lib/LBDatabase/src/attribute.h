@@ -3,6 +3,8 @@
 
 #include "property.h"
 
+#include <QVariant>
+
 namespace LBDatabase {
 
 class AttributeMetaData;
@@ -49,6 +51,8 @@ public:
     bool isCached() const;
     void setCached(bool cached);
     EntityType *entityType() const;
+    QVariant defaultValue() const;
+    void setDefaultValue(QVariant defaultValue);
 
     // Used for export
     virtual QString typeName() const;
@@ -69,6 +73,7 @@ Q_SIGNALS:
     void cachedChanged(bool);
     void editableChanged(bool);
     void calculatedChanged(bool);
+    void defaultValueChanged(QVariant);
 
 protected:
     friend class StoragePrivate;
@@ -100,6 +105,7 @@ public:
     bool cached;
     bool editable;
     Attribute::Type type;
+    QVariant defaultValue;
 };
 
 } // namespace LBDatabase

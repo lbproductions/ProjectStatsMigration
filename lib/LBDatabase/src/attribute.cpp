@@ -206,6 +206,23 @@ EntityType *Attribute::entityType() const
     return d->entityType;
 }
 
+QVariant Attribute::defaultValue() const
+{
+    Q_D(const Attribute);
+    return d->metaData.defaultValue;
+}
+
+void Attribute::setDefaultValue(QVariant defaultValue)
+{
+    Q_D(Attribute);
+    if(defaultValue == d->metaData.defaultValue)
+        return;
+
+    d->metaData.defaultValue = defaultValue;
+    d->storage->driver()->setAttributeDefaultValue(d->metaData.id, defaultValue);
+    emit defaultValueChanged(defaultValue);
+}
+
 bool Attribute::isEditable() const
 {
     Q_D(const Attribute);
@@ -307,6 +324,9 @@ QString Attribute::qtType() const
 
 QString Attribute::typeToQtType(Type type)
 {
+    if(static_cast<int>(type) < 0 || static_cast<int>(type) >= Attribute::qtTypeNames().size())
+        return Attribute::qtTypeNames().at(0);
+
     return Attribute::qtTypeNames().at(static_cast<int>(type));
 }
 
