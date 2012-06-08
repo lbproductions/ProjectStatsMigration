@@ -62,7 +62,7 @@ const QString KeyEntityColumnName("keyEntityColumnName");
 const QString ValueColumnName("valueColumnName");
 const QString DisplayName("displayName");
 const QString EntityType("entityType");
-const QString KeyEntityTypeRight("keyEntityType");
+const QString KeyEntityType("keyEntityType");
 const QString Calculated("calculated");
 const QString CacheData("cacheData");
 const QString Type("type");
@@ -247,14 +247,14 @@ QList<FunctionMetaData> LocalStorageDriver::functions() const
         FunctionMetaData metaData;
         metaData.id = row->id();
         metaData.identifier = row->data(FunctionColumns::Identifier).toString();
-        metaData.cacheData = row->data(FunctionColumns::CacheData).toBool();
+        metaData.cached = row->data(FunctionColumns::CacheData).toBool();
         metaData.calculated = row->data(FunctionColumns::Calculated).toBool();
         metaData.displayName = row->data(FunctionColumns::DisplayName).toString();
         metaData.editable = row->data(FunctionColumns::Editable).toBool();
         metaData.entityColumnName = row->data(FunctionColumns::EntityColumnName).toString();
         metaData.entityTypeId = row->data(FunctionColumns::EntityType).toInt();
         metaData.keyEntityColumnName = row->data(FunctionColumns::KeyEntityColumnName).toString();
-        metaData.keyEntityTypeId = row->data(FunctionColumns::KeyEntityTypeRight).toInt();
+        metaData.keyEntityTypeId = row->data(FunctionColumns::KeyEntityType).toInt();
         metaData.tableName = row->data(FunctionColumns::TableName).toString();
         metaData.type = static_cast<Attribute::Type>(row->data(FunctionColumns::Type).toInt());
         metaData.valueColumnName = row->data(FunctionColumns::ValueColumnName).toString();
@@ -351,8 +351,12 @@ void LocalStorageDriver::setAttributeValue(const AttributeValue *attribute, cons
 void LocalStorageDriver::addAttribute(EntityType *entityType, AttributeMetaData &metaData)
 {
     Q_D(LocalStorageDriver);
-    Table *contextTable = d->database->table(entityType->context()->tableName());
-    contextTable->addColumn(metaData.identifier, Attribute::typeToName(metaData.type));
+    if(!metaData.calculated) {
+        Table *contextTable = d->database->table(entityType->context()->tableName());
+        Column *column = contextTable->column(metaData.identifier);
+        if(!column)
+            column = contextTable->addColumn(metaData.identifier, Attribute::typeToName(metaData.type));
+    }
 
     Row *row = d->attributesTable->appendRow();
     row->setData(AttributeColumns::Identifier, metaData.identifier);
@@ -506,6 +510,80 @@ void LocalStorageDriver::setFunctionValue(FunctionValue *functionValue, const Fu
     row->setData(columnType, QVariant(data.entityId));
     row->setData(columnKey, QVariant(data.keyEntityId));
     row->setData(columnValue, QVariant(data.value));
+}
+
+void LocalStorageDriver::addFunction(EntityType *entityType, FunctionMetaData &metaData)
+{
+    Q_UNUSED(entityType)
+    Q_D(LocalStorageDriver);
+    if(!metaData.calculated) {
+        Table *table = d->database->table(metaData.tableName);
+        if(!table)
+            table = d->database->createTable(metaData.tableName);
+
+        Column *entityColumn = table->column(metaData.entityColumnName);
+        if(!entityColumn)
+            entityColumn = table->addColumn(metaData.entityColumnName, Attribute::typeToName(Attribute::Integer));
+
+        Column *keyEntityColumn = table->column(metaData.keyEntityColumnName);
+        if(!keyEntityColumn)
+            keyEntityColumn = table->addColumn(metaData.keyEntityColumnName, Attribute::typeToName(Attribute::Integer));
+
+        Column *valueColumn = table->column(metaData.valueColumnName);
+        if(!valueColumn)
+            valueColumn = table->addColumn(metaData.valueColumnName, Attribute::typeToName(metaData.type));
+    }
+
+    Row *row = d->functionsTable->appendRow();
+    row->setData(FunctionColumns::Identifier, metaData.identifier);
+    row->setData(FunctionColumns::DisplayName, metaData.displayName);
+    row->setData(FunctionColumns::CacheData, metaData.cached);
+    row->setData(FunctionColumns::Calculated, metaData.calculated);
+    row->setData(FunctionColumns::Editable, metaData.editable);
+    row->setData(FunctionColumns::EntityType, QVariant(metaData.entityTypeId));
+    row->setData(FunctionColumns::Type, QVariant(static_cast<int>(metaData.type)));
+    row->setData(FunctionColumns::KeyEntityType, metaData.keyEntityTypeId);
+    row->setData(FunctionColumns::TableName, metaData.tableName);
+    row->setData(FunctionColumns::EntityColumnName, metaData.entityColumnName);
+    row->setData(FunctionColumns::KeyEntityColumnName, metaData.keyEntityColumnName);
+    row->setData(FunctionColumns::ValueColumnName, metaData.valueColumnName);
+    metaData.id = row->id();
+
+}
+
+void LocalStorageDriver::setFunctionDisplayName(int id, const QString &displayName)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->functionsTable->row(id);
+    row->setData(FunctionColumns::DisplayName, displayName);
+}
+
+void LocalStorageDriver::setFunctionIdentifier(int id, const QString &identifier)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->functionsTable->row(id);
+    row->setData(FunctionColumns::Identifier, identifier);
+}
+
+void LocalStorageDriver::setFunctionType(int id, Attribute::Type type)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->functionsTable->row(id);
+    row->setData(FunctionColumns::Type, static_cast<int>(type));
+}
+
+void LocalStorageDriver::setFunctionEditable(int id, bool editable)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->functionsTable->row(id);
+    row->setData(FunctionColumns::Editable, editable);
+}
+
+void LocalStorageDriver::setFunctionKeyEntityType(int id, EntityType *entityType)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->functionsTable->row(id);
+    row->setData(FunctionColumns::KeyEntityType, entityType->id());
 }
 
 QList<EntityMetaData> LocalStorageDriver::entities(Context *context) const

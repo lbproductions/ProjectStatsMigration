@@ -4,6 +4,7 @@
 #include <QWidget>
 
 class QStandardItemModel;
+class QModelIndex;
 
 namespace LBDatabase {
 class EntityType;
@@ -38,6 +39,9 @@ private slots:
     void on_pushButtonEditFunction_clicked();
 
     void on_pushButtonAddFunction_clicked();
+
+    void attributeSelectionChanged(const QModelIndex & current, const QModelIndex & previous);
+    void functionSelectionChanged(const QModelIndex & current, const QModelIndex & previous);
 
 private:
     Ui::EntityTypeView *ui;

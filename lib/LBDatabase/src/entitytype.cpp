@@ -338,6 +338,22 @@ void EntityType::removeAttribute(Attribute *attribute)
     attribute->deleteLater();
 }
 
+Function *EntityType::addFunction(FunctionMetaData &metaData)
+{
+    Q_D(EntityType);
+    metaData.entityTypeId = id();
+    d->storage->driver()->addFunction(this, metaData);
+    Function *function = new Function(metaData, d->storage);
+
+    foreach(EntityType *type, d->childEntityTypes) {
+        type->inheritFunction(function);
+    }
+
+    function->addPropertyValueToEntities();
+
+    return function;
+}
+
 QList<Property *> EntityType::nonInhertitedProperties() const
 {
     QList<Property *> list = properties();
@@ -508,6 +524,17 @@ void EntityType::deinheritAttribute(Attribute *attribute)
 
     foreach(EntityType *type, d->childEntityTypes) {
         type->deinheritAttribute(attribute);
+    }
+}
+
+void EntityType::inheritFunction(Function *function)
+{
+    Q_D(EntityType);
+
+    addFunction(function);
+
+    foreach(EntityType *type, d->childEntityTypes) {
+        type->inheritFunction(function);
     }
 }
 

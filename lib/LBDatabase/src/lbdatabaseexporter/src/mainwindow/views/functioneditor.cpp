@@ -48,7 +48,7 @@ void FunctionEditor::setFunction(LBDatabase::Function *function)
     m_function = function;
     ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(true);
     ui->labelId->setText(QString::number(function->id()));
-    ui->lineEditIdentifier->setEnabled(false);
+    ui->lineEditIdentifier->setEnabled(function->isCalculated());
     ui->lineEditIdentifier->setText(function->identifier());
     ui->lineEditDisplayName->setText(function->displayName());
     for(int i = 0; i < ui->comboBoxKeyEntityType->count(); ++i) {
@@ -78,7 +78,38 @@ void FunctionEditor::setFunction(LBDatabase::Function *function)
 
 void MainWindowNS::FunctionEditor::on_buttonBox_accepted()
 {
+    if(!m_function) {
+        LBDatabase::FunctionMetaData metaData;
+        metaData.identifier = ui->lineEditIdentifier->text();
+        metaData.displayName = ui->lineEditDisplayName->text();
+        metaData.type = LBDatabase::Attribute::typeNameToType(ui->comboBoxType->currentText());
+        metaData.editable = ui->checkBoxEditable->isChecked();
+        metaData.calculated = ui->checkBoxCalculated->isChecked();
+        metaData.cached = true;
 
+        metaData.keyEntityTypeId = ui->comboBoxKeyEntityType->itemData(ui->comboBoxKeyEntityType->currentIndex()).toInt();
+        metaData.tableName = ui->lineEditTableName->text();
+        metaData.entityColumnName = ui->lineEditEntityIdColumnName->text();
+        metaData.keyEntityColumnName = ui->lineEditKeyEntityIdColumnName->text();
+        metaData.valueColumnName = ui->lineEditValueColumnName->text();
+        m_function = m_entityType->addFunction(metaData);
+    }
+    else {
+        m_function->setEditable(ui->checkBoxEditable->isChecked());
+        m_function->setDisplayName(ui->lineEditDisplayName->text());
+        m_function->setIdentifier(ui->lineEditIdentifier->text());
+        m_function->setType(static_cast<LBDatabase::Attribute::Type>(ui->comboBoxType->currentIndex()));
+        LBDatabase::EntityType *keyEntityType = m_entityType->context()->storage()->entityType(ui->comboBoxKeyEntityType->itemData(ui->comboBoxKeyEntityType->currentIndex()).toInt());
+        m_function->setKeyEntityType(keyEntityType);
+//        m_attribute->setDisplayName(ui->lineEditDisplayName->text());
+//        m_attribute->setIdentifier(ui->lineEditIdentifier->text());
+//        m_attribute->setType(LBDatabase::Attribute::typeNameToType(ui->comboBoxType->currentText()));
+//        m_attribute->setEditable(ui->checkBoxEditable->isChecked());
+//        m_attribute->setCalculated(ui->checkBoxCalculated->isChecked());
+//        m_attribute->setCached(ui->checkBoxCached->isChecked());
+//        m_attribute->setDefaultValue(ui->lineEditDefaultValue->text());
+    }
+    emit finished(QDialog::Accepted);
 }
 
 void MainWindowNS::FunctionEditor::checkCheckboxStates()
@@ -87,31 +118,81 @@ void MainWindowNS::FunctionEditor::checkCheckboxStates()
     ui->checkBoxEditable->setEnabled(!ui->checkBoxCalculated->isChecked());
 
     ui->groupBoxAdvanced->setEnabled(!ui->checkBoxCalculated->isChecked());
+
+    if(ui->checkBoxCalculated->isChecked()) {
+        ui->lineEditTableName->setText(QString());
+        ui->lineEditValueColumnName->setText(QString());
+        ui->lineEditEntityIdColumnName->setText(QString());
+        ui->lineEditKeyEntityIdColumnName->setText(QString());
+    }
+    else {
+        ui->lineEditTableName->setText(ui->lineEditIdentifier->text()+"s");
+        ui->lineEditValueColumnName->setText(ui->lineEditIdentifier->text());
+        ui->lineEditEntityIdColumnName->setText(m_entityType->identifier());
+
+        LBDatabase::EntityType *keyEntityType = m_entityType->context()->storage()->entityType(ui->comboBoxKeyEntityType->itemData(ui->comboBoxKeyEntityType->currentIndex()).toInt());
+
+        QString name = keyEntityType->identifier();
+        if(keyEntityType == m_entityType) {
+            name.prepend(QLatin1String("key"));
+        }
+
+        ui->lineEditKeyEntityIdColumnName->setText(name);
+    }
 }
 
 void MainWindowNS::FunctionEditor::checkLineEditContents()
 {
+    bool enable = true;
+    foreach(LBDatabase::Function *function, m_entityType->functions()) {
+        if(function != m_function &&
+                (QString::compare(function->identifier(),ui->lineEditIdentifier->text(),Qt::CaseInsensitive) == 0 ||
+                QString::compare(function->tableName(),ui->lineEditTableName->text(),Qt::CaseInsensitive) == 0)
+                )
+            enable = false;
+    }
     ui->buttonBox->button( QDialogButtonBox::Save )->setEnabled(
-                ui->checkBoxCalculated->isChecked() ||
+                enable &&
+                (ui->checkBoxCalculated->isChecked() ||
                 !ui->lineEditTableName->text().isEmpty() &&
+                !ui->lineEditTableName->text().startsWith("lbmeta_") &&
                 !ui->lineEditEntityIdColumnName->text().isEmpty() &&
                 !ui->lineEditKeyEntityIdColumnName->text().isEmpty() &&
-                !ui->lineEditValueColumnName->text().isEmpty()
+                !ui->lineEditValueColumnName->text().isEmpty())
                 );
 }
 
 void MainWindowNS::FunctionEditor::on_lineEditIdentifier_textEdited(const QString &text)
 {
-    ui->buttonBox->button( QDialogButtonBox::Save )->setEnabled(!text.isEmpty());
-    ui->lineEditTableName->setText(text+"s");
-    ui->lineEditValueColumnName->setText(text);
+    bool enable = true;
+    foreach(LBDatabase::Function *function, m_entityType->functions()) {
+        if(function != m_function && QString::compare(function->identifier(),text,Qt::CaseInsensitive) == 0)
+            enable = false;
+    }
+
+    if(ui->checkBoxCalculated->isChecked() || (m_function && m_function->isCalculated())) {
+        ui->lineEditKeyEntityIdColumnName->setText(QString());
+    }
+    else {
+        ui->lineEditTableName->setText(text+"s");
+        ui->lineEditValueColumnName->setText(text);
+    }
+
+    ui->buttonBox->button( QDialogButtonBox::Save )->setEnabled(enable && !text.isEmpty());
 }
 
 void MainWindowNS::FunctionEditor::on_comboBoxKeyEntityType_currentIndexChanged(int index)
 {
-    if(m_function && m_function->isCalculated())
-        return;
+    if(ui->checkBoxCalculated->isChecked() || (m_function && m_function->isCalculated())) {
+        ui->lineEditKeyEntityIdColumnName->setText(QString());
+    }
+    else {
+        LBDatabase::EntityType *keyEntityType = m_entityType->context()->storage()->entityType(ui->comboBoxKeyEntityType->itemData(index).toInt());
+        QString name = keyEntityType->identifier();
+        if(keyEntityType == m_entityType) {
+            name.prepend(QLatin1String("key"));
+        }
 
-    LBDatabase::EntityType *keyEntityType = m_entityType->context()->storage()->entityType(ui->comboBoxKeyEntityType->itemData(index).toInt());
-    ui->lineEditKeyEntityIdColumnName->setText(keyEntityType->identifier());
+        ui->lineEditKeyEntityIdColumnName->setText(name);
+    }
 }

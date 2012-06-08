@@ -30,6 +30,8 @@ private slots:
 
     void on_lineEditIdentifier_textChanged(const QString &arg1);
 
+    void on_buttonBox_rejected();
+
 private:
     Ui::AttributeEditor *ui;
     LBDatabase::Attribute *m_attribute;

@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include "attribute.h"
+#include "function.h"
 #include "relation.h"
 
 namespace LBDatabase {
@@ -50,6 +51,8 @@ public:
     Attribute *addAttribute(AttributeMetaData &metaData);
     void removeAttribute(Attribute *attribute);
 
+    Function *addFunction(FunctionMetaData &metaData);
+
     // Used for export
     QList<Property *> nonInhertitedProperties() const;
     QList<Attribute *> nonInhertitedAttributes() const;
@@ -75,22 +78,25 @@ private:
 
     int parentEntityTypeId() const;
 
+    void addEntity(Entity *entity);
     void setContext(Context *context);
     void addChildEntityType(EntityType *type);
     void setParentEntityType(EntityType *type);
-    void addRelation(Relation *relation);
-    void addFunction(Function *function);
     void inheritProperties(EntityType *parent);
+
+    Calculator *calculator() const;
+    void setCalculator(Calculator *calculator);
     void inheritCalculator(EntityType *parent);
-    void addEntity(Entity *entity);
 
     void addAttribute(Attribute *attribute);
     void _removeAttribute(Attribute *attribute);
     void inheritAttribute(Attribute *attribute);
     void deinheritAttribute(Attribute *attribute);
 
-    Calculator *calculator() const;
-    void setCalculator(Calculator *calculator);
+    void addFunction(Function *function);
+    void inheritFunction(Function *function);
+
+    void addRelation(Relation *relation);
 
     QScopedPointer<EntityTypePrivate> d_ptr;
     Q_DECLARE_PRIVATE(EntityType)

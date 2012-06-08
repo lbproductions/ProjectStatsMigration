@@ -36,7 +36,7 @@ AttributeEditor::~AttributeEditor()
 void AttributeEditor::setAttribute(LBDatabase::Attribute *attribute)
 {
     m_attribute = attribute;
-    ui->lineEditIdentifier->setEnabled(false);
+    ui->lineEditIdentifier->setEnabled(attribute->isCalculated());
     ui->labelId->setText(QString::number(attribute->id()));
     ui->lineEditIdentifier->setText(attribute->identifier());
     ui->lineEditDisplayName->setText(attribute->displayName());
@@ -82,15 +82,31 @@ void AttributeEditor::checkCheckboxStates()
 
     ui->groupBoxAdvanced->setEnabled(!ui->checkBoxCalculated->isChecked());
     ui->lineEditDefaultValue->setEnabled(!ui->checkBoxCalculated->isChecked());
+
+    if(ui->checkBoxCalculated->isChecked()) {
+        ui->lineEditColumnName->setText(QString());
+    }
+    else {
+        ui->lineEditColumnName->setText(ui->lineEditIdentifier->text());
+    }
 }
 
 void AttributeEditor::on_lineEditIdentifier_textChanged(const QString &text)
 {
-    if(m_attribute && m_attribute->isCalculated())
-        return;
+    bool enable = true;
+    foreach(LBDatabase::Attribute *attribute, m_entityType->attributes()) {
+        if(attribute != m_attribute && QString::compare(attribute->identifier(),text,Qt::CaseInsensitive) == 0)
+            enable = false;
+    }
 
-    ui->buttonBox->button( QDialogButtonBox::Save )->setEnabled(!text.isEmpty());
-    ui->lineEditColumnName->setText(text);
+    if(ui->checkBoxCalculated->isChecked() || (m_attribute && m_attribute->isCalculated())) {
+        ui->lineEditColumnName->setText(QString());
+    }
+    else {
+        ui->lineEditColumnName->setText(text);
+    }
+
+    ui->buttonBox->button( QDialogButtonBox::Save )->setEnabled(enable && !text.isEmpty());
 }
 
 } // namespace MainWindowNS
@@ -98,3 +114,8 @@ void AttributeEditor::on_lineEditIdentifier_textChanged(const QString &text)
 
 
 
+
+void MainWindowNS::AttributeEditor::on_buttonBox_rejected()
+{
+    emit finished(QDialog::Rejected);
+}

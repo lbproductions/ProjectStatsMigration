@@ -173,10 +173,10 @@ bool Function::isCalculated() const
     return d->metaData.calculated;
 }
 
-bool Function::cacheData() const
+bool Function::isCached() const
 {
     Q_D(const Function);
-    return d->metaData.cacheData;
+    return d->metaData.cached;
 }
 
 Attribute::Type Function::type() const
@@ -189,6 +189,63 @@ bool Function::isEditable() const
 {
     Q_D(const Function);
     return d->metaData.editable;
+}
+
+void Function::setDisplayName(const QString &displayName)
+{
+    Q_D(Function);
+    if(displayName == d->metaData.displayName)
+        return;
+
+    d->metaData.displayName = displayName;
+    d->storage->driver()->setFunctionDisplayName(d->metaData.id, displayName);
+    emit displayNameChanged(displayName);
+}
+
+void Function::setIdentifier(const QString &identifier)
+{
+    Q_D(Function);
+    if(identifier == d->metaData.identifier)
+        return;
+
+    d->metaData.identifier = identifier;
+    d->storage->driver()->setFunctionIdentifier(d->metaData.id, identifier);
+    emit identifierChanged(identifier);
+}
+
+
+void Function::setType(Attribute::Type type)
+{
+    Q_D(Function);
+    if(type == d->metaData.type)
+        return;
+
+    d->metaData.type = type;
+    d->storage->driver()->setFunctionType(d->metaData.id, type);
+    emit typeChanged(type);
+}
+
+void Function::setEditable(bool editable)
+{
+    Q_D(Function);
+    if(editable == d->metaData.editable)
+        return;
+
+    d->metaData.editable = editable;
+    d->storage->driver()->setFunctionEditable(d->metaData.id, editable);
+    emit editableChanged(editable);
+}
+
+void Function::setKeyEntityType(EntityType *keyEntityType)
+{
+    Q_D(Function);
+    if(keyEntityType == d->keyEntityType)
+        return;
+
+    d->metaData.keyEntityTypeId = keyEntityType->id();
+    d->keyEntityType = keyEntityType;
+    d->storage->driver()->setFunctionKeyEntityType(d->metaData.id, keyEntityType);
+    emit keyEntityTypeChanged(keyEntityType);
 }
 
 QList<EntityType *> Function::reimplementingEntityTypes() const

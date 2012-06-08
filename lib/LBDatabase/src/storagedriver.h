@@ -70,6 +70,14 @@ public:
     // Functions
     virtual QList<FunctionValueData> functionValues(Function *function) const = 0;
     virtual void setFunctionValue(FunctionValue *value, const FunctionValueData &data) = 0;
+
+    virtual void addFunction(EntityType *entityType, FunctionMetaData &metaData) = 0;
+
+    virtual void setFunctionDisplayName(int id, const QString &displayName) = 0;
+    virtual void setFunctionIdentifier(int id, const QString &identifier) = 0;
+    virtual void setFunctionType(int id, Attribute::Type type) = 0;
+    virtual void setFunctionEditable(int id, bool editable) = 0;
+    virtual void setFunctionKeyEntityType(int id, EntityType *entityType) = 0;
     
     // Entities
     virtual QList<EntityMetaData> entities(Context *context) const = 0;

@@ -94,18 +94,21 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
 
     ui->treeViewRelations->setModel(m_relationsModel);
     ui->treeViewRelations->setHeaderHidden(false);
+
+    connect(ui->treeViewAttributes->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(attributeSelectionChanged(QModelIndex,QModelIndex)));
+    connect(ui->treeViewFunctions->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(functionSelectionChanged(QModelIndex,QModelIndex)));
 }
 
 void EntityTypeView::refreshContents()
 {
-    QModelIndexList list = ui->treeViewAttributes->selectionModel()->selectedIndexes();
-    setEntityType(m_entityType);
-    foreach(QModelIndex index, list)
-        ui->treeViewAttributes->selectionModel()->select(index, QItemSelectionModel::Select);
+    QModelIndexList list1 = ui->treeViewAttributes->selectionModel()->selectedIndexes();
+    QModelIndexList list2 = ui->treeViewFunctions->selectionModel()->selectedIndexes();
 
-    list = ui->treeViewFunctions->selectionModel()->selectedIndexes();
     setEntityType(m_entityType);
-    foreach(QModelIndex index, list)
+
+    foreach(QModelIndex index, list1)
+        ui->treeViewAttributes->selectionModel()->select(index, QItemSelectionModel::Select);
+    foreach(QModelIndex index, list2)
         ui->treeViewFunctions->selectionModel()->select(index, QItemSelectionModel::Select);
 }
 
@@ -140,7 +143,9 @@ void EntityTypeView::on_pushButtonRemoveAttribute_clicked()
 
     QMessageBox msgBox(this);
     msgBox.setText(tr("Do you really want to delete the attribute \"%1\"?").arg(attribute->identifier()));
-    msgBox.setInformativeText("Note: The column of the attribute and its contents will not be deleted and may pollute the underlying database.");
+
+    if(!attribute->isCalculated())
+        msgBox.setInformativeText("Note: The column of the attribute and its contents will not be deleted and may pollute the underlying database.");
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     msgBox.setIcon(QMessageBox::Warning);
@@ -181,6 +186,20 @@ void EntityTypeView::on_pushButtonAddFunction_clicked()
     FunctionEditor *editor = new FunctionEditor(m_entityType, this);
     editor->open();
     connect(editor, SIGNAL(finished(int)), this, SLOT(refreshContents()));
+}
+
+void EntityTypeView::attributeSelectionChanged(const QModelIndex & current, const QModelIndex & previous)
+{
+    Q_UNUSED(previous)
+    ui->pushButtonEditAttribute->setEnabled(current.isValid());
+    ui->pushButtonRemoveAttribute->setEnabled(current.isValid());
+}
+
+void EntityTypeView::functionSelectionChanged(const QModelIndex &current, const QModelIndex &previous)
+{
+    Q_UNUSED(previous)
+    ui->pushButtonEditFunction->setEnabled(current.isValid());
+    //ui->pushButtonEditFunction->setEnabled(current.isValid());
 }
 
 } // namespace MainWindowNS

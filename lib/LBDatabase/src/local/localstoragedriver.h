@@ -48,6 +48,14 @@ public:
     QList<FunctionValueData> functionValues(Function *function) const;
     void setFunctionValue(FunctionValue *value, const FunctionValueData &data);
 
+    void addFunction(EntityType *entityType, FunctionMetaData &metaData);
+
+    void setFunctionDisplayName(int id, const QString &displayName);
+    void setFunctionIdentifier(int id, const QString &identifier);
+    void setFunctionType(int id, Attribute::Type type);
+    void setFunctionEditable(int id, bool editable);
+    void setFunctionKeyEntityType(int id, EntityType *entityType);
+
     // Entities
     QList<EntityMetaData> entities(Context *context) const;
     EntityMetaData createEntity(EntityType *type);

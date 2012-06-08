@@ -14,6 +14,7 @@ class Storage;
 class FunctionPrivate;
 class Function : public Property
 {
+    Q_OBJECT
 public:
     ~Function();
 
@@ -26,10 +27,16 @@ public:
     bool isCalculated() const;
 
     // General
-    bool cacheData() const;
+    bool isCached() const;
     Attribute::Type type() const;
 
+    void setDisplayName(const QString &displayName);
+    void setIdentifier(const QString &identifier);
+    void setType(Attribute::Type type);
+    void setEditable(bool editable);
+
     EntityType *keyEntityType() const;
+    void setKeyEntityType(EntityType *keyEntityType);
 
     // Used by drivers
     QString tableName() const;
@@ -41,9 +48,18 @@ public:
     QString qtTypeName() const;
     QList<EntityType *> reimplementingEntityTypes() const;
 
+Q_SIGNALS:
+    void identifierChanged(QString);
+    void typeChanged(Attribute::Type);
+    void cachedChanged(bool);
+    void editableChanged(bool);
+    void calculatedChanged(bool);
+    void keyEntityTypeChanged(EntityType *);
+
 private:
     friend class StoragePrivate;
     friend class FunctionValue;
+    friend class EntityType;
 
     explicit Function(const FunctionMetaData &metaData, Storage *parent);
 
@@ -66,7 +82,7 @@ public:
     int keyEntityTypeId;
     Attribute::Type type;
     bool calculated;
-    bool cacheData;
+    bool cached;
     bool editable;
     QString identifier;
     QString displayName;
