@@ -45,8 +45,10 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
     foreach(LBDatabase::Attribute *attribute, entityType->attributes()) {
         QStandardItem *itemName = new QStandardItem(attribute->identifier());
         itemName->setData(QVariant::fromValue<LBDatabase::Attribute *>(attribute));
+        itemName->setEditable(false);
         m_attributesModel->setItem(row, 0, itemName);
         QStandardItem *itemType = new QStandardItem(attribute->qtType());
+        itemType->setEditable(false);
         m_attributesModel->setItem(row, 1, itemType);
         row++;
     }
@@ -64,6 +66,7 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
     foreach(LBDatabase::Function *function, entityType->functions()) {
         QStandardItem *itemName = new QStandardItem(function->identifier());
         itemName->setData(QVariant::fromValue<LBDatabase::Function *>(function));
+        itemName->setEditable(false);
         m_functionsModel->setItem(row, 0, itemName);
 //        QStandardItem *itemType = new QStandardItem(attribute->qtType());
 //        functionsModel->setItem(row, 1, itemType);
@@ -82,6 +85,7 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
     row = 0;
     foreach(LBDatabase::Relation *relation, entityType->relations()) {
         QStandardItem *itemName = new QStandardItem(relation->identifier());
+        itemName->setEditable(false);
         m_relationsModel->setItem(row, 0, itemName);
 //        QStandardItem *itemType = new QStandardItem(attribute->qtType());
 //        relationsModel->setItem(row, 1, itemType);
@@ -200,6 +204,18 @@ void EntityTypeView::functionSelectionChanged(const QModelIndex &current, const 
     Q_UNUSED(previous)
     ui->pushButtonEditFunction->setEnabled(current.isValid());
     //ui->pushButtonEditFunction->setEnabled(current.isValid());
+}
+
+void EntityTypeView::on_treeViewAttributes_doubleClicked(const QModelIndex &index)
+{
+    Q_UNUSED(index)
+    on_pushButtonEditAttribute_clicked();
+}
+
+void EntityTypeView::on_treeViewFunctions_doubleClicked(const QModelIndex &index)
+{
+    Q_UNUSED(index)
+    on_pushButtonEditFunction_clicked();
 }
 
 } // namespace MainWindowNS

@@ -40,8 +40,12 @@ private slots:
 
     void on_pushButtonAddFunction_clicked();
 
+
     void attributeSelectionChanged(const QModelIndex & current, const QModelIndex & previous);
     void functionSelectionChanged(const QModelIndex & current, const QModelIndex & previous);
+
+    void on_treeViewAttributes_doubleClicked(const QModelIndex &index);
+    void on_treeViewFunctions_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::EntityTypeView *ui;

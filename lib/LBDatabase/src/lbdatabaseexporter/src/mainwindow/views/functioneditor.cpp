@@ -101,13 +101,6 @@ void MainWindowNS::FunctionEditor::on_buttonBox_accepted()
         m_function->setType(static_cast<LBDatabase::Attribute::Type>(ui->comboBoxType->currentIndex()));
         LBDatabase::EntityType *keyEntityType = m_entityType->context()->storage()->entityType(ui->comboBoxKeyEntityType->itemData(ui->comboBoxKeyEntityType->currentIndex()).toInt());
         m_function->setKeyEntityType(keyEntityType);
-//        m_attribute->setDisplayName(ui->lineEditDisplayName->text());
-//        m_attribute->setIdentifier(ui->lineEditIdentifier->text());
-//        m_attribute->setType(LBDatabase::Attribute::typeNameToType(ui->comboBoxType->currentText()));
-//        m_attribute->setEditable(ui->checkBoxEditable->isChecked());
-//        m_attribute->setCalculated(ui->checkBoxCalculated->isChecked());
-//        m_attribute->setCached(ui->checkBoxCached->isChecked());
-//        m_attribute->setDefaultValue(ui->lineEditDefaultValue->text());
     }
     emit finished(QDialog::Accepted);
 }
