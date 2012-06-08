@@ -80,40 +80,40 @@ void TablePrivate::init()
     }
 }
 
-//Column *TablePrivate::addColumn(const QString &name, const QString &sqlType, const QVariant &defaultValue)
-//{
-//    Q_Q(Table);
-//    if(q->columnNames().contains(name, Qt::CaseInsensitive)) {
-//        qWarning() << "TablePrivate::addColumn: Duplicate column name" << name;
-//        return columnsByName.value(name);
-//    }
+Column *TablePrivate::addColumn(const QString &name, const QString &sqlType, const QVariant &defaultValue)
+{
+    Q_Q(Table);
+    if(q->columnNames().contains(name, Qt::CaseInsensitive)) {
+        qWarning() << "TablePrivate::addColumn: Duplicate column name" << name;
+        return columnsByName.value(name);
+    }
 
-//    QSqlQuery query(database->sqlDatabase());
+    QSqlQuery query(database->sqlDatabase());
 
-//    QString queryString = QLatin1String("ALTER TABLE ")+this->name+QLatin1String(" ADD ")+name+
-//            QLatin1String(" ")+sqlType;
-//    if(!defaultValue.toString().isEmpty()) {
-//        queryString += QLatin1String(" DEFAULT ")+defaultValue.toString();
-//    }
-//    query.exec(queryString);
-//    checkSqlError(query);
-//    query.finish();
+    QString queryString = QLatin1String("ALTER TABLE ")+this->name+QLatin1String(" ADD ")+name+
+            QLatin1String(" ")+sqlType;
+    if(!defaultValue.toString().isEmpty()) {
+        queryString += QLatin1String(" DEFAULT ")+defaultValue.toString();
+    }
+    query.exec(queryString);
+    checkSqlError(query);
+    query.finish();
 
-//    q->clear();
-//    q->setTable(this->name);
-//    if(!q->select()) {
-//        qDebug() << q->lastError();
-//        return 0;
-//    }
+    q->clear();
+    q->setTable(this->name);
+    if(!q->select()) {
+        qDebug() << q->lastError();
+        return 0;
+    }
 
-//    QSqlField columnField = q->record().field(name);
+    QSqlField columnField = q->record().field(name);
 
-//    Column *column = new Column(columnField, q);
-//    column->setIndex(columns.size());
-//    columns.append(column);
-//    columnsByName.insert(name, column);
-//    return column;
-//}
+    Column *column = new Column(columnField, q);
+    column->setIndex(columns.size());
+    columns.append(column);
+    columnsByName.insert(name, column);
+    return column;
+}
 
 //void TablePrivate::changeColumnName(const QString &name, const QString &newName)
 //{
@@ -459,6 +459,12 @@ QStringList Table::columnNames() const
 {
     Q_D(const Table);
     return d->columnsByName.keys();
+}
+
+Column *Table::addColumn(const QString &name, const QString &sqlType, const QVariant &defaultValue)
+{
+    Q_D(Table);
+    return d->addColumn(name, sqlType, defaultValue);
 }
 
 /*!

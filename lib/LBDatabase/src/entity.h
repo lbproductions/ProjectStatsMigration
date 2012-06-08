@@ -46,7 +46,7 @@ public:
     template<class EntityClass>
     RelationValue<EntityClass> *relation(const QString &name) const;
 
-    void setValue(const QString &name, const QVariant &data);
+    void setValue(const QString &propertyIdentifier, const QVariant &data);
     QVariant value(const QString &name) const;
 
 protected:
@@ -55,11 +55,13 @@ protected:
 private:
     friend class AttributePrivate;
     friend class ContextPrivate;
+    friend class EntityType;
     friend class RelationPrivate;
     friend class Context;
     friend class FunctionPrivate;
 
     void addAttributeValue(AttributeValue *value);
+    void removeAttributeValue(Attribute *attribute);
     void addRelationValue(RelationValueBase *value);
     void addFunctionValue(FunctionValue *value);
 

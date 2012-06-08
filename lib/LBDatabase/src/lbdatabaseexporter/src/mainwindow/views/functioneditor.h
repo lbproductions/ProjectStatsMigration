@@ -3,6 +3,11 @@
 
 #include <QDialog>
 
+namespace LBDatabase {
+class Function;
+class EntityType;
+}
+
 namespace MainWindowNS {
 
 namespace Ui {
@@ -14,11 +19,20 @@ class FunctionEditor : public QDialog
     Q_OBJECT
     
 public:
-    explicit FunctionEditor(QWidget *parent = 0);
+    explicit FunctionEditor(LBDatabase::EntityType *entityType, QWidget *parent = 0);
     ~FunctionEditor();
+
+    void setFunction(LBDatabase::Function *function);
     
+private slots:
+    void on_buttonBox_accepted();
+
+    void checkCheckboxStates();
+
 private:
     Ui::FunctionEditor *ui;
+    LBDatabase::Function *m_function;
+    LBDatabase::EntityType *m_entityType;
 };
 
 

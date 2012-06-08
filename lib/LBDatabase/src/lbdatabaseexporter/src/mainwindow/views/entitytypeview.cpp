@@ -2,6 +2,7 @@
 #include "ui_entitytypeview.h"
 
 #include "attributeeditor.h"
+#include "functioneditor.h"
 
 #include <LBDatabase/LBDatabase.h>
 
@@ -62,6 +63,7 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
     row = 0;
     foreach(LBDatabase::Function *function, entityType->functions()) {
         QStandardItem *itemName = new QStandardItem(function->identifier());
+        itemName->setData(QVariant::fromValue<LBDatabase::Function *>(function));
         m_functionsModel->setItem(row, 0, itemName);
 //        QStandardItem *itemType = new QStandardItem(attribute->qtType());
 //        functionsModel->setItem(row, 1, itemType);
@@ -96,15 +98,18 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
 
 void EntityTypeView::refreshContents()
 {
-    QModelIndexList selmod = ui->treeViewAttributes->selectionModel()->selectedIndexes();
+    QModelIndexList list = ui->treeViewAttributes->selectionModel()->selectedIndexes();
     setEntityType(m_entityType);
-    foreach(QModelIndex index, selmod)
-    ui->treeViewAttributes->selectionModel()->select(index, QItemSelectionModel::Select);
+    foreach(QModelIndex index, list)
+        ui->treeViewAttributes->selectionModel()->select(index, QItemSelectionModel::Select);
+
+    list = ui->treeViewFunctions->selectionModel()->selectedIndexes();
+    setEntityType(m_entityType);
+    foreach(QModelIndex index, list)
+        ui->treeViewFunctions->selectionModel()->select(index, QItemSelectionModel::Select);
 }
 
-} // namespace MainWindowNS
-
-void MainWindowNS::EntityTypeView::on_pushButtonEditAttribute_clicked()
+void EntityTypeView::on_pushButtonEditAttribute_clicked()
 {
     if(ui->treeViewAttributes->selectionModel()->selectedRows(0).isEmpty())
         return;
@@ -112,24 +117,20 @@ void MainWindowNS::EntityTypeView::on_pushButtonEditAttribute_clicked()
     QStandardItem *item = m_attributesModel->itemFromIndex(ui->treeViewAttributes->selectionModel()->selectedRows(0).at(0));
     LBDatabase::Attribute *attribute = item->data().value<LBDatabase::Attribute *>();
 
-    AttributeEditor *editor = new AttributeEditor(this);
+    AttributeEditor *editor = new AttributeEditor(m_entityType, this);
     editor->setAttribute(attribute);
     editor->open();
     connect(editor, SIGNAL(finished(int)), this, SLOT(refreshContents()));
 }
 
-void MainWindowNS::EntityTypeView::on_pushButtonAddAttribute_clicked()
+void EntityTypeView::on_pushButtonAddAttribute_clicked()
 {
-    LBDatabase::Attribute *attribute = m_entityType->addAttribute();
-
-    AttributeEditor *editor = new AttributeEditor(this);
-    editor->setAttribute(attribute);
-    editor->setNewAttribute(true);
+    AttributeEditor *editor = new AttributeEditor(m_entityType, this);
     editor->open();
     connect(editor, SIGNAL(finished(int)), this, SLOT(refreshContents()));
 }
 
-void MainWindowNS::EntityTypeView::on_pushButtonRemoveAttribute_clicked()
+void EntityTypeView::on_pushButtonRemoveAttribute_clicked()
 {
     if(ui->treeViewAttributes->selectionModel()->selectedRows(0).isEmpty())
         return;
@@ -139,6 +140,7 @@ void MainWindowNS::EntityTypeView::on_pushButtonRemoveAttribute_clicked()
 
     QMessageBox msgBox(this);
     msgBox.setText(tr("Do you really want to delete the attribute \"%1\"?").arg(attribute->identifier()));
+    msgBox.setInformativeText("Note: The column of the attribute and its contents will not be deleted and may pollute the underlying database.");
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     msgBox.setIcon(QMessageBox::Warning);
@@ -159,3 +161,28 @@ void MainWindowNS::EntityTypeView::on_pushButtonRemoveAttribute_clicked()
     }
     refreshContents();
 }
+
+void EntityTypeView::on_pushButtonEditFunction_clicked()
+{
+    if(ui->treeViewFunctions->selectionModel()->selectedRows(0).isEmpty())
+        return;
+
+    QStandardItem *item = m_functionsModel->itemFromIndex(ui->treeViewFunctions->selectionModel()->selectedRows(0).at(0));
+    LBDatabase::Function *function = item->data().value<LBDatabase::Function *>();
+
+    FunctionEditor *editor = new FunctionEditor(m_entityType, this);
+    editor->setFunction(function);
+    editor->open();
+    connect(editor, SIGNAL(finished(int)), this, SLOT(refreshContents()));
+}
+
+void EntityTypeView::on_pushButtonAddFunction_clicked()
+{
+    FunctionEditor *editor = new FunctionEditor(m_entityType, this);
+    editor->open();
+    connect(editor, SIGNAL(finished(int)), this, SLOT(refreshContents()));
+}
+
+} // namespace MainWindowNS
+
+

@@ -301,13 +301,23 @@ QList<Function *> EntityType::functions() const
     return d->functions;
 }
 
-Attribute *EntityType::addAttribute()
+Attribute *EntityType::addAttribute(AttributeMetaData &metaData)
 {
     Q_D(EntityType);
-    Attribute *attribute = new Attribute(d->storage->driver()->addAttribute(id()),d->storage);
+    metaData.entityTypeId = id();
+    d->storage->driver()->addAttribute(this, metaData);
+    Attribute *attribute = new Attribute(metaData, d->storage);
 
     foreach(EntityType *type, d->childEntityTypes) {
         type->inheritAttribute(attribute);
+    }
+
+    attribute->addPropertyValueToEntities();
+
+    if(!attribute->defaultValue().toString().isEmpty()) {
+        foreach(Entity *e, entities()) {
+            e->setValue(attribute->identifier(), attribute->defaultValue());
+        }
     }
     return attribute;
 }
@@ -321,6 +331,9 @@ void EntityType::removeAttribute(Attribute *attribute)
     d->storage->removeAttribute(attribute);
     d->context->removeAttribute(attribute);
     deinheritAttribute(attribute);
+    foreach(Entity *e, entities()) {
+        e->removeAttributeValue(attribute);
+    }
     d->storage->driver()->removeAttribute(attribute->id());
     attribute->deleteLater();
 }

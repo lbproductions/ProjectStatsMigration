@@ -21,10 +21,6 @@ public:
     Database *database() const;
 
 
-    Column *column(int column) const;
-    Column *column(const QString &column) const;
-    QList<Column *> columns() const;
-    QStringList columnNames() const;
 
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
@@ -38,6 +34,13 @@ public:
 
     Row *appendRow();
     void deleteRow(int id);
+
+    Column *column(int column) const;
+    Column *column(const QString &column) const;
+    QList<Column *> columns() const;
+    QStringList columnNames() const;
+
+    Column *addColumn(const QString &name, const QString &sqlType, const QVariant &defaultValue = QVariant());
 
 protected:
     friend class DatabasePrivate;

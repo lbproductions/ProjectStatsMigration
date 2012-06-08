@@ -52,6 +52,7 @@ const QString Calculated("calculated");
 const QString CacheData("cacheData");
 const QString Type("type");
 const QString Editable("editable");
+const QString DefaultValue("defaultValue");
 }
 namespace FunctionColumns {
 const QString Identifier("identifier");
@@ -231,6 +232,7 @@ QList<AttributeMetaData> LocalStorageDriver::attributes() const
         metaData.editable = row->data(AttributeColumns::Editable).toBool();
         metaData.entityTypeId = row->data(AttributeColumns::EntityTypeId).toInt();
         metaData.type = static_cast<Attribute::Type>(row->data(AttributeColumns::Type).toInt());
+        metaData.defaultValue = row->data(AttributeColumns::DefaultValue);
         metaDatas.append(metaData);
     }
     return metaDatas;
@@ -346,30 +348,31 @@ void LocalStorageDriver::setAttributeValue(const AttributeValue *attribute, cons
     row->setData(attribute->attribute()->identifier(), data);
 }
 
-AttributeMetaData LocalStorageDriver::addAttribute(int entityTypeId)
+void LocalStorageDriver::addAttribute(EntityType *entityType, AttributeMetaData &metaData)
 {
     Q_D(LocalStorageDriver);
+    Table *contextTable = d->database->table(entityType->context()->tableName());
+    contextTable->addColumn(metaData.identifier, Attribute::typeToName(metaData.type));
+
     Row *row = d->attributesTable->appendRow();
+    row->setData(AttributeColumns::Identifier, metaData.identifier);
+    row->setData(AttributeColumns::DisplayName, metaData.displayName);
+    row->setData(AttributeColumns::CacheData, metaData.cached);
+    row->setData(AttributeColumns::Calculated, metaData.calculated);
+    row->setData(AttributeColumns::Editable, metaData.editable);
+    row->setData(AttributeColumns::EntityTypeId, QVariant(metaData.entityTypeId));
+    row->setData(AttributeColumns::Type, QVariant(static_cast<int>(metaData.type)));
+    row->setData(AttributeColumns::DefaultValue, metaData.defaultValue);
 
-    row->setData(AttributeColumns::EntityTypeId, QVariant(entityTypeId));
-    row->setData(AttributeColumns::Type, QVariant(static_cast<int>(Attribute::Unkown)));
-
-    AttributeMetaData metaData;
     metaData.id = row->id();
-    metaData.identifier = row->data(AttributeColumns::Identifier).toString();
-    metaData.displayName = row->data(AttributeColumns::DisplayName).toString();
-    metaData.cached = row->data(AttributeColumns::CacheData).toBool();
-    metaData.calculated = row->data(AttributeColumns::Calculated).toBool();
-    metaData.editable = row->data(AttributeColumns::Editable).toBool();
-    metaData.entityTypeId = row->data(AttributeColumns::EntityTypeId).toInt();
-    metaData.type = static_cast<Attribute::Type>(row->data(AttributeColumns::Type).toInt());
-    return metaData;
 }
 
 void LocalStorageDriver::removeAttribute(int attributeId)
 {
     Q_D(LocalStorageDriver);
     d->attributesTable->deleteRow(attributeId);
+
+    //TODO: delete the column of the attribute.
 }
 
 void LocalStorageDriver::setAttributeDisplayName(int id, const QString &displayName)
@@ -412,6 +415,13 @@ void LocalStorageDriver::setAttributeCached(int id, bool cached)
     Q_D(LocalStorageDriver);
     Row *row = d->database->table(AttributesTableName)->row(id);
     row->setData(AttributeColumns::CacheData, QVariant(cached));
+}
+
+void LocalStorageDriver::setAttributeDefaultValue(int id, QVariant defaultValue)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(AttributesTableName)->row(id);
+    row->setData(AttributeColumns::DefaultValue, defaultValue);
 }
 
 QList<RelationValueData> LocalStorageDriver::relatedEntities(Relation *relation) const

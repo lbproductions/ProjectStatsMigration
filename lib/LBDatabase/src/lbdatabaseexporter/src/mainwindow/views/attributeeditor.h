@@ -5,6 +5,7 @@
 
 namespace LBDatabase {
 class Attribute;
+class EntityType;
 }
 
 namespace MainWindowNS {
@@ -18,22 +19,21 @@ class AttributeEditor : public QDialog
     Q_OBJECT
     
 public:
-    explicit AttributeEditor(QWidget *parent = 0);
+    explicit AttributeEditor(LBDatabase::EntityType *entityType, QWidget *parent = 0);
     ~AttributeEditor();
 
     void setAttribute(LBDatabase::Attribute *attribute);
-    void setNewAttribute(bool newAttribute);
     
 private slots:
     void on_buttonBox_accepted();
     void checkCheckboxStates();
 
-    void on_buttonBox_rejected();
+    void on_lineEditIdentifier_textChanged(const QString &arg1);
 
 private:
     Ui::AttributeEditor *ui;
     LBDatabase::Attribute *m_attribute;
-    bool m_newAttribute;
+    LBDatabase::EntityType *m_entityType;
 };
 
 

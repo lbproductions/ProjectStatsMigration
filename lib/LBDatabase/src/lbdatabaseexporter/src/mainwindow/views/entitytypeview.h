@@ -35,6 +35,10 @@ private slots:
 
     void refreshContents();
 
+    void on_pushButtonEditFunction_clicked();
+
+    void on_pushButtonAddFunction_clicked();
+
 private:
     Ui::EntityTypeView *ui;
 

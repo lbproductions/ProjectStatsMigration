@@ -29,7 +29,7 @@ public:
     QVariant attributeValue(const AttributeValue *value) const;
     void setAttributeValue(const AttributeValue *value, const QVariant &data);
 
-    AttributeMetaData addAttribute(int entityTypeId);
+    void addAttribute(EntityType *entityType, AttributeMetaData &metaData);
     void removeAttribute(int attributeId);
 
     void setAttributeDisplayName(int id, const QString &displayName);
@@ -38,6 +38,7 @@ public:
     void setAttributeEditable(int id, bool editable);
     void setAttributeCalculated(int id, bool calculated);
     void setAttributeCached(int id, bool cached);
+    void setAttributeDefaultValue(int id, QVariant defaultValue);
 
     // Relations
     QList<RelationValueData> relatedEntities(Relation *relation) const;

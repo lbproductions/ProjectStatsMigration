@@ -174,10 +174,10 @@ QVariant Entity::value(const QString &name) const
     return value->dataForModel();
 }
 
-void Entity::setValue(const QString &name, const QVariant &data)
+void Entity::setValue(const QString &propertyIdentifier, const QVariant &data)
 {
     Q_D(const Entity);
-    Property *p = d->entityType->property(name);
+    Property *p = d->entityType->property(propertyIdentifier);
     if(!p || !p->isEditable())
         return;
 
@@ -200,6 +200,13 @@ void Entity::addAttributeValue(AttributeValue *value)
     Q_D(Entity);
     d->propertyValues.insert(value->property(), value);
     d->attributeValues.append(value);
+}
+
+void Entity::removeAttributeValue(Attribute *attribute)
+{
+    Q_D(Entity);
+    AttributeValue *value = static_cast<AttributeValue *>(d->propertyValues.take(attribute));
+    d->attributeValues.removeAll(value);
 }
 
 /*!

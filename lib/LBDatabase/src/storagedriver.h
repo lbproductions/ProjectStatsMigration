@@ -52,7 +52,7 @@ public:
     virtual QVariant attributeValue(const AttributeValue *value) const = 0;
     virtual void setAttributeValue(const AttributeValue *value, const QVariant &data) = 0;
 
-    virtual AttributeMetaData addAttribute(int entityTypeId) = 0;
+    virtual void addAttribute(EntityType *entityType, AttributeMetaData &metaData) = 0;
     virtual void removeAttribute(int attributeId) = 0;
 
     virtual void setAttributeDisplayName(int id, const QString &displayName) = 0;
@@ -61,6 +61,7 @@ public:
     virtual void setAttributeEditable(int id, bool editable) = 0;
     virtual void setAttributeCalculated(int id, bool calculated) = 0;
     virtual void setAttributeCached(int id, bool cached) = 0;
+    virtual void setAttributeDefaultValue(int id, QVariant defaultValue) = 0;
 
     // Relations
     virtual QList<RelationValueData> relatedEntities(Relation *relation) const = 0;

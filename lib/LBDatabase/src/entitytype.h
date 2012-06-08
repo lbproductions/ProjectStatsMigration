@@ -47,7 +47,7 @@ public:
     QList<Relation *> relations() const;
     QList<Function *> functions() const;
 
-    Attribute *addAttribute();
+    Attribute *addAttribute(AttributeMetaData &metaData);
     void removeAttribute(Attribute *attribute);
 
     // Used for export
