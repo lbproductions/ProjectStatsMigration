@@ -46,6 +46,16 @@ public:
 
     void addRelation(EntityType *entityType, RelationMetaData &metaData);
 
+    void setRelationIdentifier(int id, const QString &identifier);
+    void setRelationIdentifierRight(int id, const QString &identifierRight);
+    void setRelationDisplayName(int id, const QString &displayName);
+    void setRelationDisplayNameRight(int id, const QString &displayNameRight);
+    void setRelationCardinality(int id, Relation::Cardinality cardinality);
+    void setRelationDirection(int id, Relation::Direction direction);
+    void setRelationEntityTypeRight(int id, EntityType *entityType);
+    void setRelationEditable(int id, bool editable);
+    void setRelationCalculated(int id, bool calculated);
+
     // Functions
     QList<FunctionValueData> functionValues(Function *function) const;
     void setFunctionValue(FunctionValue *value, const FunctionValueData &data);

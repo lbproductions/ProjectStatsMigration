@@ -2,6 +2,7 @@
 
 #include "actions.h"
 #include "mainwindow.h"
+#include "views/entitytypeview.h"
 
 #include <LBDatabase/LBDatabase.h>
 #include <LBGui/LBGui.h>
@@ -51,6 +52,36 @@ void Controller::showPreferences()
     LBGui::PreferencesWindow *window = new LBGui::PreferencesWindow;
 
     window->show();
+}
+
+void Controller::addAttribute()
+{
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->addAttribute();
+}
+
+void Controller::addFunction()
+{
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->addFunction();
+}
+
+void Controller::addRelation()
+{
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->addRelation();
+}
+
+void Controller::editAttribute()
+{
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->editAttribute();
+}
+
+void Controller::editFunction()
+{
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->editFunction();
+}
+
+void Controller::editRelation()
+{
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->editRelation();
 }
 
 void Controller::showWidget(QWidget *widget)

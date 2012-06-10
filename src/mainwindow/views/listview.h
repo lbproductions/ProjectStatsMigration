@@ -1,7 +1,7 @@
 #ifndef LISTVIEW_H
 #define LISTVIEW_H
 
-#include <QWidget>
+#include <LBGui/LBGui.h>
 
 class MainWindow;
 class ContextTreeView;
@@ -19,7 +19,7 @@ namespace MainWindowNS {
 
 class Controller;
 
-class ListView : public QWidget
+class ListView : public LBGui::View
 {
     Q_OBJECT
 public:

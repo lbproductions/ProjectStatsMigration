@@ -5,6 +5,10 @@
 #include "functioneditor.h"
 #include "relationseditor.h"
 
+#include "../actions.h"
+#include "../controller.h"
+#include "../mainwindow.h"
+
 #include <LBDatabase/LBDatabase.h>
 
 #include <QStandardItemModel>
@@ -14,9 +18,10 @@
 
 namespace MainWindowNS {
 
-EntityTypeView::EntityTypeView(QWidget *parent) :
-    QFrame(parent),
+EntityTypeView::EntityTypeView(MainWindow *parent) :
+    LBGui::View(parent),
     ui(new Ui::EntityTypeView),
+    m_parent(parent),
     m_entityType(0)
 {
     ui->setupUi(this);
@@ -103,7 +108,53 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
 
     connect(ui->treeViewAttributes->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(attributeSelectionChanged(QModelIndex,QModelIndex)));
     connect(ui->treeViewFunctions->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(functionSelectionChanged(QModelIndex,QModelIndex)));
-    connect(ui->treeViewFunctions->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(relationSelectionChanged(QModelIndex,QModelIndex)));
+    connect(ui->treeViewRelations->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(relationSelectionChanged(QModelIndex,QModelIndex)));
+}
+
+void EntityTypeView::activated()
+{
+    Actions *actions = m_parent->controller()->actions();
+
+    actions->addAttributeAction()->setEnabled(true);
+    actions->addFunctionAction()->setEnabled(true);
+    actions->addRelationAction()->setEnabled(true);
+
+    QModelIndexList list1 = ui->treeViewAttributes->selectionModel()->selectedIndexes();
+    QModelIndexList list2 = ui->treeViewFunctions->selectionModel()->selectedIndexes();
+    QModelIndexList list3 = ui->treeViewRelations->selectionModel()->selectedIndexes();
+    actions->editAttributeAction()->setEnabled(!list1.isEmpty());
+    actions->editFunctionAction()->setEnabled(!list2.isEmpty());
+    actions->editRelationAction()->setEnabled(!list3.isEmpty());
+}
+
+void EntityTypeView::addAttribute()
+{
+    on_pushButtonAddAttribute_clicked();
+}
+
+void EntityTypeView::addFunction()
+{
+    on_pushButtonAddFunction_clicked();
+}
+
+void EntityTypeView::addRelation()
+{
+    on_pushButtonAddRelation_clicked();
+}
+
+void EntityTypeView::editAttribute()
+{
+    on_pushButtonEditAttribute_clicked();
+}
+
+void EntityTypeView::editFunction()
+{
+    on_pushButtonEditFunction_clicked();
+}
+
+void EntityTypeView::editRelation()
+{
+    on_pushButtonEditRelation_clicked();
 }
 
 void EntityTypeView::refreshContents()
@@ -224,6 +275,8 @@ void EntityTypeView::attributeSelectionChanged(const QModelIndex & current, cons
     Q_UNUSED(previous)
     ui->pushButtonEditAttribute->setEnabled(current.isValid());
     ui->pushButtonRemoveAttribute->setEnabled(current.isValid());
+    Actions *actions = m_parent->controller()->actions();
+    actions->editAttributeAction()->setEnabled(current.isValid());
 }
 
 void EntityTypeView::functionSelectionChanged(const QModelIndex &current, const QModelIndex &previous)
@@ -231,6 +284,8 @@ void EntityTypeView::functionSelectionChanged(const QModelIndex &current, const 
     Q_UNUSED(previous)
     ui->pushButtonEditFunction->setEnabled(current.isValid());
     //ui->pushButtonEditFunction->setEnabled(current.isValid());
+    Actions *actions = m_parent->controller()->actions();
+    actions->editFunctionAction()->setEnabled(current.isValid());
 }
 
 void EntityTypeView::relationSelectionChanged(const QModelIndex & current, const QModelIndex & previous)
@@ -238,6 +293,8 @@ void EntityTypeView::relationSelectionChanged(const QModelIndex & current, const
     Q_UNUSED(previous)
     ui->pushButtonEditRelation->setEnabled(current.isValid());
     //ui->pushButtonRemoveAttribute->setEnabled(current.isValid());
+    Actions *actions = m_parent->controller()->actions();
+    actions->editRelationAction()->setEnabled(current.isValid());
 }
 
 void EntityTypeView::on_treeViewAttributes_doubleClicked(const QModelIndex &index)

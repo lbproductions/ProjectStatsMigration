@@ -50,6 +50,16 @@ public:
 
     Storage* storage() const;
 
+    void setIdentifier(const QString &identifier);
+    void setIdentifierRight(const QString &identifierRight);
+    void setDisplayName(const QString &displayName);
+    void setDisplayNameRight(const QString &displayNameRight);
+    void setCardinality(Cardinality cardinality);
+    void setDirection(Direction direction);
+    void setEntityTypeRight(EntityType *entityType);
+    void setEditable(bool editable);
+    void setCalculated(bool calculated);
+
     // Used by drivers
     QString tableName() const;
     QString leftEntityIdColumnName() const;
@@ -57,6 +67,16 @@ public:
 
     // Used for export
     QList<EntityType *> reimplementingEntityTypes() const;
+
+Q_SIGNALS:
+    void identifierChanged(const QString &identifier);
+    void identifierRightChanged(const QString &identifierRight);
+    void displayNameRightChanged(const QString &displayNameRight);
+    void cardinalityChanged(Cardinality cardinality);
+    void directionChanged(Direction direction);
+    void entityTypeRightChanged(EntityType *entityType);
+    void editableChanged(bool editable);
+    void calculatedChanged(bool calculated);
 
 protected:
     friend class StoragePrivate;

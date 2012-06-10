@@ -14,7 +14,7 @@
 namespace MainWindowNS {
 
 ListView::ListView(Controller *controller, MainWindow *parent) :
-    QWidget(parent),
+    LBGui::View(parent),
     m_controller(controller),
     m_context(0)
 {

@@ -344,6 +344,112 @@ Storage* Relation::storage() const
     return d->storage;
 }
 
+void Relation::setIdentifier(const QString &identifier)
+{
+    Q_D(Relation);
+    if(identifier == d->metaData.identifier)
+        return;
+
+    d->metaData.identifier = identifier;
+    d->storage->driver()->setRelationIdentifier(d->metaData.id, identifier);
+    emit identifierChanged(identifier);
+}
+
+void Relation::setIdentifierRight(const QString &identifierRight)
+{
+    Q_D(Relation);
+    if(identifierRight == d->metaData.identifierRight)
+        return;
+
+    if(transposeRelation()) {
+        transposeRelation()->d_func()->metaData.identifier = identifierRight;
+    }
+    d->metaData.identifierRight = identifierRight;
+    d->storage->driver()->setRelationIdentifierRight(d->metaData.id, identifierRight);
+    emit identifierRightChanged(identifierRight);
+}
+
+void Relation::setDisplayName(const QString &displayName)
+{
+    Q_D(Relation);
+    if(displayName == d->metaData.displayName)
+        return;
+
+    d->metaData.displayName = displayName;
+    d->storage->driver()->setRelationDisplayName(d->metaData.id, displayName);
+    emit displayNameChanged(displayName);
+}
+
+void Relation::setDisplayNameRight(const QString &displayNameRight)
+{
+    Q_D(Relation);
+    if(displayNameRight == d->metaData.displayNameRight)
+        return;
+
+    if(transposeRelation()) {
+        transposeRelation()->d_func()->metaData.displayName = displayNameRight;
+    }
+    d->metaData.displayNameRight = displayNameRight;
+    d->storage->driver()->setRelationDisplayNameRight(d->metaData.id, displayNameRight);
+    emit displayNameRightChanged(displayNameRight);
+}
+
+void Relation::setCardinality(Relation::Cardinality cardinality)
+{
+    Q_D(Relation);
+    if(cardinality == d->metaData.cardinality)
+        return;
+
+    d->metaData.cardinality = cardinality;
+    d->storage->driver()->setRelationCardinality(d->metaData.id, cardinality);
+    emit cardinalityChanged(cardinality);
+}
+
+void Relation::setDirection(Relation::Direction direction)
+{
+    Q_D(Relation);
+    if(direction == d->metaData.direction)
+        return;
+
+    d->metaData.direction = direction;
+    d->storage->driver()->setRelationDirection(d->metaData.id, direction);
+    emit directionChanged(direction);
+}
+
+void Relation::setEntityTypeRight(EntityType *entityType)
+{
+    Q_D(Relation);
+    if(entityType == d->entityTypeOther)
+        return;
+
+    d->metaData.entityTypeOtherId = entityType->id();
+    d->entityTypeOther = entityType;
+    d->storage->driver()->setRelationEntityTypeRight(d->metaData.id, entityType);
+    emit entityTypeRightChanged(entityType);
+}
+
+void Relation::setEditable(bool editable)
+{
+    Q_D(Relation);
+    if(editable == d->metaData.editable)
+        return;
+
+    d->metaData.editable = editable;
+    d->storage->driver()->setRelationEditable(d->metaData.id, editable);
+    emit editableChanged(editable);
+}
+
+void Relation::setCalculated(bool calculated)
+{
+    Q_D(Relation);
+    if(calculated == d->metaData.calculated)
+        return;
+
+    d->metaData.calculated = calculated;
+    d->storage->driver()->setRelationCalculated(d->metaData.id, calculated);
+    emit calculatedChanged(calculated);
+}
+
 QList<EntityType *> Relation::reimplementingEntityTypes() const
 {
     Q_D(const Relation);

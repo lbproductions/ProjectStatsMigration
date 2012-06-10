@@ -514,6 +514,69 @@ void LocalStorageDriver::addRelation(EntityType *entityType, RelationMetaData &m
     row->setData(RelationColumns::TableName, metaData.tableName);
 }
 
+void LocalStorageDriver::setRelationIdentifier(int id, const QString &identifier)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(RelationsTableName)->row(id);
+    row->setData(RelationColumns::Identifier, identifier);
+}
+
+void LocalStorageDriver::setRelationIdentifierRight(int id, const QString &identifierRight)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(RelationsTableName)->row(id);
+    row->setData(RelationColumns::IdentifierRight, identifierRight);
+}
+
+void LocalStorageDriver::setRelationDisplayName(int id, const QString &displayName)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(RelationsTableName)->row(id);
+    row->setData(RelationColumns::DisplayNameLeft, displayName);
+}
+
+void LocalStorageDriver::setRelationDisplayNameRight(int id, const QString &displayNameRight)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(RelationsTableName)->row(id);
+    row->setData(RelationColumns::DisplayNameRight, displayNameRight);
+}
+
+void LocalStorageDriver::setRelationCardinality(int id, Relation::Cardinality cardinality)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(RelationsTableName)->row(id);
+    row->setData(RelationColumns::Cardinality, cardinality);
+}
+
+void LocalStorageDriver::setRelationDirection(int id, Relation::Direction direction)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(RelationsTableName)->row(id);
+    row->setData(RelationColumns::Direction, direction);
+}
+
+void LocalStorageDriver::setRelationEntityTypeRight(int id, EntityType *entityType)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(RelationsTableName)->row(id);
+    row->setData(RelationColumns::EntityTypeRight, entityType->id());
+}
+
+void LocalStorageDriver::setRelationEditable(int id, bool editable)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(RelationsTableName)->row(id);
+    row->setData(RelationColumns::Editable, editable);
+}
+
+void LocalStorageDriver::setRelationCalculated(int id, bool calculated)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->database->table(RelationsTableName)->row(id);
+    row->setData(RelationColumns::Calculated, calculated);
+}
+
 QList<FunctionValueData> LocalStorageDriver::functionValues(Function *function) const
 {
     Q_D(const LocalStorageDriver);

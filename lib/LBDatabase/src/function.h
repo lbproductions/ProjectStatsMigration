@@ -51,9 +51,7 @@ public:
 Q_SIGNALS:
     void identifierChanged(QString);
     void typeChanged(Attribute::Type);
-    void cachedChanged(bool);
     void editableChanged(bool);
-    void calculatedChanged(bool);
     void keyEntityTypeChanged(EntityType *);
 
 private:

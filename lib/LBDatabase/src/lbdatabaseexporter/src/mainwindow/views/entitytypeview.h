@@ -1,10 +1,12 @@
 #ifndef MAINWINDOWNS_ENTITYTYPEVIEW_H
 #define MAINWINDOWNS_ENTITYTYPEVIEW_H
 
-#include <QFrame>
+#include <LBGui/LBGui.h>
 
 class QStandardItemModel;
 class QModelIndex;
+
+class MainWindow;
 
 namespace LBDatabase {
 class EntityType;
@@ -16,16 +18,26 @@ namespace Ui {
 class EntityTypeView;
 }
 
-class EntityTypeView : public QFrame
+class EntityTypeView : public LBGui::View
 {
     Q_OBJECT
     
 public:
-    explicit EntityTypeView(QWidget *parent = 0);
+    explicit EntityTypeView(MainWindow *parent = 0);
     ~EntityTypeView();
     
     void setEntityType(LBDatabase::EntityType *entityType);
 
+public slots:
+    void activated();
+
+    void addAttribute();
+    void addFunction();
+    void addRelation();
+
+    void editAttribute();
+    void editFunction();
+    void editRelation();
 
 private slots:
     void refreshContents();
@@ -50,6 +62,8 @@ private slots:
 
 private:
     Ui::EntityTypeView *ui;
+
+    MainWindow *m_parent;
 
     LBDatabase::EntityType *m_entityType;
 

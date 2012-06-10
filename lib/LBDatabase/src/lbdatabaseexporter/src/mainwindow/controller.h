@@ -24,6 +24,14 @@ public slots:
     void example();
     void showPreferences();
 
+    void addAttribute();
+    void addFunction();
+    void addRelation();
+
+    void editAttribute();
+    void editFunction();
+    void editRelation();
+
     void showWidget(QWidget *widget);
 
 signals:

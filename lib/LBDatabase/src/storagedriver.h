@@ -6,6 +6,7 @@
 #include <QPair>
 
 #include "attribute.h"
+#include "relation.h"
 
 namespace LBDatabase {
 
@@ -68,6 +69,16 @@ public:
     virtual int addRelatedEntity(RelationValueBase *value, const RelationValueData &data) = 0;
 
     virtual void addRelation(EntityType *entityType, RelationMetaData &metaData) = 0;
+
+    virtual void setRelationIdentifier(int id, const QString &identifier) = 0;
+    virtual void setRelationIdentifierRight(int id, const QString &identifierRight) = 0;
+    virtual void setRelationDisplayName(int id, const QString &displayName) = 0;
+    virtual void setRelationDisplayNameRight(int id, const QString &displayNameRight) = 0;
+    virtual void setRelationCardinality(int id, Relation::Cardinality cardinality) = 0;
+    virtual void setRelationDirection(int id, Relation::Direction direction) = 0;
+    virtual void setRelationEntityTypeRight(int id, EntityType *entityType) = 0;
+    virtual void setRelationEditable(int id, bool editable) = 0;
+    virtual void setRelationCalculated(int id, bool calculated) = 0;
 
     // Functions
     virtual QList<FunctionValueData> functionValues(Function *function) const = 0;

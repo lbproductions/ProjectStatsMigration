@@ -52,8 +52,8 @@ void MainWindow::setupSidebar()
     //add categories to the sidebar
 
     m_sidebar->addParentCategorie(tr("Library"));
-    m_sidebar->addChildCategorie(0,tr("Games"))->setWidget(m_gamesView);
-    m_sidebar->addChildCategorie(0,tr("Players"))->setWidget(m_playersView);
+    m_sidebar->addChildCategorie(0,tr("Games"))->setView(m_gamesView);
+    m_sidebar->addChildCategorie(0,tr("Players"))->setView(m_playersView);
 
     m_sidebar->expandAll();
 

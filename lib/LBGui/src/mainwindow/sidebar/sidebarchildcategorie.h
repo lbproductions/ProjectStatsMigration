@@ -5,6 +5,8 @@
 
 namespace LBGui {
 
+class View;
+
 class SidebarChildCategorie : public QObject, public QStandardItem
 {
     Q_OBJECT
@@ -23,8 +25,8 @@ public:
     void setTitle(const QString &title);
     QString title() const;
 
-    void setWidget(QWidget *w);
-    virtual QWidget *widget() const;
+    void setView(View *w);
+    virtual View *view() const;
 
     int level() const;
 
@@ -40,7 +42,7 @@ protected:
     void setLevel(int level);
 
     QString m_title;
-    QWidget *m_widget;
+    View *m_view;
     int m_level;
 };
 

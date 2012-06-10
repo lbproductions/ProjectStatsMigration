@@ -22,6 +22,8 @@ public:
 
     void setStorage(LBDatabase::Storage *storage);
 
+    MainWindowNS::Controller *controller() const;
+
 private:
     void setupCentralWidgets();
     void setupSidebar();

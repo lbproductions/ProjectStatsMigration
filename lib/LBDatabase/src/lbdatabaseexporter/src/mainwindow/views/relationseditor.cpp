@@ -58,7 +58,7 @@ void RelationEditor::setRelation(LBDatabase::Relation *relation)
     ui->lineEditIdentifier->setText(relation->identifier());
     ui->lineEditDisplayName->setText(relation->displayName());
     for(int i = 0; i < ui->comboBoxEntityType->count(); ++i) {
-        if(ui->comboBoxEntityType->itemData(i).toInt() == relation->entityType()->id()) {
+        if(ui->comboBoxEntityType->itemData(i).toInt() == relation->entityTypeOther()->id()) {
             ui->comboBoxEntityType->setCurrentIndex(i);
             break;
         }
@@ -123,11 +123,14 @@ void RelationEditor::checkCheckboxStates()
             ui->lineEditIdentifierRight->setText(m_relation->transposeRelation()->identifier());
         }
         else {
-            LBDatabase::EntityType *relatedEntityType = m_entityType->context()->storage()->entityType(ui->comboBoxEntityType->itemData(ui->comboBoxEntityType->currentIndex()).toInt());
-
-            QString name = relatedEntityType->identifier();
-            ui->lineEditDisplayNameRight->setText(name);
-            ui->lineEditIdentifierRight->setText(name);
+            if(static_cast<LBDatabase::Relation::Cardinality>(ui->comboBoxCardinality->currentIndex()) == LBDatabase::Relation::OneToOne) {
+                ui->lineEditDisplayNameRight->setText(m_entityType->displayName());
+                ui->lineEditIdentifierRight->setText(m_entityType->identifier());
+            }
+            else {
+                ui->lineEditDisplayNameRight->setText(m_entityType->displayNamePlural());
+                ui->lineEditIdentifierRight->setText(m_entityType->identifier()+"s");
+            }
         }
     }
 
@@ -142,7 +145,9 @@ void RelationEditor::checkCheckboxStates()
                 LBDatabase::EntityType *relatedEntityType = m_entityType->context()->storage()->entityType(ui->comboBoxEntityType->itemData(ui->comboBoxEntityType->currentIndex()).toInt());
 
                 ui->lineEditTableName->setText(relatedEntityType->context()->tableName());
+                ui->lineEditTableName->setEnabled(false);
                 ui->lineEditEntityIdRightColumnName->setText("id");
+                ui->lineEditEntityIdRightColumnName->setEnabled(false);
 
                 QString name = m_entityType->identifier();
                 if(relatedEntityType == m_entityType) {
@@ -154,6 +159,8 @@ void RelationEditor::checkCheckboxStates()
             else {
                 ui->lineEditTableName->setText(ui->lineEditIdentifier->text()+"s");
                 ui->lineEditEntityIdColumnName->setText(m_entityType->identifier());
+                ui->lineEditTableName->setEnabled(true);
+                ui->lineEditEntityIdRightColumnName->setEnabled(true);
 
                 LBDatabase::EntityType *relatedEntityType = m_entityType->context()->storage()->entityType(ui->comboBoxEntityType->itemData(ui->comboBoxEntityType->currentIndex()).toInt());
 
@@ -223,13 +230,16 @@ void MainWindowNS::RelationEditor::on_buttonBox_accepted()
         m_relation = m_entityType->addRelation(metaData);
     }
     else {
-//        m_attribute->setDisplayName(ui->lineEditDisplayName->text());
-//        m_attribute->setIdentifier(ui->lineEditIdentifier->text());
-//        m_attribute->setType(LBDatabase::Attribute::typeNameToType(ui->comboBoxType->currentText()));
-//        m_attribute->setEditable(ui->checkBoxEditable->isChecked());
-//        m_attribute->setCalculated(ui->checkBoxCalculated->isChecked());
-//        m_attribute->setCached(ui->checkBoxCached->isChecked());
-//        m_attribute->setDefaultValue(ui->lineEditDefaultValue->text());
+        m_relation->setIdentifier(ui->lineEditIdentifier->text());
+        m_relation->setIdentifierRight(ui->lineEditIdentifierRight->text());
+        m_relation->setDisplayName(ui->lineEditDisplayName->text());
+        m_relation->setDisplayNameRight(ui->lineEditDisplayNameRight->text());
+        m_relation->setCardinality(static_cast<LBDatabase::Relation::Cardinality>(ui->comboBoxCardinality->currentIndex()));
+        m_relation->setDirection(static_cast<LBDatabase::Relation::Direction>(ui->comboBoxDirection->currentIndex()));
+        m_relation->setEditable(ui->checkBoxEditable->isChecked());
+        m_relation->setCalculated(ui->checkBoxCalculated->isChecked());
+        m_relation->setEntityTypeRight(m_entityType->context()->storage()->entityType(ui->comboBoxEntityType->itemData(ui->comboBoxEntityType->currentIndex()).toInt()));
+
     }
     emit finished(QDialog::Accepted);
 }

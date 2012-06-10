@@ -1,18 +1,20 @@
 #include "sidebarchildcategorie.h"
 
+#include "../view.h"
+
 namespace LBGui {
 
 SidebarChildCategorie::SidebarChildCategorie() :
     QStandardItem(),
     m_title(QString()),
-    m_widget(0)
+    m_view(0)
 {
 }
 
 SidebarChildCategorie::SidebarChildCategorie(const QString &title) :
     QStandardItem(),
     m_title(title),
-    m_widget(0)
+    m_view(0)
 {
 #ifdef Q_WS_MAC
     QFont f;
@@ -39,15 +41,15 @@ QString SidebarChildCategorie::title() const
     return m_title;
 }
 
-void SidebarChildCategorie::setWidget(QWidget *w)
+void SidebarChildCategorie::setView(View *v)
 {
-    m_widget = w;
-    setData(QVariant::fromValue<QWidget*>(w), WidgetRole);
+    m_view = v;
+    setData(QVariant::fromValue<QWidget*>(v), WidgetRole);
 }
 
-QWidget *SidebarChildCategorie::widget() const
+View *SidebarChildCategorie::view() const
 {
-    return m_widget;
+    return m_view;
 }
 
 int SidebarChildCategorie::level() const

@@ -17,9 +17,14 @@ class Actions : public QObject
 public:
     explicit Actions(Controller *controller);
 
-    LBGui::Action *exampleAction() const;
-    LBGui::Action *checkForUpdatesAction() const;
     LBGui::Action *showPreferencesAction() const;
+    LBGui::Action *addAttributeAction() const;
+    LBGui::Action *addFunctionAction() const;
+    LBGui::Action *addRelationAction() const;
+
+    LBGui::Action *editAttributeAction() const;
+    LBGui::Action *editFunctionAction() const;
+    LBGui::Action *editRelationAction() const;
 
 public slots:
     void updateActions();
@@ -28,6 +33,14 @@ private:
     Controller *m_controller;
 
     LBGui::Action *m_showPreferencesAction;
+
+    LBGui::Action *m_addAttributeAction;
+    LBGui::Action *m_addFunctionAction;
+    LBGui::Action *m_addRelationAction;
+
+    LBGui::Action *m_editAttributeAction;
+    LBGui::Action *m_editFunctionAction;
+    LBGui::Action *m_editRelationAction;
 
 };
 

@@ -55,6 +55,12 @@ void MainWindow::setupSidebar()
 void MainWindow::setupMenuBar()
 {
     //add actions to the menu bar
+    menuBar()->addAction(tr("&File"), m_controller->actions()->addAttributeAction());
+    menuBar()->addAction(tr("&File"), m_controller->actions()->addFunctionAction());
+    menuBar()->addAction(tr("&File"), m_controller->actions()->addRelationAction());
+    menuBar()->addAction(tr("&File"), m_controller->actions()->editAttributeAction());
+    menuBar()->addAction(tr("&File"), m_controller->actions()->editFunctionAction());
+    menuBar()->addAction(tr("&File"), m_controller->actions()->editRelationAction());
     menuBar()->addAction(tr("&File"), m_controller->actions()->showPreferencesAction());
 
     menuBar()->addMenu(menuBar()->windowMenu());
@@ -65,8 +71,22 @@ void MainWindow::setupMenuBar()
 void MainWindow::setupToolBar()
 {
     LBGui::ToolBar *toolBar = new LBGui::ToolBar(this);
+    toolBar->setIconSize(QSize(32,32));
 
     //add actions to the tool bar
+    toolBar->addAction(m_controller->actions()->addAttributeAction());
+    toolBar->addAction(m_controller->actions()->editAttributeAction());
+    QWidget* spacer = new QWidget(toolBar);
+    spacer->setFixedWidth(50);
+    toolBar->addWidget(spacer);
+    toolBar->addAction(m_controller->actions()->addFunctionAction());
+    toolBar->addAction(m_controller->actions()->editFunctionAction());
+    spacer = new QWidget(toolBar);
+    spacer->setFixedWidth(50);
+    toolBar->addWidget(spacer);
+    toolBar->addAction(m_controller->actions()->addRelationAction());
+    toolBar->addAction(m_controller->actions()->editRelationAction());
+
 
     setUnifiedTitleAndToolBarOnMac(true);
     addToolBar(toolBar);
@@ -85,7 +105,7 @@ void MainWindow::addEntityTypeCategoriesRecursive(LBDatabase::EntityType *entity
 
     MainWindowNS::EntityTypeView *view = new MainWindowNS::EntityTypeView(this);
     view->setEntityType(entityType);
-    item->setWidget(view);
+    item->setView(view);
 
     foreach(LBDatabase::EntityType *child, entityType->childEntityTypes()) {
         addEntityTypeCategoriesRecursive(child, item);
@@ -110,4 +130,9 @@ void MainWindow::setStorage(LBDatabase::Storage *storage)
     foreach(LBDatabase::Context *context, storage->contexts()) {
         addEntityTypeCategoriesRecursive(context->baseEntityType(), 0);
     }
+}
+
+MainWindowNS::Controller *MainWindow::controller() const
+{
+    return m_controller;
 }

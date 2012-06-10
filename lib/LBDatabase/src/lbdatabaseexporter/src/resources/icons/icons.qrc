@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/icons/actions">
+        <file alias="attribute_add">attribute_add_32.png</file>
+        <file alias="function_add">function_add_32.png</file>
+        <file alias="relation_add">relation_add_32.png</file>
+        <file alias="attribute_edit">attribute_edit_32.png</file>
+        <file alias="relation_edit">relation_edit_32.png</file>
+        <file alias="function_edit">function_edit_32.png</file>
+    </qresource>
+</RCC>

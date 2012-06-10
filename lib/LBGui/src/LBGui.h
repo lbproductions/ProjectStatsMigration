@@ -4,6 +4,7 @@
 #include <LBGui/mainwindow/mainwindow.h>
 #include <LBGui/mainwindow/menubar.h>
 #include <LBGui/mainwindow/toolbar.h>
+#include <LBGui/mainwindow/view.h>
 #include <LBGui/mainwindow/sidebar/sidebar.h>
 #include <LBGui/mainwindow/sidebar/sidebarchildcategorie.h>
 #include <LBGui/mainwindow/sidebar/sidebartreeview.h>

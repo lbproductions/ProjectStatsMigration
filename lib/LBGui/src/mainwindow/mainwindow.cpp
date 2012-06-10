@@ -3,6 +3,7 @@
 #include "menubar.h"
 #include "sidebar/sidebar.h"
 #include "sidebar/sidebarchildcategorie.h"
+#include "view.h"
 
 #include <widgets/splitter.h>
 
@@ -208,7 +209,7 @@ Sidebar *MainWindow::leftSideBar() const
 
 void MainWindow::showCategorieWidget(SidebarChildCategorie *categorie)
 {
-    QWidget *w = categorie->widget();
+    QWidget *w = categorie->view();
 
     if(w) {
         if(!w->windowTitle().isEmpty()) {

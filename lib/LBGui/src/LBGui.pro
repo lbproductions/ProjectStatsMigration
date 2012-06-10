@@ -32,7 +32,8 @@ HEADERS += \
     shared/autosavefile.h \
     preferenceswindow/preferenceswindow.h \
     preferenceswindow/preferencespage.h \
-    widgets/sheet.h
+    widgets/sheet.h \
+    mainwindow/view.h
 
 SOURCES += \
     mainwindow/mainwindow.cpp \
@@ -58,7 +59,8 @@ SOURCES += \
     shared/autosavefile.cpp \
     preferenceswindow/preferenceswindow.cpp \
     preferenceswindow/preferencespage.cpp \
-    widgets/sheet.cpp
+    widgets/sheet.cpp \
+    mainwindow/view.cpp
 
 OTHER_FILES += \
     ressources/sidebar/macos_lionmail/stylesheet.css \

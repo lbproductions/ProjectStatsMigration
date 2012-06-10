@@ -125,6 +125,9 @@ FORMS += \
     mainwindow/views/functioneditor.ui \
     mainwindow/views/relationseditor.ui
 
+RESOURCES += \
+    resources/icons/icons.qrc
+
 
 
 

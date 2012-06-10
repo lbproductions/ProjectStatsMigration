@@ -14,8 +14,10 @@ Sidebar::Sidebar(Controller *controller) :
 
 void Sidebar::onCategorieChanged(LBGui::SidebarChildCategorie *cat)
 {
-    if(cat->widget())
-        m_controller->showWidget(cat->widget());
+    if(cat->view()) {
+        m_controller->showWidget(cat->view());
+        cat->view()->activated();
+    }
 }
 
 } // namespace MainWindowNS
