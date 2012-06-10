@@ -354,6 +354,22 @@ Function *EntityType::addFunction(FunctionMetaData &metaData)
     return function;
 }
 
+Relation *EntityType::addRelation(RelationMetaData &metaData)
+{
+    Q_D(EntityType);
+    metaData.entityTypeId = id();
+    d->storage->driver()->addRelation(this, metaData);
+    Relation *relation = new Relation(metaData, d->storage);
+
+    foreach(EntityType *type, d->childEntityTypes) {
+        type->inheritRelation(relation);
+    }
+
+    relation->addPropertyValueToEntities();
+
+    return relation;
+}
+
 QList<Property *> EntityType::nonInhertitedProperties() const
 {
     QList<Property *> list = properties();
@@ -535,6 +551,17 @@ void EntityType::inheritFunction(Function *function)
 
     foreach(EntityType *type, d->childEntityTypes) {
         type->inheritFunction(function);
+    }
+}
+
+void EntityType::inheritRelation(Relation *relation)
+{
+    Q_D(EntityType);
+
+    addRelation(relation);
+
+    foreach(EntityType *type, d->childEntityTypes) {
+        type->inheritRelation(relation);
     }
 }
 

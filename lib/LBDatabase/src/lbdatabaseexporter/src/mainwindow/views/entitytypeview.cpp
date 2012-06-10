@@ -3,6 +3,7 @@
 
 #include "attributeeditor.h"
 #include "functioneditor.h"
+#include "relationseditor.h"
 
 #include <LBDatabase/LBDatabase.h>
 
@@ -14,7 +15,7 @@
 namespace MainWindowNS {
 
 EntityTypeView::EntityTypeView(QWidget *parent) :
-    QWidget(parent),
+    QFrame(parent),
     ui(new Ui::EntityTypeView),
     m_entityType(0)
 {
@@ -85,6 +86,7 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
     row = 0;
     foreach(LBDatabase::Relation *relation, entityType->relations()) {
         QStandardItem *itemName = new QStandardItem(relation->identifier());
+        itemName->setData(QVariant::fromValue<LBDatabase::Relation *>(relation));
         itemName->setEditable(false);
         m_relationsModel->setItem(row, 0, itemName);
 //        QStandardItem *itemType = new QStandardItem(attribute->qtType());
@@ -101,12 +103,14 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
 
     connect(ui->treeViewAttributes->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(attributeSelectionChanged(QModelIndex,QModelIndex)));
     connect(ui->treeViewFunctions->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(functionSelectionChanged(QModelIndex,QModelIndex)));
+    connect(ui->treeViewFunctions->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(relationSelectionChanged(QModelIndex,QModelIndex)));
 }
 
 void EntityTypeView::refreshContents()
 {
     QModelIndexList list1 = ui->treeViewAttributes->selectionModel()->selectedIndexes();
     QModelIndexList list2 = ui->treeViewFunctions->selectionModel()->selectedIndexes();
+    QModelIndexList list3 = ui->treeViewRelations->selectionModel()->selectedIndexes();
 
     setEntityType(m_entityType);
 
@@ -114,6 +118,8 @@ void EntityTypeView::refreshContents()
         ui->treeViewAttributes->selectionModel()->select(index, QItemSelectionModel::Select);
     foreach(QModelIndex index, list2)
         ui->treeViewFunctions->selectionModel()->select(index, QItemSelectionModel::Select);
+    foreach(QModelIndex index, list3)
+        ui->treeViewRelations->selectionModel()->select(index, QItemSelectionModel::Select);
 }
 
 void EntityTypeView::on_pushButtonEditAttribute_clicked()
@@ -192,6 +198,27 @@ void EntityTypeView::on_pushButtonAddFunction_clicked()
     connect(editor, SIGNAL(finished(int)), this, SLOT(refreshContents()));
 }
 
+void EntityTypeView::on_pushButtonEditRelation_clicked()
+{
+    if(ui->treeViewRelations->selectionModel()->selectedRows(0).isEmpty())
+        return;
+
+    QStandardItem *item = m_relationsModel->itemFromIndex(ui->treeViewRelations->selectionModel()->selectedRows(0).at(0));
+    LBDatabase::Relation *relation = item->data().value<LBDatabase::Relation *>();
+
+    RelationEditor *editor = new RelationEditor(m_entityType, this);
+    editor->setRelation(relation);
+    editor->open();
+    connect(editor, SIGNAL(finished(int)), this, SLOT(refreshContents()));
+}
+
+void EntityTypeView::on_pushButtonAddRelation_clicked()
+{
+    RelationEditor *editor = new RelationEditor(m_entityType, this);
+    editor->open();
+    connect(editor, SIGNAL(finished(int)), this, SLOT(refreshContents()));
+}
+
 void EntityTypeView::attributeSelectionChanged(const QModelIndex & current, const QModelIndex & previous)
 {
     Q_UNUSED(previous)
@@ -206,6 +233,13 @@ void EntityTypeView::functionSelectionChanged(const QModelIndex &current, const 
     //ui->pushButtonEditFunction->setEnabled(current.isValid());
 }
 
+void EntityTypeView::relationSelectionChanged(const QModelIndex & current, const QModelIndex & previous)
+{
+    Q_UNUSED(previous)
+    ui->pushButtonEditRelation->setEnabled(current.isValid());
+    //ui->pushButtonRemoveAttribute->setEnabled(current.isValid());
+}
+
 void EntityTypeView::on_treeViewAttributes_doubleClicked(const QModelIndex &index)
 {
     Q_UNUSED(index)
@@ -216,6 +250,12 @@ void EntityTypeView::on_treeViewFunctions_doubleClicked(const QModelIndex &index
 {
     Q_UNUSED(index)
     on_pushButtonEditFunction_clicked();
+}
+
+void EntityTypeView::on_treeViewRelations_doubleClicked(const QModelIndex &index)
+{
+    Q_UNUSED(index)
+    on_pushButtonEditRelation_clicked();
 }
 
 } // namespace MainWindowNS

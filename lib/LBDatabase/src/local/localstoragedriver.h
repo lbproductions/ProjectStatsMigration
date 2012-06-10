@@ -44,6 +44,8 @@ public:
     QList<RelationValueData> relatedEntities(Relation *relation) const;
     int addRelatedEntity(RelationValueBase *value, const RelationValueData &data);
 
+    void addRelation(EntityType *entityType, RelationMetaData &metaData);
+
     // Functions
     QList<FunctionValueData> functionValues(Function *function) const;
     void setFunctionValue(FunctionValue *value, const FunctionValueData &data);

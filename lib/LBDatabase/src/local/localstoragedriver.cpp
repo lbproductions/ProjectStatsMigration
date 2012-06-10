@@ -461,15 +461,57 @@ int LocalStorageDriver::addRelatedEntity(RelationValueBase *value, const Relatio
     if(relation->cardinality() == Relation::OneToMany)
         row = table->row(data.rightId);
 
-    //TODO: OneToOne relations beachten.
-
-    if(!row)
-        row = table->appendRow();
+    if(!row) {
+        if(relation->cardinality() != Relation::OneToOne)
+            row = table->appendRow();
+        else
+            return -1;
+    }
 
     row->setData(columnLeft, data.leftId);
     row->setData(columnRight, data.rightId);
 
     return row->id();
+}
+
+void LocalStorageDriver::addRelation(EntityType *entityType, RelationMetaData &metaData)
+{
+    Q_UNUSED(entityType)
+    Q_D(LocalStorageDriver);
+    if(!metaData.calculated) {
+        Table *table = d->database->table(metaData.tableName);
+        if(!table)
+            table = d->database->createTable(metaData.tableName);
+
+        Column *idColumn = table->column("id");
+        if(!idColumn)
+            idColumn = table->addColumn("id", Attribute::typeToName(Attribute::Integer));
+
+        Column *entityIdColumn = table->column(metaData.leftEntityIdColumnName);
+        if(!entityIdColumn)
+            entityIdColumn = table->addColumn(metaData.leftEntityIdColumnName, Attribute::typeToName(Attribute::Integer));
+
+        Column *relatedEntityColumn = table->column(metaData.rightEntityIdColumnName);
+        if(!relatedEntityColumn)
+            relatedEntityColumn = table->addColumn(metaData.rightEntityIdColumnName, Attribute::typeToName(Attribute::Integer));
+    }
+
+    Row *row = d->relationsTable->appendRow();
+    metaData.id = row->id();
+
+    row->setData(RelationColumns::Identifier, metaData.identifier);
+    row->setData(RelationColumns::IdentifierRight, metaData.identifierRight);
+    row->setData(RelationColumns::DisplayNameLeft, metaData.displayName);
+    row->setData(RelationColumns::DisplayNameRight, metaData.displayNameRight);
+    row->setData(RelationColumns::Cardinality, metaData.cardinality);
+    row->setData(RelationColumns::Direction, metaData.direction);
+    row->setData(RelationColumns::Editable, metaData.editable);
+    row->setData(RelationColumns::Calculated, metaData.calculated);
+    row->setData(RelationColumns::EntityTypeLeft, metaData.entityTypeId);
+    row->setData(RelationColumns::EntityTypeRight, metaData.entityTypeOtherId);
+    row->setData(RelationColumns::ColumnName, metaData.leftEntityIdColumnName);
+    row->setData(RelationColumns::ColumnNameRight, metaData.rightEntityIdColumnName);
+    row->setData(RelationColumns::TableName, metaData.tableName);
 }
 
 QList<FunctionValueData> LocalStorageDriver::functionValues(Function *function) const
@@ -520,6 +562,10 @@ void LocalStorageDriver::addFunction(EntityType *entityType, FunctionMetaData &m
         Table *table = d->database->table(metaData.tableName);
         if(!table)
             table = d->database->createTable(metaData.tableName);
+
+        Column *idColumn = table->column("id");
+        if(!idColumn)
+            idColumn = table->addColumn("id", Attribute::typeToName(Attribute::Integer));
 
         Column *entityColumn = table->column(metaData.entityColumnName);
         if(!entityColumn)

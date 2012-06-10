@@ -67,6 +67,8 @@ public:
     virtual QList<RelationValueData> relatedEntities(Relation *relation) const = 0;
     virtual int addRelatedEntity(RelationValueBase *value, const RelationValueData &data) = 0;
 
+    virtual void addRelation(EntityType *entityType, RelationMetaData &metaData) = 0;
+
     // Functions
     virtual QList<FunctionValueData> functionValues(Function *function) const = 0;
     virtual void setFunctionValue(FunctionValue *value, const FunctionValueData &data) = 0;

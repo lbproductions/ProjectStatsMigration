@@ -18,7 +18,6 @@ AttributeEditor::AttributeEditor(LBDatabase::EntityType *entityType, QWidget *pa
     QDialog::setAttribute(Qt::WA_DeleteOnClose, true);
     QDialog::setWindowFlags(Qt::Drawer);
 
-    ui->labelId->setText(tr("Unknown"));
     ui->buttonBox->button( QDialogButtonBox::Save )->setEnabled(false);
 
     ui->comboBoxType->addItems(LBDatabase::Attribute::typeNames());

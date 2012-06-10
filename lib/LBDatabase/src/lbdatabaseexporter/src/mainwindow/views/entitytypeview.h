@@ -1,7 +1,7 @@
 #ifndef MAINWINDOWNS_ENTITYTYPEVIEW_H
 #define MAINWINDOWNS_ENTITYTYPEVIEW_H
 
-#include <QWidget>
+#include <QFrame>
 
 class QStandardItemModel;
 class QModelIndex;
@@ -16,7 +16,7 @@ namespace Ui {
 class EntityTypeView;
 }
 
-class EntityTypeView : public QWidget
+class EntityTypeView : public QFrame
 {
     Q_OBJECT
     
@@ -28,24 +28,25 @@ public:
 
 
 private slots:
-    void on_pushButtonEditAttribute_clicked();
-
-    void on_pushButtonAddAttribute_clicked();
-
-    void on_pushButtonRemoveAttribute_clicked();
-
     void refreshContents();
 
-    void on_pushButtonEditFunction_clicked();
+    void on_pushButtonEditAttribute_clicked();
+    void on_pushButtonAddAttribute_clicked();
+    void on_pushButtonRemoveAttribute_clicked();
 
+    void on_pushButtonEditFunction_clicked();
     void on_pushButtonAddFunction_clicked();
 
+    void on_pushButtonEditRelation_clicked();
+    void on_pushButtonAddRelation_clicked();
 
     void attributeSelectionChanged(const QModelIndex & current, const QModelIndex & previous);
     void functionSelectionChanged(const QModelIndex & current, const QModelIndex & previous);
+    void relationSelectionChanged(const QModelIndex & current, const QModelIndex & previous);
 
     void on_treeViewAttributes_doubleClicked(const QModelIndex &index);
     void on_treeViewFunctions_doubleClicked(const QModelIndex &index);
+    void on_treeViewRelations_doubleClicked(const QModelIndex &index);
 
 private:
     Ui::EntityTypeView *ui;

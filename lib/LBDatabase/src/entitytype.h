@@ -53,6 +53,8 @@ public:
 
     Function *addFunction(FunctionMetaData &metaData);
 
+    Relation *addRelation(RelationMetaData &metaData);
+
     // Used for export
     QList<Property *> nonInhertitedProperties() const;
     QList<Attribute *> nonInhertitedAttributes() const;
@@ -97,6 +99,7 @@ private:
     void inheritFunction(Function *function);
 
     void addRelation(Relation *relation);
+    void inheritRelation(Relation *relation);
 
     QScopedPointer<EntityTypePrivate> d_ptr;
     Q_DECLARE_PRIVATE(EntityType)

@@ -63,6 +63,7 @@ protected:
     friend class RelationValueRightPrivate;
     friend class EntityTypePrivate;
     friend class TransposeRelation;
+    friend class EntityType;
 
     explicit Relation(const RelationMetaData &metaData, Storage *parent);
     explicit Relation(RelationPrivate &dd, const RelationMetaData &metaData, Storage *parent);
