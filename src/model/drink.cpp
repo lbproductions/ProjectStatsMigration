@@ -4,10 +4,8 @@
 #include "player.h"
 
 
-#include "drinkcalculator.h"
-
-const QString DrinksContext::Name("Drinks");
 const QString Drink::Name("drink");
+const int Drink::EntityTypeId(9);
 
 Drink::Drink(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Context *context) :
 	Entity(metaData, context)
@@ -103,18 +101,6 @@ QString Drink::displayName() const
 {
     return name();
 }
+
 	// END
-
-DrinksContext::DrinksContext(const ::LBDatabase::ContextMetaData &metaData, LBDatabase::Storage *parent) :
-	Context(metaData, parent)
-{
-	registerEntityClass<Drink>();
-	registerCalculatorClass<Drink,DrinkCalculator>();
-
-}
-
-Drink *DrinksContext::drink(int id) const
-{
-	return static_cast<Drink *>(entity(id));
-}
 

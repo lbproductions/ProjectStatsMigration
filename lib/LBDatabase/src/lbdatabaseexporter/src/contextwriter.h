@@ -8,7 +8,7 @@ namespace LBDatabase {
 class CppExporter;
 class Context;
 
-class ContextWriter : public EntityTypeWriter
+class ContextWriter : public Writer
 {
 public:
     ContextWriter(const CppExporter *exporter);
@@ -19,9 +19,13 @@ public:
 
 private:
     Context *m_context;
+    QString m_classname;
 
     void writeDeclaration(QString &header) const;
     void writeImplementation(QString &source) const;
+
+    void exportHeader() const;
+    void exportSource() const;
 };
 
 } // namespace LBDatabase

@@ -5,6 +5,7 @@
 
 
 const QString LiveGame::Name("liveGame");
+const int LiveGame::EntityTypeId(22);
 
 LiveGame::LiveGame(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Context *context) :
 	Game(metaData, context)
@@ -13,20 +14,26 @@ LiveGame::LiveGame(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Con
 
 LiveGame::State LiveGame::state() const
 {
-    return static_cast<State>(value(LiveGameProperties::StateAttribute).value<int>());
+	return static_cast<State>(value(LiveGameProperties::StateAttribute).value<int>());
 }
 
-void LiveGame::setState(LiveGame::State state)
+void LiveGame::setState(State state)
 {
-    if(state == this->state())
-        return;
-    setValue(LiveGameProperties::StateAttribute,QVariant::fromValue<int>(state));
-    emit stateChanged(state);
+	if(state == this->state())
+		return;
+	setValue(LiveGameProperties::StateAttribute,QVariant::fromValue<int>(state));
+	emit stateChanged(state);
 }
 
 QList<Round *> LiveGame::rounds() const
 {
 	return relation<Round>(LiveGameProperties::RoundsRelation)->entities();
+}
+
+void LiveGame::addRound(Round *round)
+{
+
+relation<Round>(LiveGameProperties::RoundsRelation)->addEntity(round);
 }
 
 int LiveGame::points(const Player *player) const
@@ -36,12 +43,7 @@ int LiveGame::points(const Player *player) const
 
 int LiveGame::placement(const Player *player) const
 {
-    return function(LiveGameProperties::PlacementFunction)->value(player).value<int>();
-}
-
-void LiveGame::addRound(Round *round)
-{
-    relation<Round>(LiveGameProperties::RoundsRelation)->addEntity(round);
+	return function(LiveGameProperties::PlacementFunction)->value(player).value<int>();
 }
 
 
@@ -49,7 +51,8 @@ void LiveGame::addRound(Round *round)
 	//START
 QString LiveGame::displayName() const
 {
-    return Entity::displayName();
+	return Entity::displayName();
 }
+
 	// END
 

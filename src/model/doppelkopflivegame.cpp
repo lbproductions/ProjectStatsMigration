@@ -228,7 +228,7 @@ void DoppelkopfLiveGame::setDoko_mitSchwarzsolo(bool doko_mitSchwarzsolo)
 	if(doko_mitSchwarzsolo == this->doko_mitSchwarzsolo())
 		return;
 	setValue(DoppelkopfLiveGameProperties::Doko_mitSchwarzsoloAttribute,QVariant::fromValue<bool>(doko_mitSchwarzsolo));
-    emit doko_mitSchwarzsoloChanged(doko_mitSchwarzsolo);
+	emit doko_mitSchwarzsoloChanged(doko_mitSchwarzsolo);
 }
 
 
@@ -236,9 +236,10 @@ void DoppelkopfLiveGame::setDoko_mitSchwarzsolo(bool doko_mitSchwarzsolo)
 	//START
 QString DoppelkopfLiveGame::displayName() const
 {
-    return Game::displayName();
+	return Entity::displayName();
 }
 
 const QString DoppelkopfLiveGame::GameName(QObject::tr("Doppelkopf"));
+
 	// END
 

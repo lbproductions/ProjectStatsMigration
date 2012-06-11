@@ -2,12 +2,11 @@
 
 
 
-
-const QString RulesContext::Name("Rules");
 const QString Rule::Name("rule");
+const int Rule::EntityTypeId(19);
 
 Rule::Rule(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Context *context) :
-    Entity(metaData, context)
+	Entity(metaData, context)
 {
 }
 
@@ -41,18 +40,8 @@ int Rule::type() const
 	//START
 QString Rule::displayName() const
 {
-    return Entity::displayName();
+	return Entity::displayName();
 }
+
 	// END
-
-RulesContext::RulesContext(const ::LBDatabase::ContextMetaData &metaData, LBDatabase::Storage *parent) :
-    Context(metaData, parent)
-{
-	registerEntityClass<Rule>();
-}
-
-Rule *RulesContext::rule(int id) const
-{
-	return static_cast<Rule *>(entity(id));
-}
 

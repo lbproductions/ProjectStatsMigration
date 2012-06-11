@@ -8,7 +8,8 @@
 #include "../../widgets/playerslistwidget.h"
 #include "../../model/doppelkopflivegame.h"
 #include "../../model/player.h"
-#include "../../model/projectstatsstorage.h"
+#include "../../model/playerscontext.h"
+#include "../../model/storage.h"
 
 #include <QSettings>
 

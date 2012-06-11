@@ -5,7 +5,7 @@
 
 class MainWindow;
 class Updater;
-class ProjectStatsStorage;
+class Storage;
 
 namespace LBDatabase {
 class Entity;
@@ -23,7 +23,7 @@ public:
 
     MainWindow *mainWindow() const;
     Actions *actions() const;
-    ProjectStatsStorage *storage() const;
+    Storage *storage() const;
 
     bool close();
 
@@ -43,7 +43,7 @@ private:
     MainWindow *m_mainWindow;
     Actions *m_actions;
     Updater *m_updater;
-    ProjectStatsStorage *m_storage;
+    Storage *m_storage;
 };
 
 } // namespace MainWindowNS

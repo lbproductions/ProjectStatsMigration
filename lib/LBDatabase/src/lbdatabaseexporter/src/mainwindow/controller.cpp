@@ -146,6 +146,13 @@ void Controller::exportSource(const QString &location)
     exporter.setDirectory(location);
     exporter.setStorage(m_storage);
     exporter.exportCpp();
+
+    QMessageBox msg(m_mainWindow);
+    msg.setText("Successfully exported C++ source to:");
+    msg.setInformativeText(location);
+    msg.setIcon(QMessageBox::Information);
+    msg.setModal(true);
+    msg.exec();
 }
 
 void Controller::showWidget(QWidget *widget)

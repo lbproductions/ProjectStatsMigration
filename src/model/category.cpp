@@ -3,9 +3,8 @@
 #include "category.h"
 
 
-
-const QString CategoriesContext::Name("Categories");
 const QString Category::Name("category");
+const int Category::EntityTypeId(2);
 
 Category::Category(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Context *context) :
 	Entity(metaData, context)
@@ -45,6 +44,14 @@ void Category::setOrderIndicator(int orderIndicator)
 	emit orderIndicatorChanged(orderIndicator);
 }
 
+void Category::setIcon(const QString &icon)
+{
+	if(icon == this->icon())
+		return;
+	setValue(CategoryProperties::IconAttribute,QVariant::fromValue<QString>(icon));
+	emit iconChanged(icon);
+}
+
 Category *Category::parentCategory() const
 {
 	return relation<Category>(CategoryProperties::ParentCategoryRelation)->firstEntity();
@@ -60,18 +67,11 @@ QList<Category *> Category::childCategories() const
 	//START
 QString Category::displayName() const
 {
-    return name();
+	return Entity::displayName();
+}
+
+void Category::test()
+{
 }
 	// END
-
-CategoriesContext::CategoriesContext(const ::LBDatabase::ContextMetaData &metaData, LBDatabase::Storage *parent) :
-	Context(metaData, parent)
-{
-	registerEntityClass<Category>();
-}
-
-Category *CategoriesContext::category(int id) const
-{
-	return static_cast<Category *>(entity(id));
-}
 

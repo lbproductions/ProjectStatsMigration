@@ -25,13 +25,14 @@ const QString Doko_mitFleischlosAttribute("doko_mitFleischlos");
 const QString Doko_mitSchwarzsoloAttribute("doko_mitSchwarzsolo");
 } // namespace DoppelkopfLiveGameProperties
 
+
 class DoppelkopfLiveGame : public LiveGame
 {
 	Q_OBJECT
 public:
 	Q_INVOKABLE DoppelkopfLiveGame(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
 	static const QString Name;
-    static const int EntityTypeId;
+	static const int EntityTypeId;
 
 	QString displayName() const;
 
@@ -71,6 +72,9 @@ public:
 	void setDoko_mitFleischlos(bool doko_mitFleischlos);
 	void setDoko_mitSchwarzsolo(bool doko_mitSchwarzsolo);
 
+
+
+
 	// Write anything you want to remain unchanged between these comments: 
 	//START
 
@@ -98,6 +102,6 @@ signals:
 	void doko_mitSchwarzsoloChanged(bool doko_mitSchwarzsolo);
 };
 
-Q_DECLARE_METATYPE(QList<DoppelkopfLiveGame *>);
+Q_DECLARE_METATYPE(QList<DoppelkopfLiveGame *>)
 
 #endif // DOPPELKOPFLIVEGAME_H

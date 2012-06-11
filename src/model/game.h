@@ -20,14 +20,13 @@ const QString PlacementFunction("placement");
 class Place;
 class Player;
 
-class DoppelkopfLiveGame;
-
 class Game : public LBDatabase::Entity
 {
 	Q_OBJECT
 public:
-    Q_INVOKABLE Game(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
+	Q_INVOKABLE Game(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
 	static const QString Name;
+	static const int EntityTypeId;
 
 	QString displayName() const;
 
@@ -48,7 +47,7 @@ public:
 
 	Place *site() const;
 	QList<Player *> players() const;
-    void addPlayer(Player *player);
+	void addPlayer(Player *players);
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
@@ -65,18 +64,6 @@ signals:
 	void positionChanged(const Player *player,int position);
 };
 
-Q_DECLARE_METATYPE(QList<Game *>);
-
-class GamesContext : public LBDatabase::Context
-{
-	Q_OBJECT
-public:
-    Q_INVOKABLE GamesContext(const ::LBDatabase::ContextMetaData &metaData, ::LBDatabase::Storage *parent);
-	static const QString Name;
-
-    DoppelkopfLiveGame *createDoppelkopfGame();
-
-	Game *game(int id) const;
-};
+Q_DECLARE_METATYPE(QList<Game *>)
 
 #endif // GAME_H

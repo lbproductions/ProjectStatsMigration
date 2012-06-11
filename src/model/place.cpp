@@ -4,10 +4,8 @@
 #include "player.h"
 
 
-#include "placecalculator.h"
-
-const QString PlacesContext::Name("Places");
 const QString Place::Name("place");
+const int Place::EntityTypeId(13);
 
 Place::Place(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Context *context) :
 	Entity(metaData, context)
@@ -91,12 +89,13 @@ void Place::setComment(const QString &comment)
 
 QList<Game *> Place::games() const
 {
-    return relation<Game>(PlaceProperties::GamesRelation)->entities();
+	return relation<Game>(PlaceProperties::GamesRelation)->entities();
 }
 
 void Place::addGame(Game *game)
 {
-    return relation<Game>(PlaceProperties::GamesRelation)->addEntity(game);
+
+relation<Game>(PlaceProperties::GamesRelation)->addEntity(game);
 }
 
 QList<Player *> Place::players() const
@@ -111,26 +110,6 @@ QString Place::displayName() const
 {
     return strasse() + QLatin1String(" ") + QString::number(nummer()) + QLatin1String(", ") + QString::number(plz()) + QLatin1String(" ") + ort();
 }
+
 	// END
-
-PlacesContext::PlacesContext(const ::LBDatabase::ContextMetaData &metaData, LBDatabase::Storage *parent) :
-	Context(metaData, parent)
-{
-	registerEntityClass<Place>();
-	registerCalculatorClass<Place,PlaceCalculator>();
-
-}
-
-Place *PlacesContext::place(int id) const
-{
-    return static_cast<Place *>(entity(id));
-}
-
-QList<Place *> PlacesContext::places() const
-{
-    QList<Place *> places;
-    foreach(LBDatabase::Entity *entity, entities())
-        places.append(static_cast<Place *>(entity));
-    return places;
-}
 

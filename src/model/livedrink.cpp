@@ -5,12 +5,11 @@
 #include "drink.h"
 
 
-
-const QString LiveDrinksContext::Name("LiveDrinks");
 const QString LiveDrink::Name("liveDrink");
+const int LiveDrink::EntityTypeId(11);
 
 LiveDrink::LiveDrink(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Context *context) :
-    Entity(metaData, context)
+	Entity(metaData, context)
 {
 }
 
@@ -47,18 +46,8 @@ Drink *LiveDrink::drink() const
 	//START
 QString LiveDrink::displayName() const
 {
-    return Entity::displayName();
+	return Entity::displayName();
 }
+
 	// END
-
-LiveDrinksContext::LiveDrinksContext(const ::LBDatabase::ContextMetaData &metaData, LBDatabase::Storage *parent) :
-    Context(metaData, parent)
-{
-	registerEntityClass<LiveDrink>();
-}
-
-LiveDrink *LiveDrinksContext::liveDrink(int id) const
-{
-	return static_cast<LiveDrink *>(entity(id));
-}
 

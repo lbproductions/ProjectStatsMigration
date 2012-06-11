@@ -1,16 +1,16 @@
-#include "projectstatsstorage.h"
-#include "category.h"
-#include "drink.h"
-#include "game.h"
-#include "livedrink.h"
-#include "place.h"
-#include "player.h"
-#include "round.h"
-#include "rule.h"
-#include "schmeisserei.h"
+#include "storage.h"
+#include "categoriescontext.h"
+#include "drinkscontext.h"
+#include "gamescontext.h"
+#include "livedrinkscontext.h"
+#include "placescontext.h"
+#include "playerscontext.h"
+#include "roundscontext.h"
+#include "rulescontext.h"
+#include "schmeissereiencontext.h"
 
-ProjectStatsStorage::ProjectStatsStorage(QObject *parent) :
-    Storage(parent)
+Storage::Storage(QObject *parent) :
+	LBDatabase::Storage(parent)
 {
 	registerContextType<CategoriesContext>();
 	registerContextType<DrinksContext>();
@@ -23,47 +23,47 @@ ProjectStatsStorage::ProjectStatsStorage(QObject *parent) :
 	registerContextType<SchmeissereienContext>();
 }
 
-CategoriesContext *ProjectStatsStorage::categoriesContext() const
+CategoriesContext *Storage::categoriesContext() const
 {
 	return static_cast<CategoriesContext *>(context(CategoriesContext::Name));
 }
 
-DrinksContext *ProjectStatsStorage::drinksContext() const
+DrinksContext *Storage::drinksContext() const
 {
 	return static_cast<DrinksContext *>(context(DrinksContext::Name));
 }
 
-GamesContext *ProjectStatsStorage::gamesContext() const
+GamesContext *Storage::gamesContext() const
 {
 	return static_cast<GamesContext *>(context(GamesContext::Name));
 }
 
-LiveDrinksContext *ProjectStatsStorage::liveDrinksContext() const
+LiveDrinksContext *Storage::liveDrinksContext() const
 {
 	return static_cast<LiveDrinksContext *>(context(LiveDrinksContext::Name));
 }
 
-PlacesContext *ProjectStatsStorage::placesContext() const
+PlacesContext *Storage::placesContext() const
 {
 	return static_cast<PlacesContext *>(context(PlacesContext::Name));
 }
 
-PlayersContext *ProjectStatsStorage::playersContext() const
+PlayersContext *Storage::playersContext() const
 {
 	return static_cast<PlayersContext *>(context(PlayersContext::Name));
 }
 
-RoundsContext *ProjectStatsStorage::roundsContext() const
+RoundsContext *Storage::roundsContext() const
 {
 	return static_cast<RoundsContext *>(context(RoundsContext::Name));
 }
 
-RulesContext *ProjectStatsStorage::rulesContext() const
+RulesContext *Storage::rulesContext() const
 {
 	return static_cast<RulesContext *>(context(RulesContext::Name));
 }
 
-SchmeissereienContext *ProjectStatsStorage::schmeissereienContext() const
+SchmeissereienContext *Storage::schmeissereienContext() const
 {
 	return static_cast<SchmeissereienContext *>(context(SchmeissereienContext::Name));
 }

@@ -1,6 +1,7 @@
 #include "playerslistwidget.h"
 
 #include "../model/player.h"
+#include "../model/playerscontext.h"
 
 #include <QDebug>
 

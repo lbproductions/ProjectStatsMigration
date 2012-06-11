@@ -3,17 +3,17 @@
 #include "livegamegeneraloptionswidget.h"
 #include "livedokogameoptionswidget.h"
 
-#include "../../model/game.h"
+#include "../../model/gamescontext.h"
 #include "../../model/doppelkopflivegame.h"
 #include "../../model/place.h"
-#include "../../model/projectstatsstorage.h"
+#include "../../model/storage.h"
 
 #include <QDebug>
 #include <QMessageBox>
 
 namespace Wizards {
 
-NewGameWizard::NewGameWizard(ProjectStatsStorage *storage, QWidget *parent) :
+NewGameWizard::NewGameWizard(Storage *storage, QWidget *parent) :
     QWizard(parent),
     m_storage(storage)
 {
@@ -42,7 +42,7 @@ void NewGameWizard::initializeWidget()
     this->setPage(Page_LiveGameDokoOptions, m_liveDokoGameOptionsWidget);
 }
 
-ProjectStatsStorage *NewGameWizard::storage() const
+Storage *NewGameWizard::storage() const
 {
     return m_storage;
 }

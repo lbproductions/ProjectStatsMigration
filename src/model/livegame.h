@@ -14,14 +14,14 @@ const QString PlacementFunction("placement");
 
 class Round;
 class Player;
-class Round;
 
 class LiveGame : public Game
 {
 	Q_OBJECT
 public:
-    Q_INVOKABLE LiveGame(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
+	Q_INVOKABLE LiveGame(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
 	static const QString Name;
+	static const int EntityTypeId;
 
 	QString displayName() const;
 
@@ -32,23 +32,24 @@ public:
 	};
 
 	State state() const;
-    void setState(State state);
 
+	void setState(State state);
 
 	int points(const Player *player) const;
 	int placement(const Player *player) const;
 
-    QList<Round *> rounds() const;
-    void addRound(Round *round);
+
+	QList<Round *> rounds() const;
+	void addRound(Round *rounds);
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
 	// END
 
 signals:
-    void stateChanged(State);
+	void stateChanged(State state);
 };
 
-Q_DECLARE_METATYPE(QList<LiveGame *>);
+Q_DECLARE_METATYPE(QList<LiveGame *>)
 
 #endif // LIVEGAME_H

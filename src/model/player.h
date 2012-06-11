@@ -38,6 +38,7 @@ const QString SkatSoloRoundsRelation("skatSoloRounds");
 const QString PlacesRelation("places");
 const QString GamesRelation("games");
 const QString DrinksRelation("drinks");
+const QString RoundsRelation("rounds");
 } // namespace PlayerProperties
 
 class Schmeisserei;
@@ -47,6 +48,7 @@ class SkatRound;
 class Place;
 class Game;
 class Drink;
+class Round;
 
 class Player : public LBDatabase::Entity
 {
@@ -54,6 +56,7 @@ class Player : public LBDatabase::Entity
 public:
 	Q_INVOKABLE Player(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
 	static const QString Name;
+	static const int EntityTypeId;
 
 	QString displayName() const;
 
@@ -94,6 +97,7 @@ public:
 	QList<Place *> places() const;
 	QList<Game *> games() const;
 	QList<Drink *> drinks() const;
+	QList<Round *> rounds() const;
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
@@ -106,17 +110,6 @@ signals:
 	void nameChanged(QString name);
 };
 
-Q_DECLARE_METATYPE(QList<Player *>);
-
-class PlayersContext : public LBDatabase::Context
-{
-	Q_OBJECT
-public:
-	Q_INVOKABLE PlayersContext(const::LBDatabase::ContextMetaData &metaData, ::LBDatabase::Storage *parent);
-	static const QString Name;
-
-	Player *player(int id) const;
-    QList<Player *> players() const;
-};
+Q_DECLARE_METATYPE(QList<Player *>)
 
 #endif // PLAYER_H

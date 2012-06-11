@@ -14,9 +14,11 @@ const QString RePlayer2Relation("rePlayer2");
 const QString SchweinereiPlayerRelation("schweinereiPlayer");
 const QString TrumpfabgabePlayerRelation("trumpfabgabePlayer");
 const QString DokoSoloPlayerRelation("dokoSoloPlayer");
+const QString CurrentPlayingPlayersRelation("currentPlayingPlayers");
 } // namespace DoppelkopfRoundProperties
 
 class Player;
+class Round;
 
 class DoppelkopfRound : public Round
 {
@@ -24,7 +26,7 @@ class DoppelkopfRound : public Round
 public:
 	Q_INVOKABLE DoppelkopfRound(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
 	static const QString Name;
-    static const int EntityTypeId;
+	static const int EntityTypeId;
 
 	QString displayName() const;
 
@@ -42,6 +44,7 @@ public:
 	Player *schweinereiPlayer() const;
 	Player *trumpfabgabePlayer() const;
 	Player *dokoSoloPlayer() const;
+	QList<Round *> currentPlayingPlayers() const;
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
@@ -52,6 +55,6 @@ signals:
 	void doko_soloTypeChanged(QString doko_soloType);
 };
 
-Q_DECLARE_METATYPE(QList<DoppelkopfRound *>);
+Q_DECLARE_METATYPE(QList<DoppelkopfRound *>)
 
 #endif // DOPPELKOPFROUND_H

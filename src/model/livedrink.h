@@ -20,8 +20,9 @@ class LiveDrink : public LBDatabase::Entity
 {
 	Q_OBJECT
 public:
-    Q_INVOKABLE LiveDrink(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
+	Q_INVOKABLE LiveDrink(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
 	static const QString Name;
+	static const int EntityTypeId;
 
 	QString displayName() const;
 
@@ -43,16 +44,6 @@ signals:
 	void timeChanged(QDateTime time);
 };
 
-Q_DECLARE_METATYPE(QList<LiveDrink *>);
-
-class LiveDrinksContext : public LBDatabase::Context
-{
-	Q_OBJECT
-public:
-    Q_INVOKABLE LiveDrinksContext(const::LBDatabase::ContextMetaData &metaData, ::LBDatabase::Storage *parent);
-	static const QString Name;
-
-	LiveDrink *liveDrink(int id) const;
-};
+Q_DECLARE_METATYPE(QList<LiveDrink *>)
 
 #endif // LIVEDRINK_H

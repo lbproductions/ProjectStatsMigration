@@ -5,7 +5,7 @@
 #include "player.h"
 
 DoppelkopfRoundCalculator::DoppelkopfRoundCalculator(QObject *parent) :
-    RoundCalculator(parent)
+    LBDatabase::Calculator(parent)
 {
 }
 

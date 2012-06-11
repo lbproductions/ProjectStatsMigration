@@ -83,7 +83,7 @@ void CalculatorWriter::exportHeader() const
     }
 
     foreach(Relation *relation, m_entityType->nonInhertitedRelations()) {
-        if(relation->isCalculated()) {
+        if(relation->isCalculated() && !relation->isTranspose()) {
             header.append(QLatin1String("\t\n\tQ_INVOKABLE RelatedEntities ")+makeMethodName(relation->identifier())+QLatin1String("(const LBDatabase::Entity *entity) const;\n"));
         }
     }
@@ -154,7 +154,7 @@ void CalculatorWriter::exportSource() const
     }
 
     foreach(Relation *relation, m_entityType->nonInhertitedRelations()) {
-        if(relation->isCalculated()) {
+        if(relation->isCalculated() && !relation->isTranspose()) {
             name = calculatorClass+QLatin1String("::")+makeMethodName(relation->identifier());
 
             if(!source.contains(name)) {

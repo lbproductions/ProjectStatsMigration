@@ -125,7 +125,7 @@ SOURCES += main.cpp \
     model/livedrink.cpp \
     model/game.cpp \
     model/drink.cpp \
-    model/projectstatsstorage.cpp \
+    model/storage.cpp \
     model/livegame.cpp \
     model/schmeisserei.cpp \
     model/rule.cpp \
@@ -158,7 +158,18 @@ SOURCES += main.cpp \
     widgets/graphs/graphview.cpp \
     widgets/graphs/dokolivegamegraphview.cpp \
     model/roundcalculator.cpp \
-    model/doppelkopfroundcalculator.cpp
+    model/doppelkopfroundcalculator.cpp \
+    model/schmeissereiencontext.cpp \
+    model/rulescontext.cpp \
+    model/roundscontext.cpp \
+    model/playerscontext.cpp \
+    model/placescontext.cpp \
+    model/livedrinkscontext.cpp \
+    model/gamescontext.cpp \
+    model/drinkscontext.cpp \
+    model/categoriescontext.cpp \
+    model/skatround.cpp \
+    model/skatlivegame.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -175,7 +186,7 @@ HEADERS  += \
     model/livedrink.h \
     model/game.h \
     model/drink.h \
-    model/projectstatsstorage.h \
+    model/storage.h \
     model/livegame.h \
     model/schmeisserei.h \
     model/rule.h \
@@ -210,7 +221,18 @@ HEADERS  += \
     widgets/graphs/graphview.h \
     widgets/graphs/dokolivegamegraphview.h \
     model/roundcalculator.h \
-    model/doppelkopfroundcalculator.h
+    model/doppelkopfroundcalculator.h \
+    model/schmeissereiencontext.h \
+    model/rulescontext.h \
+    model/roundscontext.h \
+    model/playerscontext.h \
+    model/placescontext.h \
+    model/livedrinkscontext.h \
+    model/gamescontext.h \
+    model/drinkscontext.h \
+    model/categoriescontext.h \
+    model/skatround.h \
+    model/skatlivegame.h
 
 RESOURCES += \
     resources/resources.qrc

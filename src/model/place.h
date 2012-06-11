@@ -26,6 +26,7 @@ class Place : public LBDatabase::Entity
 public:
 	Q_INVOKABLE Place(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
 	static const QString Name;
+	static const int EntityTypeId;
 
 	QString displayName() const;
 
@@ -46,7 +47,7 @@ public:
 
 
 	QList<Game *> games() const;
-    void addGame(Game *game);
+	void addGame(Game *games);
 	QList<Player *> players() const;
 
 	// Write anything you want to remain unchanged between these comments: 
@@ -61,17 +62,6 @@ signals:
 	void commentChanged(QString comment);
 };
 
-Q_DECLARE_METATYPE(QList<Place *>);
-
-class PlacesContext : public LBDatabase::Context
-{
-	Q_OBJECT
-public:
-	Q_INVOKABLE PlacesContext(const::LBDatabase::ContextMetaData &metaData, ::LBDatabase::Storage *parent);
-	static const QString Name;
-
-	Place *place(int id) const;
-    QList<Place *> places() const;
-};
+Q_DECLARE_METATYPE(QList<Place *>)
 
 #endif // PLACE_H

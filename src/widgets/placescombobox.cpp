@@ -1,7 +1,8 @@
 #include "placescombobox.h"
 
+#include "../model/placescontext.h"
 #include "../model/place.h"
-#include "../model/projectstatsstorage.h"
+#include "../model/storage.h"
 
 PlacesComboBox::PlacesComboBox(PlacesContext *context, QWidget *parent) :
     QComboBox(parent),

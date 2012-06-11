@@ -1,5 +1,5 @@
-#ifndef PROJECTSTATSSTORAGE_H
-#define PROJECTSTATSSTORAGE_H
+#ifndef STORAGE_H
+#define STORAGE_H
 
 #include <LBDatabase/LBDatabase.h>
 
@@ -13,10 +13,10 @@ class RoundsContext;
 class RulesContext;
 class SchmeissereienContext;
 
-class ProjectStatsStorage : public LBDatabase::Storage
+class Storage : public LBDatabase::Storage
 {
 public:
-    ProjectStatsStorage(QObject *parent = 0);
+	Storage(QObject *parent = 0);
 
 	CategoriesContext *categoriesContext() const;
 	DrinksContext *drinksContext() const;
@@ -29,4 +29,4 @@ public:
 	SchmeissereienContext *schmeissereienContext() const;
 };
 
-#endif // PROJECTSTATSSTORAGE_H
+#endif // STORAGE_H

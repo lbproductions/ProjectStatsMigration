@@ -3,9 +3,9 @@
 #include "actions.h"
 #include "controller.h"
 #include "sidebar.h"
-#include "model/projectstatsstorage.h"
-#include "model/game.h"
-#include "model/player.h"
+#include "model/storage.h"
+#include "model/gamescontext.h"
+#include "model/playerscontext.h"
 #include "views/listview.h"
 
 #include <QCloseEvent>

@@ -19,6 +19,7 @@ class Rule : public LBDatabase::Entity
 public:
 	Q_INVOKABLE Rule(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
 	static const QString Name;
+	static const int EntityTypeId;
 
 	QString displayName() const;
 
@@ -39,16 +40,6 @@ public:
 signals:
 };
 
-Q_DECLARE_METATYPE(QList<Rule *>);
-
-class RulesContext : public LBDatabase::Context
-{
-	Q_OBJECT
-public:
-	Q_INVOKABLE RulesContext(const::LBDatabase::ContextMetaData &metaData, ::LBDatabase::Storage *parent);
-	static const QString Name;
-
-	Rule *rule(int id) const;
-};
+Q_DECLARE_METATYPE(QList<Rule *>)
 
 #endif // RULE_H

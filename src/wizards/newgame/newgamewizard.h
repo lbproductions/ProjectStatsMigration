@@ -4,7 +4,7 @@
 #include <QWizard>
 
 class PlacesComboBox;
-class ProjectStatsStorage;
+class Storage;
 
 namespace Wizards
 {
@@ -23,7 +23,7 @@ class NewGameWizard : public QWizard
     Q_OBJECT
 
 public:
-    explicit NewGameWizard(ProjectStatsStorage *storage, QWidget *parent = 0);
+    explicit NewGameWizard(Storage *storage, QWidget *parent = 0);
 
     /**
      * WizardPages werden erstellt, Namen festgelegt
@@ -35,7 +35,7 @@ public:
         Page_LiveGameDokoOptions
     };
 
-    ProjectStatsStorage *storage() const;
+    Storage *storage() const;
 
 private slots:
     void on_accepted();
@@ -44,7 +44,7 @@ private:
     NewGame::LiveGameGeneralOptionsWidget *m_liveGameGeneralOptionsWidget;
     NewGame::LiveDokoGameOptionsWidget *m_liveDokoGameOptionsWidget;
 
-    ProjectStatsStorage *m_storage;
+    Storage *m_storage;
 };
 
 }

@@ -3,15 +3,15 @@
 #include "schmeisserei.h"
 #include "livedrink.h"
 #include "doppelkopfround.h"
+#include "skatround.h"
 #include "place.h"
 #include "game.h"
 #include "drink.h"
+#include "round.h"
 
 
-#include "playercalculator.h"
-
-const QString PlayersContext::Name("Players");
 const QString Player::Name("player");
+const int Player::EntityTypeId(15);
 
 Player::Player(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Context *context) :
 	Entity(metaData, context)
@@ -195,6 +195,11 @@ QList<Drink *> Player::drinks() const
 	return relation<Drink>(PlayerProperties::DrinksRelation)->entities();
 }
 
+QList<Round *> Player::rounds() const
+{
+	return relation<Round>(PlayerProperties::RoundsRelation)->entities();
+}
+
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
@@ -202,26 +207,6 @@ QString Player::displayName() const
 {
     return name();
 }
+
 	// END
-
-PlayersContext::PlayersContext(const ::LBDatabase::ContextMetaData &metaData, LBDatabase::Storage *parent) :
-	Context(metaData, parent)
-{
-	registerEntityClass<Player>();
-	registerCalculatorClass<Player,PlayerCalculator>();
-
-}
-
-Player *PlayersContext::player(int id) const
-{
-    return static_cast<Player *>(entity(id));
-}
-
-QList<Player *> PlayersContext::players() const
-{
-    QList<Player *> players;
-    foreach(LBDatabase::Entity *entity, entities())
-        players.append(static_cast<Player *>(entity));
-    return players;
-}
 

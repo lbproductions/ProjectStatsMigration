@@ -73,7 +73,7 @@ void StorageWriter::exportStorageSource() const
     startNamespace(source);
 
     foreach(Context *context, storage->contexts()) {
-        writeInclude(makeClassname(context->baseEntityType()->identifier()), source);
+        writeInclude(makeClassname(context->identifier()+"Context"), source);
     }
 
     source.append(QLatin1String("\n")+

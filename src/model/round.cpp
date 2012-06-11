@@ -4,16 +4,10 @@
 #include "schmeisserei.h"
 #include "livegame.h"
 #include "player.h"
-#include "roundcalculator.h"
-#include "doppelkopfroundcalculator.h"
 
 
-#include "doppelkopfround.h"
-
-#include "projectstatsstorage.h"
-
-const QString RoundsContext::Name("Rounds");
 const QString Round::Name("round");
+const int Round::EntityTypeId(18);
 
 Round::Round(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Context *context) :
 	Entity(metaData, context)
@@ -97,7 +91,12 @@ QList<Schmeisserei *> Round::schmeissereienPerRound() const
 
 LiveGame *Round::game() const
 {
-    return relation<LiveGame>(RoundProperties::GameRelation)->firstEntity();
+	return relation<LiveGame>(RoundProperties::GameRelation)->firstEntity();
+}
+
+QList<Player *> Round::currentPlayingPlayers() const
+{
+	return relation<Player>(RoundProperties::CurrentPlayingPlayersRelation)->entities();
 }
 
 int Round::points(const Player *player) const
@@ -121,29 +120,4 @@ QString Round::displayName() const
     return Entity::displayName();
 }
 	// END
-
-RoundsContext::RoundsContext(const ::LBDatabase::ContextMetaData &metaData, LBDatabase::Storage *parent) :
-	Context(metaData, parent)
-{
-	registerEntityClass<Round>();
-    registerEntityClass<DoppelkopfRound>();
-
-    registerCalculatorClass<Round,RoundCalculator>();
-    registerCalculatorClass<DoppelkopfRound,DoppelkopfRoundCalculator>();
-}
-
-DoppelkopfRound *RoundsContext::createDoppelkopfRound()
-{
-    ProjectStatsStorage *psstorage = static_cast<ProjectStatsStorage *>(storage());
-    DoppelkopfRound *round = static_cast<DoppelkopfRound *>(insertEntity(psstorage->entityType(DoppelkopfRound::EntityTypeId)));
-    round->setState(Round::Running);
-    round->setStartTime(QDateTime::currentDateTime());
-    round->setNumber(1);
-    return round;
-}
-
-Round *RoundsContext::round(int id) const
-{
-	return static_cast<Round *>(entity(id));
-}
 

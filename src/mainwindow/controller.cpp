@@ -3,7 +3,7 @@
 #include "actions.h"
 #include "mainwindow.h"
 
-#include "../model/projectstatsstorage.h"
+#include "../model/storage.h"
 #include "../model/game.h"
 #include "../model/doppelkopflivegame.h"
 #include "../preferences/updaterpreferences.h"
@@ -45,7 +45,7 @@ Controller::Controller(MainWindow *mainWindow) :
 
     QString storageLocation = QDesktopServices::storageLocation(QDesktopServices::DataLocation).append("/storage.lbstorage");
     qDebug() << storageLocation;
-    m_storage = new ProjectStatsStorage(this);
+    m_storage = new Storage(this);
     m_storage->setDriver(
                 new LBDatabase::LocalStorageDriver(
                     storageLocation,
@@ -71,7 +71,7 @@ Actions *Controller::actions() const
     return m_actions;
 }
 
-ProjectStatsStorage *Controller::storage() const
+Storage *Controller::storage() const
 {
     return m_storage;
 }

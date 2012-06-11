@@ -4,9 +4,8 @@
 #include "round.h"
 
 
-
-const QString SchmeissereienContext::Name("Schmeissereien");
 const QString Schmeisserei::Name("schmeisserei");
+const int Schmeisserei::EntityTypeId(21);
 
 Schmeisserei::Schmeisserei(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Context *context) :
 	Entity(metaData, context)
@@ -41,18 +40,8 @@ Round *Schmeisserei::round() const
 	//START
 QString Schmeisserei::displayName() const
 {
-    return Entity::displayName();
+	return Entity::displayName();
 }
+
 	// END
-
-SchmeissereienContext::SchmeissereienContext(const ::LBDatabase::ContextMetaData &metaData, LBDatabase::Storage *parent) :
-	Context(metaData, parent)
-{
-	registerEntityClass<Schmeisserei>();
-}
-
-Schmeisserei *SchmeissereienContext::schmeisserei(int id) const
-{
-	return static_cast<Schmeisserei *>(entity(id));
-}
 

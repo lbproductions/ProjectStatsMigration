@@ -3,7 +3,7 @@
 #include "livegame.h"
 #include "player.h"
 #include "round.h"
-#include "projectstatsstorage.h"
+#include "storage.h"
 
 LiveGameCalculator::LiveGameCalculator(QObject *parent) :
     Calculator(parent)
@@ -22,22 +22,6 @@ EntityVariantHash LiveGameCalculator::points(const LBDatabase::Entity *entity) c
     }
 
     return result;
-}
-
-QVariant LiveGameCalculator::state(const LBDatabase::Entity *entity) const
-{
-    const LiveGame *liveGame = static_cast<const LiveGame *>(entity);
-    QList<Round*> list = liveGame->relation<Round>(LiveGameProperties::RoundsRelation)->sort<int>(RoundProperties::NumberAttribute, LBDatabase::SortDescending);
-
-    if(list.isEmpty())
-        return tr("No rounds");
-
-    Round *current = list.first();
-
-    if(!current)
-        return tr("No rounds");
-
-    return QVariant(current->state());
 }
 
 EntityVariantHash LiveGameCalculator::placement(const LBDatabase::Entity *entity) const

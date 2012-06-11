@@ -22,6 +22,7 @@ class Category : public LBDatabase::Entity
 public:
 	Q_INVOKABLE Category(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
 	static const QString Name;
+	static const int EntityTypeId;
 
 	QString displayName() const;
 
@@ -37,6 +38,7 @@ public:
 	Type type() const;
 
 	void setOrderIndicator(int orderIndicator);
+	void setIcon(const QString &icon);
 
 
 
@@ -45,22 +47,16 @@ public:
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
+
+    void test();
+
 	// END
 
 signals:
 	void orderIndicatorChanged(int orderIndicator);
+	void iconChanged(QString icon);
 };
 
-Q_DECLARE_METATYPE(QList<Category *>);
-
-class CategoriesContext : public LBDatabase::Context
-{
-	Q_OBJECT
-public:
-    Q_INVOKABLE CategoriesContext(const ::LBDatabase::ContextMetaData &metaData, ::LBDatabase::Storage *parent);
-	static const QString Name;
-
-	Category *category(int id) const;
-};
+Q_DECLARE_METATYPE(QList<Category *>)
 
 #endif // CATEGORY_H

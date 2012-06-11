@@ -229,7 +229,7 @@ void EntityTypeWriter::writeDeclaration(QString &header) const
 
     header.append(QLatin1String("};\n\n"));
 
-    header.append(QLatin1String("Q_DECLARE_METATYPE(QList<")+m_classname+QLatin1String(" *>);\n\n"));
+    header.append(QLatin1String("Q_DECLARE_METATYPE(QList<")+m_classname+QLatin1String(" *>)\n\n"));
 }
 
 void EntityTypeWriter::writeImplementation(QString &source) const

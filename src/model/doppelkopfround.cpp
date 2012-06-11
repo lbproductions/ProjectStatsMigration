@@ -1,6 +1,7 @@
 #include "doppelkopfround.h"
 
 #include "player.h"
+#include "round.h"
 
 
 const QString DoppelkopfRound::Name("doppelkopfRound");
@@ -67,12 +68,18 @@ Player *DoppelkopfRound::dokoSoloPlayer() const
 	return relation<Player>(DoppelkopfRoundProperties::DokoSoloPlayerRelation)->firstEntity();
 }
 
+QList<Round *> DoppelkopfRound::currentPlayingPlayers() const
+{
+	return relation<Round>(DoppelkopfRoundProperties::CurrentPlayingPlayersRelation)->entities();
+}
+
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
 QString DoppelkopfRound::displayName() const
 {
-    return Entity::displayName();
+	return Entity::displayName();
 }
+
 	// END
 

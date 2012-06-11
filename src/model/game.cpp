@@ -4,17 +4,8 @@
 #include "player.h"
 
 
-#include "gamecalculator.h"
-#include "livegame.h"
-#include "livegamecalculator.h"
-#include "doppelkopflivegame.h"
-
-#include "projectstatsstorage.h"
-#include "round.h"
-#include "doppelkopfround.h"
-
-const QString GamesContext::Name("Games");
 const QString Game::Name("game");
+const int Game::EntityTypeId(10);
 
 Game::Game(const ::LBDatabase::EntityMetaData &metaData, LBDatabase::Context *context) :
 	Entity(metaData, context)
@@ -80,12 +71,13 @@ Place *Game::site() const
 
 QList<Player *> Game::players() const
 {
-    return relation<Player>(GameProperties::PlayersRelation)->entities();
+	return relation<Player>(GameProperties::PlayersRelation)->entities();
 }
 
 void Game::addPlayer(Player *player)
 {
-    relation<Player>(GameProperties::PlayersRelation)->addEntity(player);
+
+relation<Player>(GameProperties::PlayersRelation)->addEntity(player);
 }
 
 int Game::position(const Player *player) const
@@ -120,31 +112,4 @@ int Game::points(const Player *player) const
 }
 
 	// END
-
-GamesContext::GamesContext(const ::LBDatabase::ContextMetaData &metaData, LBDatabase::Storage *parent) :
-	Context(metaData, parent)
-{
-	registerEntityClass<Game>();
-	registerCalculatorClass<Game,GameCalculator>();
-
-	registerEntityClass<LiveGame>();
-	registerCalculatorClass<LiveGame,LiveGameCalculator>();
-
-    registerEntityClass<DoppelkopfLiveGame>();
-}
-
-DoppelkopfLiveGame *GamesContext::createDoppelkopfGame()
-{
-    ProjectStatsStorage *psstorage = static_cast<ProjectStatsStorage *>(storage());
-    DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(insertEntity(psstorage->entityType(DoppelkopfLiveGame::EntityTypeId)));
-    DoppelkopfRound *round1 = psstorage->roundsContext()->createDoppelkopfRound();
-    game->addRound(round1);
-    game->setDate(QDateTime::currentDateTime());
-    return game;
-}
-
-Game *GamesContext::game(int id) const
-{
-	return static_cast<Game *>(entity(id));
-}
 

@@ -18,6 +18,7 @@
 #include <QVariant>
 #include <QDebug>
 #include <QSqlQuery>
+#include <QSqlError>
 
 namespace {
 const QString MetaDataTableName("lbmeta");
@@ -437,7 +438,7 @@ QList<RelationValueData> LocalStorageDriver::relatedEntities(Relation *relation)
     query.setForwardOnly(true);
     query.exec("SELECT id, "+
                relation->leftEntityIdColumnName()+","+
-               relation->rightEntityIdColumnName()+","+
+               relation->rightEntityIdColumnName()+
                " FROM "+relation->tableName());
 
     while (query.next()) {

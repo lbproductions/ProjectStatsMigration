@@ -15,6 +15,7 @@ const QString StateAttribute("state");
 const QString LiveDrinksRelation("liveDrinks");
 const QString SchmeissereienPerRoundRelation("SchmeissereienPerRound");
 const QString GameRelation("game");
+const QString CurrentPlayingPlayersRelation("currentPlayingPlayers");
 const QString PointsFunction("points");
 } // namespace RoundProperties
 
@@ -23,14 +24,13 @@ class Schmeisserei;
 class LiveGame;
 class Player;
 
-class DoppelkopfRound;
-
 class Round : public LBDatabase::Entity
 {
 	Q_OBJECT
 public:
-    Q_INVOKABLE Round(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
+	Q_INVOKABLE Round(const ::LBDatabase::EntityMetaData &metaData, ::LBDatabase::Context *context);
 	static const QString Name;
+	static const int EntityTypeId;
 
 	QString displayName() const;
 
@@ -58,7 +58,8 @@ public:
 
 	QList<LiveDrink *> liveDrinks() const;
 	QList<Schmeisserei *> schmeissereienPerRound() const;
-    LiveGame *game() const;
+	LiveGame *game() const;
+	QList<Player *> currentPlayingPlayers() const;
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
@@ -73,18 +74,6 @@ signals:
 	void pointsChanged(const Player *player,int points);
 };
 
-Q_DECLARE_METATYPE(QList<Round *>);
-
-class RoundsContext : public LBDatabase::Context
-{
-	Q_OBJECT
-public:
-    Q_INVOKABLE RoundsContext(const ::LBDatabase::ContextMetaData &metaData, ::LBDatabase::Storage *parent);
-	static const QString Name;
-
-    DoppelkopfRound *createDoppelkopfRound();
-
-	Round *round(int id) const;
-};
+Q_DECLARE_METATYPE(QList<Round *>)
 
 #endif // ROUND_H
