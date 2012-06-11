@@ -10,6 +10,7 @@ class MainWindow;
 
 namespace LBDatabase {
 class EntityType;
+class Relation;
 }
 
 namespace MainWindowNS {
@@ -59,6 +60,8 @@ private slots:
     void on_treeViewAttributes_doubleClicked(const QModelIndex &index);
     void on_treeViewFunctions_doubleClicked(const QModelIndex &index);
     void on_treeViewRelations_doubleClicked(const QModelIndex &index);
+
+    void addRelationToModel(int row, LBDatabase::Relation *relation);
 
 private:
     Ui::EntityTypeView *ui;

@@ -45,70 +45,408 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
     else
         ui->comboBoxParent->addItem("---");
 
+
+
     //Attributes
+    QList<LBDatabase::Attribute *> inheritedAttributes = entityType->attributes();
     m_attributesModel = new QStandardItemModel(this);
     int row = 0;
-    foreach(LBDatabase::Attribute *attribute, entityType->attributes()) {
-        QStandardItem *itemName = new QStandardItem(attribute->identifier());
-        itemName->setData(QVariant::fromValue<LBDatabase::Attribute *>(attribute));
-        itemName->setEditable(false);
-        m_attributesModel->setItem(row, 0, itemName);
-        QStandardItem *itemType = new QStandardItem(attribute->qtType());
-        itemType->setEditable(false);
-        m_attributesModel->setItem(row, 1, itemType);
+    foreach(LBDatabase::Attribute *attribute, entityType->nonInhertitedAttributes()) {
+        inheritedAttributes.removeAll(attribute);
+        QStandardItem *item = new QStandardItem(attribute->identifier());
+        item->setData(QVariant::fromValue<LBDatabase::Attribute *>(attribute));
+        item->setEditable(false);
+        m_attributesModel->setItem(row, 0, item);
+        item = new QStandardItem(attribute->typeName());
+        item->setEditable(false);
+        m_attributesModel->setItem(row, 1, item);
+        item = new QStandardItem();
+        item->setEditable(false);
+        item->setCheckState(attribute->isCached() ? Qt::Checked : Qt::Unchecked);
+        m_attributesModel->setItem(row, 2, item);
+        item = new QStandardItem();
+        item->setEditable(false);
+        item->setCheckState(attribute->isCalculated() ? Qt::Checked : Qt::Unchecked);
+        m_attributesModel->setItem(row, 3, item);
+        item = new QStandardItem();
+        item->setEditable(false);
+        item->setCheckState(attribute->isEditable() ? Qt::Checked : Qt::Unchecked);
+        m_attributesModel->setItem(row, 4, item);
+        item = new QStandardItem(attribute->defaultValue().toString());
+        item->setEditable(false);
+        m_attributesModel->setItem(row, 5, item);
+        row++;
+    }
+
+    if(!inheritedAttributes.isEmpty()) {
+        QStandardItem *item = new QStandardItem(tr("Inherited Attributes:"));
+        item->setEditable(false);
+        item->setSelectable(false);
+        item->setFont(QFont("Lucida Grande",12,QFont::Bold));
+        item->setForeground(QBrush(QColor(150,150,150)));
+        m_attributesModel->setItem(row, 0, item);
+        item = new QStandardItem("");
+        item->setEditable(false);
+        item->setSelectable(false);
+        m_attributesModel->setItem(row, 1, item);
+        item = new QStandardItem("");
+        item->setEditable(false);
+        item->setSelectable(false);
+        m_attributesModel->setItem(row, 2, item);
+        item = new QStandardItem("");
+        item->setEditable(false);
+        item->setSelectable(false);
+        m_attributesModel->setItem(row, 3, item);
+        item = new QStandardItem("");
+        item->setEditable(false);
+        item->setSelectable(false);
+        m_attributesModel->setItem(row, 4, item);
+        item = new QStandardItem("");
+        item->setEditable(false);
+        item->setSelectable(false);
+        m_attributesModel->setItem(row, 5, item);
+        row++;
+    }
+
+    foreach(LBDatabase::Attribute *attribute, inheritedAttributes) {
+        QStandardItem *item1 = new QStandardItem(attribute->identifier());
+        item1->setData(QVariant::fromValue<LBDatabase::Attribute *>(attribute));
+        item1->setEditable(false);
+        m_attributesModel->setItem(row, 0, item1);
+        QStandardItem *item2 = new QStandardItem(attribute->typeName());
+        item2->setEditable(false);
+        m_attributesModel->setItem(row, 1, item2);
+        QStandardItem *item3 = new QStandardItem();
+        item3->setEditable(false);
+        item3->setCheckState(attribute->isCached() ? Qt::Checked : Qt::Unchecked);
+        m_attributesModel->setItem(row, 2, item3);
+        QStandardItem *item4 = new QStandardItem();
+        item4->setEditable(false);
+        item4->setCheckState(attribute->isCalculated() ? Qt::Checked : Qt::Unchecked);
+        m_attributesModel->setItem(row, 3, item4);
+        QStandardItem *item5 = new QStandardItem();
+        item5->setEditable(false);
+        item5->setCheckState(attribute->isEditable() ? Qt::Checked : Qt::Unchecked);
+        m_attributesModel->setItem(row, 4, item5);
+        QStandardItem *item6 = new QStandardItem(attribute->defaultValue().toString());
+        item6->setEditable(false);
+        m_attributesModel->setItem(row, 5, item6);
         row++;
     }
 
     QStringList attributesHeaderTitles;
-    attributesHeaderTitles << tr("Identifier") << tr("Qt-Type");
+    attributesHeaderTitles << tr("Identifier") << tr("Type") << tr("Cached") << tr("Calculated") << tr("Editable") << tr("Default Value");
     m_attributesModel->setHorizontalHeaderLabels(attributesHeaderTitles);
 
-    ui->treeViewAttributes->setModel(m_attributesModel);
     ui->treeViewAttributes->setHeaderHidden(false);
+    ui->treeViewAttributes->setUniformRowHeights(true);
+    ui->treeViewAttributes->setAlternatingRowColors(true);
+    ui->treeViewAttributes->setModel(m_attributesModel);
+    ui->treeViewAttributes->resizeColumnToContents(0);
+    ui->treeViewAttributes->resizeColumnToContents(1);
+    ui->treeViewAttributes->resizeColumnToContents(2);
+    ui->treeViewAttributes->resizeColumnToContents(3);
+    ui->treeViewAttributes->resizeColumnToContents(4);
+    ui->treeViewAttributes->resizeColumnToContents(5);
 
     //Functions
     m_functionsModel = new QStandardItemModel(this);
+    QList<LBDatabase::Function *> inheritedFunctions= entityType->functions();
     row = 0;
-    foreach(LBDatabase::Function *function, entityType->functions()) {
-        QStandardItem *itemName = new QStandardItem(function->identifier());
-        itemName->setData(QVariant::fromValue<LBDatabase::Function *>(function));
-        itemName->setEditable(false);
-        m_functionsModel->setItem(row, 0, itemName);
-//        QStandardItem *itemType = new QStandardItem(attribute->qtType());
-//        functionsModel->setItem(row, 1, itemType);
+    foreach(LBDatabase::Function *function, entityType->nonInhertitedFunctions()) {
+        inheritedFunctions.removeAll(function);
+        QStandardItem *item = new QStandardItem(function->identifier());
+        item->setData(QVariant::fromValue<LBDatabase::Function *>(function));
+        item->setEditable(false);
+        m_functionsModel->setItem(row, 0, item);
+        item = new QStandardItem(":");
+        item->setEditable(false);
+        m_functionsModel->setItem(row, 1, item);
+        item = new QStandardItem(function->keyEntityType()->identifier());
+        item->setEditable(false);
+        m_functionsModel->setItem(row, 2, item);
+        item = new QStandardItem("->");
+        item->setEditable(false);
+        m_functionsModel->setItem(row, 3, item);
+        item = new QStandardItem(LBDatabase::Attribute::typeToName(function->type()));
+        item->setEditable(false);
+        m_functionsModel->setItem(row, 4, item);
+        item = new QStandardItem();
+        item->setEditable(false);
+        item->setCheckState(function->isCached() ? Qt::Checked : Qt::Unchecked);
+        m_functionsModel->setItem(row, 5, item);
+        item = new QStandardItem();
+        item->setEditable(false);
+        item->setCheckState(function->isCalculated() ? Qt::Checked : Qt::Unchecked);
+        m_functionsModel->setItem(row, 6, item);
+        item = new QStandardItem();
+        item->setEditable(false);
+        item->setCheckState(function->isEditable() ? Qt::Checked : Qt::Unchecked);
+        m_functionsModel->setItem(row, 7, item);
+        row++;
+    }
+
+    if(!inheritedFunctions.isEmpty()) {
+        QStandardItem *item = new QStandardItem(tr("Inherited Functions:"));
+        item->setEditable(false);
+        item->setSelectable(false);
+        item->setFont(QFont("Lucida Grande",12,QFont::Bold));
+        item->setForeground(QBrush(QColor(150,150,150)));
+        m_functionsModel->setItem(row, 0, item);
+        item = new QStandardItem("");
+        item->setEditable(false);
+        item->setSelectable(false);
+        m_functionsModel->setItem(row, 1, item);
+        m_functionsModel->setItem(row, 2, item);
+        m_functionsModel->setItem(row, 3, item);
+        m_functionsModel->setItem(row, 4, item);
+        m_functionsModel->setItem(row, 5, item);
+        m_functionsModel->setItem(row, 6, item);
+        m_functionsModel->setItem(row, 7, item);
+        row++;
+    }
+
+    foreach(LBDatabase::Function *function, inheritedFunctions) {
+        QStandardItem *item = new QStandardItem(function->identifier());
+        item->setData(QVariant::fromValue<LBDatabase::Function *>(function));
+        item->setEditable(false);
+        m_functionsModel->setItem(row, 0, item);
+        item = new QStandardItem(":");
+        item->setEditable(false);
+        m_functionsModel->setItem(row, 1, item);
+        item = new QStandardItem(function->keyEntityType()->identifier());
+        item->setEditable(false);
+        m_functionsModel->setItem(row, 2, item);
+        item = new QStandardItem("->");
+        item->setEditable(false);
+        m_functionsModel->setItem(row, 3, item);
+        item = new QStandardItem(LBDatabase::Attribute::typeToName(function->type()));
+        item->setEditable(false);
+        m_functionsModel->setItem(row, 4, item);
+        item = new QStandardItem();
+        item->setEditable(false);
+        item->setCheckState(function->isCached() ? Qt::Checked : Qt::Unchecked);
+        m_functionsModel->setItem(row, 5, item);
+        item = new QStandardItem();
+        item->setEditable(false);
+        item->setCheckState(function->isCalculated() ? Qt::Checked : Qt::Unchecked);
+        m_functionsModel->setItem(row, 6, item);
+        item = new QStandardItem();
+        item->setEditable(false);
+        item->setCheckState(function->isEditable() ? Qt::Checked : Qt::Unchecked);
+        m_functionsModel->setItem(row, 7, item);
         row++;
     }
 
     QStringList functionsHeaderTitles;
-    functionsHeaderTitles << tr("Identifier");
+    functionsHeaderTitles << tr("Identifier") << "" << tr("Key Entity") << "" << tr("Type") << tr("Cached") << tr("Calculated") << tr("Editable");
     m_functionsModel->setHorizontalHeaderLabels(functionsHeaderTitles);
 
-    ui->treeViewFunctions->setModel(m_functionsModel);
     ui->treeViewFunctions->setHeaderHidden(false);
+    ui->treeViewFunctions->setUniformRowHeights(true);
+    ui->treeViewFunctions->setAlternatingRowColors(true);
+    ui->treeViewFunctions->setModel(m_functionsModel);
+    ui->treeViewFunctions->resizeColumnToContents(0);
+    ui->treeViewFunctions->resizeColumnToContents(1);
+    ui->treeViewFunctions->resizeColumnToContents(2);
+    ui->treeViewFunctions->resizeColumnToContents(3);
+    ui->treeViewFunctions->resizeColumnToContents(4);
+    ui->treeViewFunctions->setColumnWidth(4, ui->treeViewFunctions->columnWidth(4) + 100);
+    ui->treeViewFunctions->resizeColumnToContents(5);
+    ui->treeViewFunctions->resizeColumnToContents(6);
+    ui->treeViewFunctions->resizeColumnToContents(7);
 
     //Relations
     m_relationsModel = new QStandardItemModel(this);
+
+    QList<LBDatabase::Relation *> transposeRelations;
+    QList<LBDatabase::Relation *> inheritedRelations = entityType->relations();
+
     row = 0;
-    foreach(LBDatabase::Relation *relation, entityType->relations()) {
-        QStandardItem *itemName = new QStandardItem(relation->identifier());
-        itemName->setData(QVariant::fromValue<LBDatabase::Relation *>(relation));
-        itemName->setEditable(false);
-        m_relationsModel->setItem(row, 0, itemName);
-//        QStandardItem *itemType = new QStandardItem(attribute->qtType());
-//        relationsModel->setItem(row, 1, itemType);
+    foreach(LBDatabase::Relation *relation, entityType->nonInhertitedRelations()) {
+        inheritedRelations.removeAll(relation);
+        if(relation->isTranspose()) {
+            transposeRelations.append(relation);
+            continue;
+        }
+        addRelationToModel(row, relation);
+        row++;
+    }
+
+    if(!transposeRelations.isEmpty()) {
+        QStandardItem *item = new QStandardItem(tr("Transpose Relations:"));
+        item->setEditable(false);
+        item->setSelectable(false);
+        item->setFont(QFont("Lucida Grande",12,QFont::Bold));
+        item->setForeground(QBrush(QColor(150,150,150)));
+        m_relationsModel->setItem(row, 0, item);
+        item = new QStandardItem("");
+        item->setEditable(false);
+        item->setSelectable(false);
+        m_relationsModel->setItem(row, 1, item);
+        m_relationsModel->setItem(row, 2, item);
+        m_relationsModel->setItem(row, 3, item);
+        m_relationsModel->setItem(row, 4, item);
+        m_relationsModel->setItem(row, 5, item);
+        m_relationsModel->setItem(row, 6, item);
+        m_relationsModel->setItem(row, 7, item);
+        row++;
+    }
+
+    foreach(LBDatabase::Relation *relation, transposeRelations) {
+        addRelationToModel(row, relation);
+        row++;
+    }
+
+    if(!inheritedRelations.isEmpty()) {
+        QStandardItem *item = new QStandardItem(tr("Inherited Relations:"));
+        item->setEditable(false);
+        item->setSelectable(false);
+        item->setFont(QFont("Lucida Grande",12,QFont::Bold));
+        item->setForeground(QBrush(QColor(150,150,150)));
+        m_relationsModel->setItem(row, 0, item);
+        item = new QStandardItem("");
+        item->setEditable(false);
+        item->setSelectable(false);
+        m_relationsModel->setItem(row, 1, item);
+        m_relationsModel->setItem(row, 2, item);
+        m_relationsModel->setItem(row, 3, item);
+        m_relationsModel->setItem(row, 4, item);
+        m_relationsModel->setItem(row, 5, item);
+        m_relationsModel->setItem(row, 6, item);
+        m_relationsModel->setItem(row, 7, item);
+        row++;
+    }
+
+    QList<LBDatabase::Relation *> inheritedTransposeRelations;
+    foreach(LBDatabase::Relation *relation, inheritedRelations) {
+        if(relation->isTranspose()) {
+            inheritedTransposeRelations.append(relation);
+            continue;
+        }
+        addRelationToModel(row, relation);
+        row++;
+    }
+
+    if(!inheritedTransposeRelations.isEmpty()) {
+        QStandardItem *item = new QStandardItem(tr("Inherited Transpose Relations:"));
+        item->setEditable(false);
+        item->setSelectable(false);
+        item->setFont(QFont("Lucida Grande",12,QFont::Bold));
+        item->setForeground(QBrush(QColor(150,150,150)));
+        m_relationsModel->setItem(row, 0, item);
+        item = new QStandardItem("");
+        item->setEditable(false);
+        item->setSelectable(false);
+        m_relationsModel->setItem(row, 1, item);
+        m_relationsModel->setItem(row, 2, item);
+        m_relationsModel->setItem(row, 3, item);
+        m_relationsModel->setItem(row, 4, item);
+        m_relationsModel->setItem(row, 5, item);
+        m_relationsModel->setItem(row, 6, item);
+        m_relationsModel->setItem(row, 7, item);
+        row++;
+    }
+
+    foreach(LBDatabase::Relation *relation, inheritedTransposeRelations) {
+        addRelationToModel(row, relation);
         row++;
     }
 
     QStringList relationsHeaderTitles;
-    relationsHeaderTitles << tr("Identifier");
+    relationsHeaderTitles << tr("Identifier") << tr("Entity") << "" << "" << "" << tr("Related Entity") << tr("Calculated") << tr("Editable");
     m_relationsModel->setHorizontalHeaderLabels(relationsHeaderTitles);
 
-    ui->treeViewRelations->setModel(m_relationsModel);
     ui->treeViewRelations->setHeaderHidden(false);
+    ui->treeViewRelations->setUniformRowHeights(true);
+    ui->treeViewRelations->setAlternatingRowColors(true);
+    ui->treeViewRelations->setModel(m_relationsModel);
+    ui->treeViewRelations->resizeColumnToContents(0);
+    ui->treeViewRelations->resizeColumnToContents(1);
+    ui->treeViewRelations->resizeColumnToContents(2);
+    ui->treeViewRelations->resizeColumnToContents(3);
+    ui->treeViewRelations->resizeColumnToContents(4);
+    ui->treeViewRelations->resizeColumnToContents(5);
+    ui->treeViewRelations->resizeColumnToContents(6);
+    ui->treeViewRelations->resizeColumnToContents(7);
 
     connect(ui->treeViewAttributes->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(attributeSelectionChanged(QModelIndex,QModelIndex)));
     connect(ui->treeViewFunctions->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(functionSelectionChanged(QModelIndex,QModelIndex)));
     connect(ui->treeViewRelations->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(relationSelectionChanged(QModelIndex,QModelIndex)));
+}
+
+void EntityTypeView::addRelationToModel(int row, LBDatabase::Relation *relation)
+{
+    QStandardItem *item = new QStandardItem(relation->identifier());
+    item->setData(QVariant::fromValue<LBDatabase::Relation *>(relation));
+    item->setEditable(false);
+    m_relationsModel->setItem(row, 0, item);
+
+    item = new QStandardItem(relation->entityType()->identifier());
+    item->setEditable(false);
+    m_relationsModel->setItem(row, 1, item);
+
+    if(relation->isTranspose()) {
+        item = new QStandardItem("<-");
+        item->setEditable(false);
+        m_relationsModel->setItem(row, 2, item);
+
+        switch(relation->cardinality()) {
+        case LBDatabase::Relation::OneToOne:
+            item = new QStandardItem("1:1");
+            break;
+        case LBDatabase::Relation::OneToMany:
+            item = new QStandardItem("N:1");
+            break;
+        default:
+        case LBDatabase::Relation::ManyToMany:
+            item = new QStandardItem("M:N");
+            break;
+        }
+        item->setEditable(false);
+        m_relationsModel->setItem(row, 3, item);
+
+        item = new QStandardItem(relation->direction() == LBDatabase::Relation::Both ? "->" : "");
+        item->setEditable(false);
+        m_relationsModel->setItem(row, 4, item);
+    }
+    else {
+        item = new QStandardItem(relation->direction() == LBDatabase::Relation::Both ? "<-" : "");
+        item->setEditable(false);
+        m_relationsModel->setItem(row, 2, item);
+
+        switch(relation->cardinality()) {
+        case LBDatabase::Relation::OneToOne:
+            item = new QStandardItem("1:1");
+            break;
+        case LBDatabase::Relation::OneToMany:
+            item = new QStandardItem("1:N");
+            break;
+        default:
+        case LBDatabase::Relation::ManyToMany:
+            item = new QStandardItem("N:M");
+            break;
+        }
+        item->setEditable(false);
+        m_relationsModel->setItem(row, 3, item);
+
+        item = new QStandardItem("->");
+        item->setEditable(false);
+        m_relationsModel->setItem(row, 4, item);
+    }
+
+    item = new QStandardItem(relation->entityTypeOther()->identifier());
+    item->setEditable(false);
+    m_relationsModel->setItem(row, 5, item);
+
+    item = new QStandardItem();
+    item->setEditable(false);
+    item->setCheckState(relation->isCalculated() ? Qt::Checked : Qt::Unchecked);
+    m_relationsModel->setItem(row, 6, item);
+    item = new QStandardItem();
+    item->setEditable(false);
+    item->setCheckState(relation->isEditable() ? Qt::Checked : Qt::Unchecked);
+    m_relationsModel->setItem(row, 7, item);
 }
 
 void EntityTypeView::activated()
