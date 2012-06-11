@@ -433,12 +433,12 @@ QList<RelationValueData> LocalStorageDriver::relatedEntities(Relation *relation)
     Q_D(const LocalStorageDriver);
     QList<RelationValueData> entities;
 
-    QSqlQuery query("SELECT id, "+
-                    relation->leftEntityIdColumnName()+","+
-                    relation->rightEntityIdColumnName()+","+
-                    " FROM "+relation->tableName());
+    QSqlQuery query(d->database->sqlDatabase());
     query.setForwardOnly(true);
-    query.exec();
+    query.exec("SELECT id, "+
+               relation->leftEntityIdColumnName()+","+
+               relation->rightEntityIdColumnName()+","+
+               " FROM "+relation->tableName());
 
     while (query.next()) {
         RelationValueData data;
