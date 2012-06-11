@@ -60,6 +60,12 @@ Actions::Actions(Controller *controller) :
     m_editRelationAction->setEnabled(false);
     m_editRelationAction->setIcon(QIcon(":/icons/actions/relation_edit"));
     connect(m_editRelationAction, SIGNAL(triggered()), m_controller, SLOT(editRelation()));
+
+    m_exportAction = new LBGui::Action(this);
+    m_exportAction->setText(tr("Export C++ Source..."));
+    m_exportAction->setEnabled(false);
+    m_exportAction->setIcon(QIcon(":/icons/actions/export"));
+    connect(m_exportAction, SIGNAL(triggered()), m_controller, SLOT(exportSource()));
 }
 
 LBGui::Action *Actions::showPreferencesAction() const
@@ -100,6 +106,11 @@ LBGui::Action *Actions::editFunctionAction() const
 LBGui::Action *Actions::editRelationAction() const
 {
     return m_editRelationAction;
+}
+
+LBGui::Action *Actions::exportAction() const
+{
+    return m_exportAction;
 }
 
 void Actions::updateActions()

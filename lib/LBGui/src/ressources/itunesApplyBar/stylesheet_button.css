@@ -1,7 +1,14 @@
+QWidget#buttonBackground {
+    background-color: transparent;
+    border-image: url(:/itunesApplyBar/buttonbackground) 2px 0px 0px 0px;
+    border: 0;
+    border-left: 2px transparent;
+}
+
 QPushButton {
     background: transparent;
     border-image: url(:/pushbutton/itunes_white/background) 4px 9px 4px 9px;
-    border-top: 4px transparent;
+    border-top: 3px transparent;
     border-bottom: 3px transparent;
     border-right: 4px transparent;
     border-left: 4px transparent;
@@ -9,7 +16,7 @@ QPushButton {
 QPushButton:pressed {
     background: transparent;
     border-image: url(:/pushbutton/itunes_white/background_pressed) 4px 9px 4px 9px;
-    border-top: 4px transparent;
+    border-top: 3px transparent;
     border-bottom: 3px transparent;
     border-right: 4px transparent;
     border-left: 4px transparent;

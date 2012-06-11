@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/pushbutton/itunes_white">
-        <file alias="background">itunes_white/background.png</file>
         <file alias="stylesheet">itunes_white/stylesheet.css</file>
+        <file alias="background_old">itunes_white/background.png</file>
+        <file alias="background_pressed">itunes_white/background copy_pressed.png</file>
+        <file alias="background">itunes_white/background copy.png</file>
     </qresource>
 </RCC>

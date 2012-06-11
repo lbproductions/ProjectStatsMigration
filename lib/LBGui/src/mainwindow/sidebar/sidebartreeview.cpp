@@ -27,7 +27,7 @@ SidebarTreeView::SidebarTreeView(Sidebar *parent) :
 
     setMinimumWidth(100);
 
-    setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+    setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Expanding);
 
     setAcceptDrops(true);
     setDropIndicatorShown(true);

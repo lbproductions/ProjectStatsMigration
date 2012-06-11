@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/itunesApplyBar">
+        <file alias="background">background.png</file>
+        <file alias="buttonbackground">buttonbackground.png</file>
+        <file alias="stylesheet_button">stylesheet_button.css</file>
+        <file alias="stylesheet">stylesheet.css</file>
+    </qresource>
+</RCC>

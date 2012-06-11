@@ -22,7 +22,7 @@ Sidebar::Sidebar(MainWindow *parent) :
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0,0,0,0);
     layout->setSpacing(0);
-    layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    //layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
 
     m_treeView = new SidebarTreeView(this);
     layout->addWidget(m_treeView);
@@ -36,9 +36,7 @@ Sidebar::Sidebar(MainWindow *parent) :
 //#endif
     setLayout(layout);
     setStyle(MacOSLionMailStyle);
-
-    setMinimumSize(200,200);
-    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::MinimumExpanding);
+    setSizePolicy(QSizePolicy::Preferred,QSizePolicy::Expanding);
 
     connect(m_treeView, SIGNAL(categorieChanged(::LBGui::SidebarChildCategorie*)),
             this,       SIGNAL(categorieChanged(::LBGui::SidebarChildCategorie*)));

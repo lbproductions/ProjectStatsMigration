@@ -33,7 +33,9 @@ HEADERS += \
     preferenceswindow/preferenceswindow.h \
     preferenceswindow/preferencespage.h \
     widgets/sheet.h \
-    mainwindow/view.h
+    mainwindow/view.h \
+    widgets/itunesapplybar.h \
+    widgets/label.h
 
 SOURCES += \
     mainwindow/mainwindow.cpp \
@@ -60,7 +62,9 @@ SOURCES += \
     preferenceswindow/preferenceswindow.cpp \
     preferenceswindow/preferencespage.cpp \
     widgets/sheet.cpp \
-    mainwindow/view.cpp
+    mainwindow/view.cpp \
+    widgets/itunesapplybar.cpp \
+    widgets/label.cpp
 
 OTHER_FILES += \
     ressources/sidebar/macos_lionmail/stylesheet.css \
@@ -70,7 +74,9 @@ OTHER_FILES += \
     ressources/listwidget/itunes_white/stylesheet.css \
     ressources/treeview/itunes_white/stylesheet.css \
     ressources/backgroundwidget/gray/stylesheet.css \
-    ressources/sheet/stylesheet.css
+    ressources/sheet/stylesheet.css \
+    ressources/itunesApplyBar/stylesheet.css \
+    ressources/itunesApplyBar/stylesheet_button.css
 
 RESOURCES += \
     ressources/sidebar/sidebar.qrc \
@@ -81,7 +87,8 @@ RESOURCES += \
     ressources/treeview/treeview.qrc \
     ressources/backgroundwidget/backgroundwidget.qrc \
     ressources/preferenceswindow/preferenceswindow.qrc \
-    ressources/sheet/sheet.qrc
+    ressources/sheet/sheet.qrc \
+    ressources/itunesApplyBar/itunesApplyBar.qrc
 
 macx {
     HEADERS += \

@@ -63,6 +63,8 @@ void MainWindow::setupMenuBar()
     menuBar()->addAction(tr("&File"), m_controller->actions()->editAttributeAction());
     menuBar()->addAction(tr("&File"), m_controller->actions()->editFunctionAction());
     menuBar()->addAction(tr("&File"), m_controller->actions()->editRelationAction());
+    menuBar()->addSeparator(tr("&File"));
+    menuBar()->addAction(tr("&File"), m_controller->actions()->exportAction());
     menuBar()->addAction(tr("&File"), m_controller->actions()->showPreferencesAction());
 
     menuBar()->addMenu(menuBar()->windowMenu());
@@ -88,6 +90,10 @@ void MainWindow::setupToolBar()
     toolBar->addWidget(spacer);
     toolBar->addAction(m_controller->actions()->addRelationAction());
     toolBar->addAction(m_controller->actions()->editRelationAction());
+    spacer = new QWidget(toolBar);
+    spacer->setFixedWidth(50);
+    toolBar->addWidget(spacer);
+    toolBar->addAction(m_controller->actions()->exportAction());
 
 
     setUnifiedTitleAndToolBarOnMac(true);

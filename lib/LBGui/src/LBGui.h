@@ -17,6 +17,8 @@
 #include <LBGui/widgets/sheet.h>
 #include <LBGui/widgets/splitter.h>
 #include <LBGui/widgets/treeview.h>
+#include <LBGui/widgets/itunesapplybar.h>
+#include <LBGui/widgets/label.h>
 #include <LBGui/shared/action.h>
 #include <LBGui/shared/autosavefile.h>
 #include <LBGui/shared/global.h>
@@ -32,6 +34,7 @@
     Q_INIT_RESOURCE(backgroundwidget); \
     Q_INIT_RESOURCE(treeview); \
     Q_INIT_RESOURCE(preferenceswindow); \
-    Q_INIT_RESOURCE(sheet)
+    Q_INIT_RESOURCE(sheet); \
+    Q_INIT_RESOURCE(itunesApplyBar)
 
 #endif // LBGUI_H

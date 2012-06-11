@@ -5,6 +5,10 @@
 
 class MainWindow;
 
+namespace LBDatabase {
+class Storage;
+}
+
 namespace MainWindowNS {
 
 class Actions;
@@ -36,6 +40,9 @@ public slots:
     void editFunction();
     void editRelation();
 
+    void exportSource();
+    void exportSource(const QString &location);
+
     void showWidget(QWidget *widget);
 
     QString getOpenFileName(const QString &windowTitle, const QString &fileDesc);
@@ -49,6 +56,7 @@ private:
 
     MainWindow *m_mainWindow;
     Actions *m_actions;
+    LBDatabase::Storage *m_storage;
 };
 
 } // namespace MainWindowNS

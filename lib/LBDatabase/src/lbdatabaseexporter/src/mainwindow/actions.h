@@ -29,6 +29,8 @@ public:
     LBGui::Action *editFunctionAction() const;
     LBGui::Action *editRelationAction() const;
 
+    LBGui::Action *exportAction() const;
+
 public slots:
     void updateActions();
 
@@ -46,6 +48,8 @@ private:
     LBGui::Action *m_editAttributeAction;
     LBGui::Action *m_editFunctionAction;
     LBGui::Action *m_editRelationAction;
+
+    LBGui::Action *m_exportAction;
 
 };
 

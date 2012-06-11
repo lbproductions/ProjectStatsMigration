@@ -15,6 +15,7 @@
 #include <QMessageBox>
 
 #include <QDebug>
+#include <QSettings>
 
 namespace MainWindowNS {
 
@@ -25,6 +26,86 @@ EntityTypeView::EntityTypeView(MainWindow *parent) :
     m_entityType(0)
 {
     ui->setupUi(this);
+
+    setBackgroundRole(QPalette::Base);
+    ui->scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
+    setContentsMargins(0,0,0,0);
+    layout()->setSpacing(0);
+    layout()->setContentsMargins(0,0,0,0);
+
+    QFile stylesheet(QLatin1String(":/groupbox/itunes_white/stylesheet"));
+    stylesheet.open(QFile::ReadOnly);
+    ui->groupBoxGeneral->setStyleSheet(stylesheet.readAll());
+    stylesheet.seek(0);
+    ui->groupBoxAttributes->setStyleSheet(stylesheet.readAll());
+    stylesheet.seek(0);
+    ui->groupBoxFunctions->setStyleSheet(stylesheet.readAll());
+    stylesheet.seek(0);
+    ui->groupBoxRelations->setStyleSheet(stylesheet.readAll());
+    stylesheet.close();
+
+    ui->treeViewAttributes->setAttribute(Qt::WA_MacShowFocusRect, false);
+    ui->treeViewFunctions->setAttribute(Qt::WA_MacShowFocusRect, false);
+    ui->treeViewRelations->setAttribute(Qt::WA_MacShowFocusRect, false);
+
+    QString style = "QTreeView {"
+            "font-size: 13px;"
+            "background-color: #f5f5f5;"
+            "alternate-background-color: #ebebeb;"
+            "selection-background-color: #Dbdbdb;"
+            "selection-color: black;"
+            "border: 1px solid #c5c5c5;"
+            "}"
+
+        "QTreeView::item {"
+            "height: 22px;"
+        "}";
+    ui->treeViewAttributes->setStyleSheet(style);
+    ui->treeViewFunctions->setStyleSheet(style);
+    ui->treeViewRelations->setStyleSheet(style);
+
+//    GroupBox *sourceGroupBox = new GroupBox(overviewWidget);
+//    sourceGroupBox->setCheckable(true);
+//    sourceGroupBox->setChecked(false);
+//    sourceGroupBox->setFixedWidth(792);
+//    sourceGroupBox->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Maximum);
+//    sourceGroupBox->setStyle(GroupBox::ItunesWhite);
+//    sourceGroupBox->setTitle(tr("Keep sources in sync (not supported yet)"));
+//    QHBoxLayout *sourceLayout = new QHBoxLayout();
+//    sourceGroupBox->setLayout(sourceLayout);
+//    sourceLayout->addWidget(new QLabel(tr("Source directory")));
+//    sourceLayout->addWidget(new QLineEdit());
+//    QPushButton *chooseSourceButton = new QPushButton(tr("Choose..."),sourceGroupBox);
+//    sourceLayout->addWidget(chooseSourceButton);
+
+//    overviewLayout->addWidget(sourceGroupBox);
+
+//    QScrollArea *overviewScrollArea = new QScrollArea();
+//    overviewScrollArea->setWidget(overviewWidget);
+//    overviewScrollArea->setWidgetResizable(true);
+
+//    addTab(overviewScrollArea,tr("Overview"));
+
+    LBGui::ItunesApplyBar *applyBar = new LBGui::ItunesApplyBar(this);
+
+    QWidget *sourceWidget = new QWidget(applyBar);
+    QHBoxLayout *sourceLayout = new QHBoxLayout(sourceWidget);
+    sourceWidget->setLayout(sourceLayout);
+    LBGui::Label *label = new LBGui::Label(tr("Export C++ Source to:"));
+    label->setForegroundColor(QColor(251,251,251));
+    label->setDropshadowColor(QColor(67,67,67));
+    label->setFont(QFont("Lucida Grande", 12, QFont::Bold));
+    sourceLayout->addWidget(label);
+    m_lineEditSource = new QLineEdit(sourceWidget);
+    QSettings settings;
+    m_lineEditSource->setText(settings.value("storagecppsource").toString());
+    connect(m_lineEditSource, SIGNAL(textChanged(QString)), this, SLOT(sourceLocationChanged(QString)));
+    sourceLayout->addWidget(m_lineEditSource);
+    applyBar->setWidget(sourceWidget);
+
+    layout()->addWidget(applyBar);
+
+    connect(applyBar, SIGNAL(applyClicked()), this, SLOT(exportSource()));
 }
 
 EntityTypeView::~EntityTypeView()
@@ -447,6 +528,11 @@ void EntityTypeView::setEntityType(LBDatabase::EntityType *entityType)
     connect(ui->treeViewRelations->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), this, SLOT(relationSelectionChanged(QModelIndex,QModelIndex)));
 }
 
+QString EntityTypeView::sourceLocation() const
+{
+    return m_lineEditSource->text();
+}
+
 void EntityTypeView::addRelationToModel(int row, LBDatabase::Relation *relation)
 {
     QStandardItem *item = new QStandardItem(relation->identifier());
@@ -521,6 +607,17 @@ void EntityTypeView::addRelationToModel(int row, LBDatabase::Relation *relation)
     m_relationsModel->setItem(row, 7, item);
 }
 
+void EntityTypeView::sourceLocationChanged(QString location)
+{
+    QSettings settings;
+    settings.setValue("storagecppsource", location);
+}
+
+void EntityTypeView::exportSource()
+{
+    m_parent->controller()->exportSource(m_lineEditSource->text());
+}
+
 void EntityTypeView::activated()
 {
     Actions *actions = m_parent->controller()->actions();
@@ -535,6 +632,11 @@ void EntityTypeView::activated()
     actions->editAttributeAction()->setEnabled(!list1.isEmpty());
     actions->editFunctionAction()->setEnabled(!list2.isEmpty());
     actions->editRelationAction()->setEnabled(!list3.isEmpty());
+
+    actions->exportAction()->setEnabled(true);
+
+    QSettings settings;
+    m_lineEditSource->setText(settings.value("storagecppsource").toString());
 }
 
 void EntityTypeView::addAttribute()

@@ -4,6 +4,8 @@
 #include "mainwindow.h"
 #include "views/entitytypeview.h"
 
+#include "../cppexporter.h"
+
 #include <LBDatabase/LBDatabase.h>
 #include <LBGui/LBGui.h>
 
@@ -64,16 +66,16 @@ void Controller::openStorage(const QString &fileName)
     QSettings settings;
     settings.setValue("controller/lastChosenStorage", fileName);
 
-    LBDatabase::Storage *storage = new LBDatabase::Storage(m_mainWindow);
+    m_storage = new LBDatabase::Storage(m_mainWindow);
 
     QElapsedTimer timer;
     timer.start();
 //    LBGui::AutosaveFile *autosaveFile = LBGui::AutosaveFile::instance(fileName);
 //    storage->setDriver(new LBDatabase::LocalStorageDriver(autosaveFile->copyFileName(),storage));
-    storage->setDriver(new LBDatabase::LocalStorageDriver(fileName,storage));
-    storage->open();
+    m_storage->setDriver(new LBDatabase::LocalStorageDriver(fileName,m_storage));
+    m_storage->open();
     qDebug() << "Opening the storage" << fileName << "took "+QString::number(timer.elapsed())+"ms.";
-    m_mainWindow->setStorage(storage);
+    m_mainWindow->setStorage(m_storage);
 }
 
 void Controller::example()
@@ -120,6 +122,30 @@ void Controller::editFunction()
 void Controller::editRelation()
 {
     static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->editRelation();
+}
+
+void Controller::exportSource()
+{
+    exportSource(static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->sourceLocation());
+}
+
+void Controller::exportSource(const QString &location)
+{
+    QFile f(location);
+    if(!f.exists() || !QFileInfo(f).isDir()) {
+        QMessageBox msg(m_mainWindow);
+        msg.setText("The C++ source for the storage could not be exported.");
+        msg.setInformativeText("The chosen location is no writable directory.");
+        msg.setIcon(QMessageBox::Critical);
+        msg.setModal(true);
+        msg.exec();
+        return;
+    }
+
+    LBDatabase::CppExporter exporter;
+    exporter.setDirectory(location);
+    exporter.setStorage(m_storage);
+    exporter.exportCpp();
 }
 
 void Controller::showWidget(QWidget *widget)

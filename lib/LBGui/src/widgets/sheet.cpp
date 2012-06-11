@@ -45,10 +45,10 @@ Sheet::Sheet(QWidget *parent) :
     line->setFrameShadow(QFrame::Sunken);
     layout->addWidget(line);
     m_widget = new QWidget(this);
-    m_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+//    m_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     layout->addWidget(m_widget);
 
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+//    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     setLayout(layout);
 }
 

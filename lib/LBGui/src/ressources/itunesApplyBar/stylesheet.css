@@ -1,0 +1,5 @@
+QWidget#contentWidget {
+    background: transparent;
+    background-image: url(:/itunesApplyBar/background);
+    background-repeat: repeat-x;
+}

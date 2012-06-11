@@ -100,7 +100,14 @@ SOURCES += main.cpp \
     mainwindow/views/entitytypeview.cpp \
     mainwindow/views/attributeeditor.cpp \
     mainwindow/views/functioneditor.cpp \
-    mainwindow/views/relationseditor.cpp
+    mainwindow/views/relationseditor.cpp \
+    graphvizexporter.cpp \
+    entitytypewriter.cpp \
+    cppexporter.cpp \
+    contextwriter.cpp \
+    calculatorwriter.cpp \
+    writer.cpp \
+    storagewriter.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -114,7 +121,14 @@ HEADERS  += \
     mainwindow/views/entitytypeview.h \
     mainwindow/views/attributeeditor.h \
     mainwindow/views/functioneditor.h \
-    mainwindow/views/relationseditor.h
+    mainwindow/views/relationseditor.h \
+    graphvizexporter.h \
+    entitytypewriter.h \
+    cppexporter.h \
+    contextwriter.h \
+    calculatorwriter.h \
+    writer.h \
+    storagewriter.h
 
 OTHER_FILES += \
     ../util/deployment/mac/deploy.sh

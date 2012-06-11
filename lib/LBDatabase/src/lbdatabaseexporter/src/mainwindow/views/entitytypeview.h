@@ -29,6 +29,8 @@ public:
     
     void setEntityType(LBDatabase::EntityType *entityType);
 
+    QString sourceLocation() const;
+
 public slots:
     void activated();
 
@@ -63,6 +65,10 @@ private slots:
 
     void addRelationToModel(int row, LBDatabase::Relation *relation);
 
+    void sourceLocationChanged(QString);
+
+    void exportSource();
+
 private:
     Ui::EntityTypeView *ui;
 
@@ -73,6 +79,8 @@ private:
     QStandardItemModel *m_attributesModel;
     QStandardItemModel *m_relationsModel;
     QStandardItemModel *m_functionsModel;
+
+    QLineEdit *m_lineEditSource;
 };
 
 
