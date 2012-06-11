@@ -2,6 +2,7 @@
 
 #include <LBDatabase/LBDatabase.h>
 
+#include "mainwindow/controller.h"
 #include "mainwindow/mainwindow.h"
 #include "misc/logger.h"
 
@@ -18,17 +19,7 @@ int main(int argc, char *argv[])
 
     MainWindow window;
     window.show();
-
-    LBDatabase::Storage *storage = new LBDatabase::Storage(&window);
-
-    storage->setDriver(
-                new LBDatabase::LocalStorageDriver(
-                    "/Users/niklas/Library/Application Support/LBProductions/ProjectStats/storage.lbstorage",
-                    storage)
-                );
-
-    storage->open();
-    window.setStorage(storage);
+    window.controller()->init();
 
     return a.exec();
 }

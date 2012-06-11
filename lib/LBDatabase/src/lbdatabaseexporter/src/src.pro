@@ -7,7 +7,7 @@ VERSION = 0.1
 DEPLOY_DIR = $$OUT_PWD/../deploy
 DESTDIR = $$OUT_PWD/../
 OBJECTS_DIR = $$OUT_PWD/../build/
-MYICON = $$PWD/resources/icon/ApplicationIcon.icns
+MYICON = $$PWD/resources/icons/AppIcon.icns
 APPCASTURL = http://dl.dropbox.com/u/140012/$$TARGET
 
 DEFINES +=  'APPCASTURL=\'\"$$APPCASTURL\"\''
@@ -83,10 +83,10 @@ macx {
     QMAKE_EXTRA_TARGETS += copyFrameworks copyDylibs
     PRE_TARGETDEPS += dylibs frameworks
 
-#     CONFIG(release, debug|release) {
-#        QMAKE_POST_LINK += && rm -R $$DESTDIR/deploy && $$PWD/../util/deployment/mac/deploy.sh $$PWD $$OUT_PWD/../ $$DEPLOY_DIR $$MYICON $$TARGET $$APPCASTURL && \
-#                             rm -R $$DESTDIR/deploy/Contents
-#    }
+     CONFIG(release, debug|release) {
+        QMAKE_POST_LINK += && rm -Rf $$DESTDIR/deploy && $$PWD/../util/deployment/mac/deploy.sh $$PWD $$OUT_PWD/../ $$DEPLOY_DIR $$MYICON $$TARGET $$APPCASTURL && \
+                             rm -Rf $$DESTDIR/deploy/Contents
+    }
 }
 
 SOURCES += main.cpp \

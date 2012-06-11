@@ -55,6 +55,8 @@ void MainWindow::setupSidebar()
 void MainWindow::setupMenuBar()
 {
     //add actions to the menu bar
+    menuBar()->addAction(tr("&File"), m_controller->actions()->openStorageAction());
+    menuBar()->addSeparator(tr("&File"));
     menuBar()->addAction(tr("&File"), m_controller->actions()->addAttributeAction());
     menuBar()->addAction(tr("&File"), m_controller->actions()->addFunctionAction());
     menuBar()->addAction(tr("&File"), m_controller->actions()->addRelationAction());

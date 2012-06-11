@@ -20,6 +20,11 @@ Actions::Actions(Controller *controller) :
     m_showPreferencesAction->setShortcut(QKeySequence::Preferences);
     connect(m_showPreferencesAction, SIGNAL(triggered()), m_controller, SLOT(showPreferences()));
 
+    m_openStorageAction = new LBGui::Action(this);
+    m_openStorageAction->setText(tr("&Open Storage..."));
+    m_openStorageAction->setShortcut(QKeySequence::Open);
+    connect(m_openStorageAction, SIGNAL(triggered()), m_controller, SLOT(openStorage()));
+
     m_addAttributeAction = new LBGui::Action(this);
     m_addAttributeAction->setText(tr("Add &Attribute..."));
     m_addAttributeAction->setEnabled(false);
@@ -60,6 +65,11 @@ Actions::Actions(Controller *controller) :
 LBGui::Action *Actions::showPreferencesAction() const
 {
     return m_showPreferencesAction;
+}
+
+LBGui::Action *Actions::openStorageAction() const
+{
+    return m_openStorageAction;
 }
 
 LBGui::Action *Actions::addAttributeAction() const

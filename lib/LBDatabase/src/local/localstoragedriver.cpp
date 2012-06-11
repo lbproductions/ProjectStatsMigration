@@ -447,7 +447,9 @@ QList<RelationValueData> LocalStorageDriver::relatedEntities(Relation *relation)
         data.rightId = query.value(2).toInt();
         entities.append(data);
     }
+    query.finish();
 
+    //This is slow (by slow I mean 400ms vs 60ms for our ProjectStats.lbstorage):
 //    Table *relationTable = d->database->table(relation->tableName());
 //    int columnLeft = relationTable->column(relation->leftEntityIdColumnName())->index();
 //    int columnRight = relationTable->column(relation->rightEntityIdColumnName())->index();

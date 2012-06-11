@@ -18,6 +18,9 @@ public:
     explicit Actions(Controller *controller);
 
     LBGui::Action *showPreferencesAction() const;
+
+    LBGui::Action *openStorageAction() const;
+
     LBGui::Action *addAttributeAction() const;
     LBGui::Action *addFunctionAction() const;
     LBGui::Action *addRelationAction() const;
@@ -33,6 +36,8 @@ private:
     Controller *m_controller;
 
     LBGui::Action *m_showPreferencesAction;
+
+    LBGui::Action *m_openStorageAction;
 
     LBGui::Action *m_addAttributeAction;
     LBGui::Action *m_addFunctionAction;
