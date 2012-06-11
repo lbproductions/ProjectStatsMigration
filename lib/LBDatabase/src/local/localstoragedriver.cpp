@@ -17,6 +17,7 @@
 #include <QFile>
 #include <QVariant>
 #include <QDebug>
+#include <QSqlQuery>
 
 namespace {
 const QString MetaDataTableName("lbmeta");
@@ -267,7 +268,6 @@ QList<RelationMetaData> LocalStorageDriver::relations() const
 {
     Q_D(const LocalStorageDriver);
     QList<RelationMetaData> metaDatas;
-    metaDatas.reserve(d->relationsTable->rows().count());
     foreach(Row *row, d->relationsTable->rows()) {
         RelationMetaData metaData;
         metaData.id = row->id();
@@ -433,17 +433,31 @@ QList<RelationValueData> LocalStorageDriver::relatedEntities(Relation *relation)
     Q_D(const LocalStorageDriver);
     QList<RelationValueData> entities;
 
-    Table *relationTable = d->database->table(relation->tableName());
-    int columnLeft = relationTable->column(relation->leftEntityIdColumnName())->index();
-    int columnRight = relationTable->column(relation->rightEntityIdColumnName())->index();
+    QSqlQuery query("SELECT id, "+
+                    relation->leftEntityIdColumnName()+","+
+                    relation->rightEntityIdColumnName()+","+
+                    " FROM "+relation->tableName());
+    query.setForwardOnly(true);
+    query.exec();
 
-    foreach(Row *row, relationTable->rows()) {
+    while (query.next()) {
         RelationValueData data;
-        data.rowId = row->id();
-        data.leftId = row->data(columnLeft).toInt();
-        data.rightId = row->data(columnRight).toInt();
+        data.rowId = query.value(0).toInt();
+        data.leftId = query.value(1).toInt();
+        data.rightId = query.value(2).toInt();
         entities.append(data);
     }
+
+//    Table *relationTable = d->database->table(relation->tableName());
+//    int columnLeft = relationTable->column(relation->leftEntityIdColumnName())->index();
+//    int columnRight = relationTable->column(relation->rightEntityIdColumnName())->index();
+//    foreach(Row *row, relationTable->rows()) {
+//        RelationValueData data;
+//        data.rowId = row->id();
+//        data.leftId = row->data(columnLeft).toInt();
+//        data.rightId = row->data(columnRight).toInt();
+//        entities.append(data);
+//    }
 
     return entities;
 }
