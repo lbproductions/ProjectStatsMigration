@@ -12,7 +12,7 @@
 
 #include <widgets/graphs/dokolivegamegraphview.h>
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 #   include "../misc/sparkleupdater.h"
 #elif defined Q_WS_WIN
 #   include "../misc/winsparkleupdater.h"
@@ -34,7 +34,7 @@ Controller::Controller(MainWindow *mainWindow) :
     m_mainWindow(mainWindow),
     m_actions(new Actions(this))
 {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     m_updater = new SparkleUpdater(APPCASTURL"/AppCast_mac.xml");
 #elif defined Q_WS_WIN
     m_updater = new WinSparkleUpdater("APPCASTURL/AppCast_win.xml");

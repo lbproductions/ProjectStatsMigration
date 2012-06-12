@@ -16,7 +16,7 @@ SidebarChildCategorie::SidebarChildCategorie(const QString &title) :
     m_title(title),
     m_view(0)
 {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     QFont f;
     f.setFamily("Lucida Grande");
     f.setPixelSize(13);

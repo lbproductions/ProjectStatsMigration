@@ -35,7 +35,7 @@ protected:
 
     QMenu *m_windowMenu;
 
-#ifndef Q_WS_MAC
+#ifndef Q_OS_MAC
     MainWindow *m_mainWindow; //on non MacOS each menu bar has one main window
 #else
     static MenuBar *s_instance; //on MacOS we have exactly one menubar per application

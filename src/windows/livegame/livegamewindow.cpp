@@ -75,7 +75,7 @@ void LiveGameWindow::setFullScreen(bool state)
 {
     if (state)
     {
-#if true //!defined Q_WS_MAC || MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_7
+#if true //!defined Q_OS_MAC || MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_7
         this->showFullScreen();
 #else
         //setUnifiedTitleAndToolBarOnMac(false);
@@ -88,7 +88,7 @@ void LiveGameWindow::setFullScreen(bool state)
     else
     {
         this->setMinimumSize(100,100);
-#ifndef true // Q_WS_MAC
+#ifndef true // Q_OS_MAC
         this->showNormal();
 #else
         toggleFullscreen(this);

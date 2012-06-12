@@ -12,11 +12,13 @@
 
 namespace LBGui {
 
+#ifdef Q_OS_MAC
 MenuBar *MenuBar::s_instance(0);
+#endif
 
 MenuBar *MenuBar::createMenuBar(MainWindow *mainWindow)
 {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     (void) mainWindow;
     static QMutex mutex;
     QMutexLocker locker(&mutex); (void) locker;
@@ -39,7 +41,7 @@ MenuBar::MenuBar(QWidget *mainWindow) :
     m_menus(QHash<QString, QMenu*>()),
     m_windowMenu(0)
 {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     QApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
 #endif
 }

@@ -1,8 +1,8 @@
-#include <QtGui/QApplication>
+#include <QApplication>
 
 #include "mainwindow/mainwindow.h"
 #include "misc/logger.h"
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 #   include "misc/cocoainitializer.h"
 #endif
 
@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     CocoaInitializer cocoaInitializer;
     Q_UNUSED(cocoaInitializer)
 #endif

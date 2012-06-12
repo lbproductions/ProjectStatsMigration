@@ -5,7 +5,7 @@
 #include <QAction>
 #include <QStackedWidget>
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 #   include <QToolBar>
 #endif
 
@@ -26,7 +26,7 @@ private:
     QStackedWidget *centralWidget;
     QList<PreferencesPage *> pages;
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     QToolBar *toolBar;
 #endif
 
@@ -34,7 +34,7 @@ private:
     Q_DECLARE_PUBLIC(PreferencesWindow)
 };
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 
 void PreferencesWindowPrivate::addPage(PreferencesPage *page)
 {
@@ -78,6 +78,7 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) :
     d->centralWidget = new QStackedWidget(this);
     setCentralWidget(d->centralWidget);
 
+#ifdef Q_OS_MAC
     d->toolBar = new QToolBar(this);
     d->toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     d->toolBar->setIconSize(QSize(32,32));
@@ -85,6 +86,7 @@ PreferencesWindow::PreferencesWindow(QWidget *parent) :
     d->toolBar->setContentsMargins(0,0,0,-4);
     setUnifiedTitleAndToolBarOnMac(true);
     addToolBar(d->toolBar);
+#endif
 
     setAttribute(Qt::WA_DeleteOnClose);
 }

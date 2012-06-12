@@ -10,7 +10,7 @@ SidebarParentCategorie::SidebarParentCategorie() :
 SidebarParentCategorie::SidebarParentCategorie(const QString &title) :
     QStandardItem(title)
 {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     static QFont f;
     f.setFamily("Lucida Grande");
     f.setPixelSize(11);

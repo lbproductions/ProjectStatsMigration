@@ -46,7 +46,7 @@ HEADERS += \
     calculator.h \
     enumattribute.h \
     attribute_p.h \
-    server/restserver.h \
+    #server/restserver.h \
     storagedriver.h \
     local/localstoragedriver.h \
     relationvaluebase.h \
@@ -70,7 +70,7 @@ SOURCES += \
     functionvalue.cpp \
     calculator.cpp \
     enumattribute.cpp \
-    server/restserver.cpp \
+    #server/restserver.cpp \
     storagedriver.cpp \
     local/localstoragedriver.cpp \
     relationvaluebase.cpp \

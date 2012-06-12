@@ -1,7 +1,7 @@
 TARGET = lbgui
 TEMPLATE = lib
 
-QT += sql
+QT += sql widgets
 
 OBJECTS_DIR = $$OUT_PWD/../build/
 DESTDIR = $$OUT_PWD/../

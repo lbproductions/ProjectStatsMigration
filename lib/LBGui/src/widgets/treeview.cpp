@@ -17,7 +17,7 @@ TreeView::TreeView(QWidget *parent) :
     QTreeView(parent),
     m_doubleClickActions(0)
 {
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
     setRootIsDecorated(false);
     setAlternatingRowColors(true);
     setFont(QFont("Lucida Grande",12));

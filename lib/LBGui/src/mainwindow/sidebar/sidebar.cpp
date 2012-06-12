@@ -29,7 +29,7 @@ Sidebar::Sidebar(MainWindow *parent) :
 
     m_treeView->setModel(m_categoriesModel);
 
-//#ifdef Q_WS_MAC
+//#ifdef Q_OS_MAC
 //    m_options = new SidebarStatusBar(parent, this);
 //    connect(m_options->m_dragButton,SIGNAL(dragged(int)),this,SIGNAL(dragged(int)));
 //    layout->addWidget(m_options);

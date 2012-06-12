@@ -5,14 +5,15 @@
 
 #include <QMetaType>
 
+#include "attribute.h"
+#include "context.h"
+#include "entitytype.h"
+#include "function.h"
+#include "relation.h"
+#include "storagedriver.h"
+
 namespace LBDatabase {
 
-class Attribute;
-class Context;
-class EntityType;
-class Function;
-class Relation;
-class StorageDriver;
 
 class StoragePrivate;
 class Storage : public QObject

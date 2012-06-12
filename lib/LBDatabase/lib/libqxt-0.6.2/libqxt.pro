@@ -9,7 +9,7 @@ TEMPLATE = subdirs
 DESTDIR  = lib
 
 #check Qt version
-lessThan(QT_MAJOR_VERSION, 4) | lessThan(QT_MINOR_VERSION, 3) {
+lessThan(QT_MAJOR_VERSION, 4) | (lessThan(QT_MAJOR_VERSION, 5) & lessThan(QT_MINOR_VERSION, 3)) {
    error(LibQxt requires Qt 4.3 or newer but Qt $$[QT_VERSION] was detected.)
 }
 

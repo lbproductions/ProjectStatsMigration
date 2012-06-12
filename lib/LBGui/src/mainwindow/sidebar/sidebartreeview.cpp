@@ -4,7 +4,7 @@
 #include "sidebar.h"
 #include "sidebarchildcategorie.h"
 
-#ifdef Q_WS_MAC
+#ifdef Q_OS_MAC
 #   include "sidebaritemdelegatemac.h"
 #endif
 
