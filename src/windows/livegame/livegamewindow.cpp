@@ -1,15 +1,16 @@
 #include "livegamewindow.h"
 
-#include "../../model/livegame.h"
+#include <model/livegame.h>
 
 #include <QAction>
 #include <QToolBar>
 #include <QLabel>
 #include <QDebug>
+#include <QFile>
 
-LiveGameWindow::LiveGameWindow() :
-    QMainWindow(),
-    m_livegame(0)
+LiveGameWindow::LiveGameWindow(QWidget *parent) :
+    QMainWindow(parent),
+    m_liveGame(0)
 {
     setupToolBar();
 
@@ -18,94 +19,89 @@ LiveGameWindow::LiveGameWindow() :
 
 LiveGameWindow::~LiveGameWindow()
 {
-    if(m_livegame && m_livegame->state() == LiveGame::Running)
-        m_livegame->setState(LiveGame::Paused);
+    if(m_liveGame && m_liveGame->state() == LiveGame::Running)
+        m_liveGame->setState(LiveGame::Paused);
 }
 
-void LiveGameWindow::setGame(LiveGame *game)
+void LiveGameWindow::setLiveGame(LiveGame *liveGame)
 {
-    if(game == m_livegame)
+    if(liveGame == m_liveGame)
         return;
 
-    m_livegame = game;
-    connect(m_livegame, SIGNAL(stateChanged(State)), this, SLOT(reflectState()));
-    reflectState();
+    m_liveGame = liveGame;
+    connect(m_liveGame, SIGNAL(stateChanged(LiveGame::State)), this, SLOT(reflectState(LiveGame::State)));
+    reflectState(m_liveGame->state());
 }
 
 void LiveGameWindow::setupToolBar()
 {
-    m_toolbar = new QToolBar(tr("Live Game"));
-    m_toolbar->setIconSize(QSize(50,44));
-    m_toolbar->setMovable(false);
-    m_toolbar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    addToolBar(m_toolbar);
+    m_toolBar = new QToolBar(tr("Live Game"));
+    m_toolBar->setIconSize(QSize(50,44));
+    m_toolBar->setFixedHeight(72);
+    m_toolBar->setMovable(false);
+    m_toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    addToolBar(m_toolBar);
 
-    m_actionPause = new QAction(QIcon(":/graphics/icons/livegame/pause"),tr("Pause"),m_toolbar);
+    m_actionPause = new QAction(QIcon(":/graphics/icons/livegame/pause"),tr("Pause"),m_toolBar);
     m_actionPause->setCheckable(true);
     connect(m_actionPause,SIGNAL(triggered(bool)),this,SLOT(pauseLiveGame(bool)));
-    m_toolbar->addAction(m_actionPause);
+    m_toolBar->addAction(m_actionPause);
 
-    m_actionCloseGame = new QAction(QIcon(":/graphics/icons/livegame/closegame"),tr("End Game"),m_toolbar);
-    connect(m_actionCloseGame,SIGNAL(triggered()),this,SLOT(showEndGameDialog()));
-    m_toolbar->addAction(m_actionCloseGame);
+    m_actionShowEndGameDialog = new QAction(QIcon(":/graphics/icons/livegame/closegame"),tr("End Game"),m_toolBar);
+    connect(m_actionShowEndGameDialog,SIGNAL(triggered()),this,SLOT(showEndGameDialog()));
+    m_toolBar->addAction(m_actionShowEndGameDialog);
 
     QWidget* spacer = new QWidget();
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_toolbar->addWidget(spacer);
+    m_toolBar->addWidget(spacer);
 
-    m_actionAddDrink = new QAction(QIcon(":/graphics/icons/livegame/bierbutton"),tr("Add Drink"),m_toolbar);
-    connect(m_actionAddDrink,SIGNAL(triggered()),this,SLOT(showAddDrinkDialog()));
-    m_toolbar->addAction(m_actionAddDrink);
+    m_actionShowNewRoundDialog = new QAction(QIcon(":/graphics/icons/livegame/newround"),tr("New Round"),m_toolBar);
+    connect(m_actionShowNewRoundDialog,SIGNAL(triggered()),this,SLOT(showNewRoundDialog()));
+    m_toolBar->addAction(m_actionShowNewRoundDialog);
 
-    m_actionNewRound = new QAction(QIcon(":/graphics/icons/livegame/newround"),tr("New Round"),m_toolbar);
-    connect(m_actionNewRound,SIGNAL(triggered()),this,SLOT(showNewRoundDialog()));
-    m_toolbar->addAction(m_actionNewRound);
+    m_actionShowAddDrinkDialog = new QAction(QIcon(":/graphics/icons/livegame/bierbutton"),tr("Add Drink"),m_toolBar);
+    connect(m_actionShowAddDrinkDialog,SIGNAL(triggered()),this,SLOT(showAddDrinkDialog()));
+    m_toolBar->addAction(m_actionShowAddDrinkDialog);
+
+    spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_toolBar->addWidget(spacer);
 
     QIcon iconFullscreen(":/graphics/icons/livegame/fullscreen");
-    m_actionFullScreen = new QAction(iconFullscreen,tr("Fullscreen"),m_toolbar);
+    m_actionFullScreen = new QAction(iconFullscreen,tr("Fullscreen"),m_toolBar);
     m_actionFullScreen->setCheckable(true);
     connect(m_actionFullScreen, SIGNAL(triggered(bool)), this, SLOT(setFullScreen(bool)));
-    m_toolbar->addAction(m_actionFullScreen);
+    m_toolBar->addAction(m_actionFullScreen);
 
-    setUnifiedTitleAndToolBarOnMac(true);
+    QFile stylesheet(QLatin1String(":/toolbar/black/stylesheet"));
+    stylesheet.open(QFile::ReadOnly);
+    m_toolBar->setStyleSheet(stylesheet.readAll());
+    stylesheet.close();
 }
 
 
-void LiveGameWindow::setFullScreen(bool state)
+void LiveGameWindow::setFullScreen(bool fullScreen)
 {
-    if (state)
-    {
-#if true //!defined Q_OS_MAC || MAC_OS_X_VERSION_MAX_ALLOWED < MAC_OS_X_VERSION_10_7
-        this->showFullScreen();
-#else
-        //setUnifiedTitleAndToolBarOnMac(false);
-        toggleFullscreen(this);
-#endif
-        m_actionFullScreen->setIcon(QIcon(":/graphics/icons/mac/livegame/normal"));
+    if (fullScreen) {
+        showFullScreen();
+
+        m_actionFullScreen->setIcon(QIcon(":/graphics/icons/livegame/normalmode"));
         m_actionFullScreen->setText(tr("Exit Fullscreen"));
-        m_toolbar->setStyleSheet("QWidget { background-image: url(:/graphics/styles/mac/toolbar/fullscreen/toolbar_background_fullscreen); border: 0px solid transparent; border-bottom: 1px solid gray;color: white;}");
     }
-    else
-    {
-        this->setMinimumSize(100,100);
-#ifndef true // Q_OS_MAC
-        this->showNormal();
-#else
-        toggleFullscreen(this);
-        //setUnifiedTitleAndToolBarOnMac(true);
-#endif
-        m_actionFullScreen->setIcon(QIcon(":/graphics/icons/mac/livegame/fullscreen"));
+    else {
+        showNormal();
+
+        m_actionFullScreen->setIcon(QIcon(":/graphics/icons/livegame/fullscreen"));
         m_actionFullScreen->setText(tr("Fullscreen"));
-        m_toolbar->setStyleSheet("");
     }
 }
 
 void LiveGameWindow::pauseLiveGame(bool pause)
 {
     if(pause)
-        m_livegame->setState(LiveGame::Paused);
+        m_liveGame->setState(LiveGame::Paused);
     else
-        m_livegame->setState(LiveGame::Running);
+        m_liveGame->setState(LiveGame::Running);
 }
 
 void LiveGameWindow::showEndGameDialog()
@@ -115,35 +111,22 @@ void LiveGameWindow::showEndGameDialog()
 //    endGameWidget.exec();
 }
 
-void LiveGameWindow::reflectState()
+void LiveGameWindow::reflectState(LiveGame::State state)
 {
     m_actionPause->setEnabled(true);
-    m_actionNewRound->setEnabled(true);
-    m_actionCloseGame->setEnabled(true);
-    m_actionAddDrink->setEnabled(true);
+    m_actionShowNewRoundDialog->setEnabled(true);
+    m_actionShowEndGameDialog->setEnabled(true);
+    m_actionShowAddDrinkDialog->setEnabled(true);
     m_actionPause->setEnabled(true);
-    m_actionNewRound->setEnabled(true);
+    m_actionShowNewRoundDialog->setEnabled(true);
 
-    if(!m_livegame)
-        return;
-
-    LiveGame::State state = m_livegame->state();
     switch(state)
     {
     case LiveGame::Paused:
         m_actionPause->setIcon(QIcon(":/graphics/icons/livegame/play"));
         m_actionPause->setText(tr("Play"));
         m_actionPause->setChecked(true);
-        m_actionNewRound->setEnabled(false);
-        break;
-
-    case LiveGame::Finished:
-        m_actionPause->setEnabled(false);
-        m_actionNewRound->setEnabled(false);
-        m_actionCloseGame->setEnabled(false);
-        m_actionAddDrink->setEnabled(false);
-        m_actionPause->setEnabled(false);
-        m_actionNewRound->setEnabled(false);
+        m_actionShowNewRoundDialog->setEnabled(false);
         break;
 
     case LiveGame::Running:
@@ -152,6 +135,13 @@ void LiveGameWindow::reflectState()
         break;
 
     default:
+    case LiveGame::Finished:
+        m_actionPause->setEnabled(false);
+        m_actionShowNewRoundDialog->setEnabled(false);
+        m_actionShowEndGameDialog->setEnabled(false);
+        m_actionShowAddDrinkDialog->setEnabled(false);
+        m_actionPause->setEnabled(false);
+        m_actionShowNewRoundDialog->setEnabled(false);
         break;
     }
 }
@@ -165,4 +155,18 @@ void LiveGameWindow::showAddDrinkDialog()
 
 void LiveGameWindow::showNewRoundDialog()
 {
+}
+
+void LiveGameWindow::addToolBarAction(QAction *action, LiveGameWindow::ToolBarPosition position)
+{
+    switch(position) {
+    case LeftToolBarPosition:
+        m_toolBar->insertAction(m_actionShowEndGameDialog, action);
+        break;
+    case MiddleToolBarPosition:
+        m_toolBar->insertAction(m_actionShowAddDrinkDialog, action);
+        break;
+    case RightToolBarPosition:
+        m_toolBar->insertAction(m_actionFullScreen, action);
+    }
 }

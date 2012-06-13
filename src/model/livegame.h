@@ -47,7 +47,7 @@ public:
 	// END
 
 signals:
-	void stateChanged(State state);
+    void stateChanged(LiveGame::State state);
 };
 
 Q_DECLARE_METATYPE(QList<LiveGame *>)

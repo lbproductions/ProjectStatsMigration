@@ -25,6 +25,7 @@ public:
     virtual Entity *entity() const = 0;
     virtual Property *property() const = 0;
     virtual QVariant dataForModel(int role = Qt::DisplayRole) const = 0;
+    virtual QVariant value() const = 0;
 
 Q_SIGNALS:
     void changed();

@@ -10,5 +10,6 @@
         <file alias="normalmode">graphics/icons/livegame/normalmode.png</file>
         <file alias="pause">graphics/icons/livegame/pause.png</file>
         <file alias="play">graphics/icons/livegame/play.png</file>
+        <file alias="schmeisserei">graphics/icons/livegame/schmeisserei.png</file>
     </qresource>
 </RCC>

@@ -66,6 +66,12 @@ QVariant RelationValue<EntityClass>::dataForModel(int role) const
 }
 
 template<class EntityClass>
+QVariant RelationValue<EntityClass>::value() const
+{
+    return dataForModel(PropertyValue::PlainDataRole);
+}
+
+template<class EntityClass>
 QList<EntityClass *> RelationValue<EntityClass>::entities() const
 {
     return otherEntities.value(0);

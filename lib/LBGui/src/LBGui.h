@@ -35,6 +35,7 @@
     Q_INIT_RESOURCE(treeview); \
     Q_INIT_RESOURCE(preferenceswindow); \
     Q_INIT_RESOURCE(sheet); \
-    Q_INIT_RESOURCE(itunesApplyBar)
+    Q_INIT_RESOURCE(itunesApplyBar) \
+    Q_INIT_RESOURCE(toolbar)
 
 #endif // LBGUI_H

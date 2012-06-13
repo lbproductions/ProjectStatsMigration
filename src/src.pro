@@ -169,7 +169,11 @@ SOURCES += main.cpp \
     model/drinkscontext.cpp \
     model/categoriescontext.cpp \
     model/skatround.cpp \
-    model/skatlivegame.cpp
+    model/skatlivegame.cpp \
+    windows/livegame/livegameroundtable.cpp \
+    windows/livegame/livegamedetailswidget.cpp \
+    windows/livegame/doppelkopf/dokolivegamewindow.cpp \
+    windows/livegame/doppelkopf/centralwidget.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -232,7 +236,11 @@ HEADERS  += \
     model/drinkscontext.h \
     model/categoriescontext.h \
     model/skatround.h \
-    model/skatlivegame.h
+    model/skatlivegame.h \
+    windows/livegame/livegameroundtable.h \
+    windows/livegame/livegamedetailswidget.h \
+    windows/livegame/doppelkopf/dokolivegamewindow.h \
+    windows/livegame/doppelkopf/centralwidget.h
 
 RESOURCES += \
     resources/resources.qrc

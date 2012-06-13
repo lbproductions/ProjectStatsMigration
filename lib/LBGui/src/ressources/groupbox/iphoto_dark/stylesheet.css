@@ -1,0 +1,7 @@
+QGroupBox {
+    background: transparent;
+    border: 5px transparent;
+    border-image: url(:/groupbox/iphoto_dark/background) 5px 5px 5px 5px;
+    margin: 0px;
+    padding: -5px;
+}

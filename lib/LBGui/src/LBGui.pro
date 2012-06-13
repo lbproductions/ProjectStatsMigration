@@ -76,7 +76,9 @@ OTHER_FILES += \
     ressources/backgroundwidget/gray/stylesheet.css \
     ressources/sheet/stylesheet.css \
     ressources/itunesApplyBar/stylesheet.css \
-    ressources/itunesApplyBar/stylesheet_button.css
+    ressources/itunesApplyBar/stylesheet_button.css \
+    ressources/toolbar/black/stylesheet.css \
+    ressources/groupbox/iphoto_dark/stylesheet.css
 
 RESOURCES += \
     ressources/sidebar/sidebar.qrc \
@@ -88,7 +90,8 @@ RESOURCES += \
     ressources/backgroundwidget/backgroundwidget.qrc \
     ressources/preferenceswindow/preferenceswindow.qrc \
     ressources/sheet/sheet.qrc \
-    ressources/itunesApplyBar/itunesApplyBar.qrc
+    ressources/itunesApplyBar/itunesApplyBar.qrc \
+    ressources/toolbar/toolbar.qrc
 
 macx {
     HEADERS += \

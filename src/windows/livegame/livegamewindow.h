@@ -3,60 +3,51 @@
 
 #include <QMainWindow>
 
+#include <model/livegame.h>
 
-class LiveGame;
+class LiveGameWindowCentralWidget;
 
 class LiveGameWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    LiveGameWindow();
+    LiveGameWindow(QWidget *parent = 0);
     ~LiveGameWindow();
 
-    void setGame(LiveGame *game);
+    void setLiveGame(LiveGame *liveGame);
+
+protected slots:
+    virtual void showEndGameDialog();
+    virtual void showNewRoundDialog();
+    virtual void reflectState(LiveGame::State state);
 
 protected:
-    LiveGame *m_livegame;
-//    LiveGameWidget *m_liveGameDetailsWidget;
+    enum ToolBarPosition {
+        LeftToolBarPosition,
+        MiddleToolBarPosition,
+        RightToolBarPosition
+    };
 
-    QToolBar *m_toolbar;
+    void addToolBarAction(QAction *action, ToolBarPosition position);
+
+private slots:
+    void setFullScreen(bool fullScreen);
+    void pauseLiveGame(bool pause);
+
+    void showAddDrinkDialog();
+
+private:
+    void setupToolBar();
+
+    LiveGame *m_liveGame;
+
+    QToolBar *m_toolBar;
 
     QAction* m_actionFullScreen;
     QAction* m_actionPause;
-    QAction* m_actionNewRound;
-    QAction* m_actionCloseGame;
-    QAction* m_actionAddDrink;
-    QAction* m_actionSettings;
-
-    /**
-    * Erstellt eine neue Toolbar mit den zugehörigen Actions für das LiveGame.
-    */
-    void setupToolBar();
-
-protected slots:
-    virtual void reflectState();
-
-    /**
-    * Wird von der Action m_actionFullScreen aufgerufen. Wechelt je nach Zustand von state zwischen Fullscreen-Mode und Normal-Mode.
-    */
-    void setFullScreen(bool state);
-
-    /**
-    * Wird von der Action m_actionPause aufgerufen. Wechselt je nach Zustand von state zwischen Pausieren und Fortsetzen des LiveGames.
-    */
-    void pauseLiveGame(bool pause);
-
-    /**
-    * Wird von der Action m_actionCloseGame aufgerufen. Öffnet das EndLiveGameWidget und verknüpft dessen Signal liveGameClosed() mit dem Slot onLiveGameClosed.
-    */
-    virtual void showEndGameDialog();
-
-    /**
-    * Wird von der Action m_actionNewRound aufgerufen. Wechselt je nach Zustand von state zwischen Darstellen und Löschen des NewDokoRoundWidgets.
-    */
-    virtual void showNewRoundDialog();
-
-    void showAddDrinkDialog();
+    QAction* m_actionShowNewRoundDialog;
+    QAction* m_actionShowEndGameDialog;
+    QAction* m_actionShowAddDrinkDialog;
 };
 
 #endif // LIVEGAMEWINDOW_H

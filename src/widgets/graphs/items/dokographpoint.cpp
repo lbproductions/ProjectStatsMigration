@@ -57,13 +57,21 @@ DoppelkopfRound* DokoGraphPoint::round() const
 
 void DokoGraphPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem * /*option*/, QWidget * /*widget*/)
 {
-    painter->setPen(QColor(255,255,255));
-    painter->setPen(m_player->color());
+    m_pen.setColor(m_player->color());
     painter->setBrush(Qt::black);
+    if(m_mouseIn) {
+        m_pen.setWidth(3);
+    }
+    else {
+        m_pen.setWidth(1);
+    }
+    painter->setPen(m_pen);
+
     painter->drawEllipse(QPointF(  m_point.x()*m_graph->coordinateSystem()->xScale(),
                                     -m_point.y()*m_graph->coordinateSystem()->yScale()),
                                     m_radius,
                                     m_radius);
+
     painter->setPen(QColor("white"));
     QFont font = painter->font();
     font.setPointSize(10);

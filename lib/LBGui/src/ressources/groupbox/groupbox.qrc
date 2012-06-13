@@ -4,4 +4,8 @@
         <file alias="checkbox_checked">itunes_white/checkbox_checked.png</file>
         <file alias="checkbox_unchecked">itunes_white/checkbox_unchecked.png</file>
     </qresource>
+    <qresource prefix="/groupbox/iphoto_dark">
+        <file alias="background">iphoto_dark/background.png</file>
+        <file alias="stylesheet">iphoto_dark/stylesheet.css</file>
+    </qresource>
 </RCC>

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/toolbar/black">
+        <file alias="background">black/background.png</file>
+        <file alias="stylesheet">black/stylesheet.css</file>
+        <file alias="background_72">black/background_72.png</file>
+        <file alias="background_72_selfmade">black/background_72_selfmade.png</file>
+    </qresource>
+</RCC>

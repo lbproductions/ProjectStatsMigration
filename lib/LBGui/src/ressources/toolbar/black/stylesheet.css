@@ -1,0 +1,9 @@
+QToolBar {
+    background-image: url(:/toolbar/black/background_72_selfmade);
+    border: 0;
+}
+
+QToolButton {
+    color: white;
+    font-weight: bold;
+}

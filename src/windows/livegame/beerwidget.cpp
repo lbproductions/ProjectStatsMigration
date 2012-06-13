@@ -1,40 +1,40 @@
-#include "beerwidget.h"
+//#include "beerwidget.h"
 
-#include "beerplayerwidget.h"
+//#include "beerplayerwidget.h"
 
-#include <Database/livegame.h>
-#include <Database/player.h>
-#include <Database/drink.h>
+//#include <Database/livegame.h>
+//#include <Database/player.h>
+//#include <Database/drink.h>
 
-#include <Gui/Misc/groupbox.h>
+//#include <Gui/Misc/groupbox.h>
 
-#include <QGridLayout>
-#include <QLabel>
+//#include <QGridLayout>
+//#include <QLabel>
 
-using namespace Gui::Details::LiveGameDetails;
+//using namespace Gui::Details::LiveGameDetails;
 
-BeerWidget::BeerWidget(Database::LiveGame* livegame, QWidget *parent) :
-    AbstractLiveGameWidget(parent)
-{
-    QVBoxLayout* layout = new QVBoxLayout(this);
-    this->setLayout(layout);
+//BeerWidget::BeerWidget(Database::LiveGame* livegame, QWidget *parent) :
+//    AbstractLiveGameWidget(parent)
+//{
+//    QVBoxLayout* layout = new QVBoxLayout(this);
+//    this->setLayout(layout);
 
-    this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
+//    this->setSizePolicy(QSizePolicy::Fixed,QSizePolicy::Expanding);
 
-    this->setAutoFillBackground(true);
+//    this->setAutoFillBackground(true);
 
-    QPalette palette = this->palette();
-    QPixmap pixmap;
-    pixmap.load(":/graphics/styles/mac/toolbar/fullscreen/sidebar_background_fullscreen");
-    palette.setBrush(QPalette::Window,QBrush(pixmap));
-    this->setPalette(palette);
+//    QPalette palette = this->palette();
+//    QPixmap pixmap;
+//    pixmap.load(":/graphics/styles/mac/toolbar/fullscreen/sidebar_background_fullscreen");
+//    palette.setBrush(QPalette::Window,QBrush(pixmap));
+//    this->setPalette(palette);
 
-    foreach(Database::Player* p, livegame->playersSortedByPosition->value())
-    {
-        layout->addStretch();
-        layout->addWidget(new Gui::Misc::GroupBox(new BeerPlayerWidget(p,livegame,this)));
-        layout->addStretch();
-    }
+//    foreach(Database::Player* p, livegame->playersSortedByPosition->value())
+//    {
+//        layout->addStretch();
+//        layout->addWidget(new Gui::Misc::GroupBox(new BeerPlayerWidget(p,livegame,this)));
+//        layout->addStretch();
+//    }
 
-    this->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
-}
+//    this->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Minimum);
+//}

@@ -171,7 +171,7 @@ QVariant Entity::value(const QString &name) const
     if(!value)
         return QVariant();
 
-    return value->dataForModel();
+    return value->value();
 }
 
 void Entity::setValue(const QString &propertyIdentifier, const QVariant &data)

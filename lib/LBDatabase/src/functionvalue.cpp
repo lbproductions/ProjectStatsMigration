@@ -123,6 +123,11 @@ QVariant FunctionValue::dataForModel(int role) const
     return QVariant();
 }
 
+QVariant FunctionValue::value() const
+{
+    return dataForModel(PropertyValue::PlainDataRole);
+}
+
 QHash<const Entity *, QVariant> FunctionValue::values() const
 {
     Q_D(const FunctionValue);

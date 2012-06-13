@@ -1,81 +1,34 @@
-#ifndef LIVEGAMEDETAILSWIDGET_H
-#define LIVEGAMEDETAILSWIDGET_H
+//#ifndef LIVEGAMEDETAILSWIDGET_H
+//#define LIVEGAMEDETAILSWIDGET_H
 
-#include <Gui/Details/detailswidget.h>
+//#include <QWidget>
 
-class QTableWidget;
+//class LiveGame;
 
-namespace Database
-{
-    class LiveGame;
-}
+//class LiveGameWindowCentralWidget : public QWidget
+//{
+//    Q_OBJECT
+//public:
+//    LiveGameWindowCentralWidget(QWidget *parent = 0);
 
-namespace Gui
-{
+//    void setLiveGame(LiveGame* liveGame);
 
-namespace Graphs
-{
-    class LiveGameGraphView;
-}
+//protected slots:
+//    void resizeEvent(QResizeEvent* /*event*/);
 
-namespace Details
-{
+//protected:
+//    LiveGame *m_liveGame;
 
-class LiveGameRowWindow;
+////    QPointer<LiveGameDetails::LiveGameInfoGroupBox> m_infoBox;
 
-namespace LiveGameDetails
-{
+////    QPointer<LiveGameDetails::LiveGameRoundTable> m_roundTable;
 
-class LiveGameInfoGroupBox;
-class LiveGameRoundTable;
+////    QTableWidget* m_playerTotalPointsTable;
 
-//! Diese Klasse stellt eine gemeinsame Oberklasse für alle LiveGameWidgets dar.
-/*!
-    Sie sollte eigentlich nie tatsächlich instantiiert werden, stattdessen sollte für jeden Spieltyp eine eigene Unterklasse implementiert sein.<br>
-    Bei der Implementierung einer neuen Unterklasse muss im Konstruktor setupWidget() und initializeItems() ausgeführt werden. Verwendet man eigene Widgets,
-    so müssen entsprechend setupWidget(), initializeItems(), fillWidget() und resizeEvent() angepasst werden. Dabei ist es wichtig, dass jeweils die Oberklassen-Methoden
-    von der jeweiligen Methode bei der Reimplementierung aufgerufen werden.<br>
-    Wichtig ist außerdem, dass showRoundWidget() mit einem für das Game entsprechendem NewRoundWidget implementiert wird.
-*/
-class LiveGameDetailsWidget : public DetailsWidget
-{
-    Q_OBJECT
-
-public:
-    LiveGameDetailsWidget(Database::LiveGame* livegame, QWidget *parent = 0);
-
-    /**
-     * Virtuelle Methode, die die zugehörigen Widgets anpasst und zu Layouts hinzufügt. Muss bei Reimplementierung aufgerufen werden.
-     */
-    virtual void setupWidget();
-
-    /**
-     * Initialisiert die einzelnen Items für dieses Widget. Bei Reimplementierung muss diese Methode aufgerufen werden als letzter Aufruf dieser!
-     */
-    virtual void initializeItems();
-
-protected slots:
-    void resizeEvent(QResizeEvent* /*event*/);
-
-protected:
-    friend class ::Gui::Details::LiveGameRowWindow;
-
-    QPointer<Database::LiveGame> m_livegame;
-
-    QPointer<LiveGameDetails::LiveGameInfoGroupBox> m_infoBox;
-
-    QPointer<LiveGameDetails::LiveGameRoundTable> m_roundTable;
-
-    QTableWidget* m_playerTotalPointsTable;
-
-    QPointer<Gui::Graphs::LiveGameGraphView> m_graph;
+////    QPointer<Gui::Graphs::LiveGameGraphView> m_graph;
 
 
-    void updateSizes();
-};
+//    void updateSizes();
+//};
 
-}
-}
-}
-
-#endif // LIVEGAMEDETAILSWIDGET_H
+//#endif // LIVEGAMEDETAILSWIDGET_H

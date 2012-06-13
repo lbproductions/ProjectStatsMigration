@@ -1,12 +1,16 @@
 #include "groupbox.h"
 
 #include <QFile>
-
+#include <QHBoxLayout>
 #include <QDebug>
+
+namespace LBGui {
 
 GroupBox::GroupBox(QWidget *parent) :
     QGroupBox(parent)
 {
+    QHBoxLayout *layout = new QHBoxLayout(this);
+    setLayout(layout);
 }
 
 GroupBox::Style GroupBox::style() const
@@ -23,6 +27,9 @@ void GroupBox::setStyle(Style style)
     case ItunesWhite:
         stylesheet.setFileName(QLatin1String(":/groupbox/itunes_white/stylesheet"));
         break;
+    case IphotoDark:
+        stylesheet.setFileName(QLatin1String(":/groupbox/iphoto_dark/stylesheet"));
+        break;
     }
 
     if(!stylesheet.exists()) {
@@ -33,3 +40,5 @@ void GroupBox::setStyle(Style style)
     setStyleSheet(stylesheet.readAll());
     stylesheet.close();
 }
+
+} // namespace LBGui

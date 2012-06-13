@@ -4,8 +4,6 @@
 
 #include <model/doppelkopflivegame.h>
 
-using namespace Gui::Graphs;
-
 DokoLiveGameGraphView::DokoLiveGameGraphView(QWidget *parent):
     LiveGameGraphView(parent)
 {
@@ -18,7 +16,7 @@ void DokoLiveGameGraphView::setLiveGame(LiveGame *liveGame)
         m_liveGameCoordinateSystem->deleteLater();
     }
 
-    m_liveGameCoordinateSystem = new Items::DokoLiveGameCoordinateSystem(static_cast<DoppelkopfLiveGame*>(liveGame));
+    m_liveGameCoordinateSystem = new Gui::Graphs::Items::DokoLiveGameCoordinateSystem(static_cast<DoppelkopfLiveGame*>(liveGame));
     m_liveGameCoordinateSystem->setParent(this);
     m_liveGameCoordinateSystem->setupSystem();
     connect(m_liveGameCoordinateSystem,SIGNAL(dimensionsChanged(QRectF)),this,SLOT(on_coordinateSystem_dimensionsChanged(QRectF)));

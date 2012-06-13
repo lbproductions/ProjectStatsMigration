@@ -391,8 +391,11 @@ void EntityTypeWriter::writeAttributeSetterImplementation(Attribute *attribute, 
 
 void EntityTypeWriter::writeAttributeChangedSignal(Attribute *attribute, QString &header) const
 {
+    QString type = attribute->qtType();
+    if(attribute->propertyType() == Property::EnumAttribute)
+        type.prepend(m_classname+"::");
     header.append(QLatin1String("\tvoid ") +
-                  makeMethodName(attribute->identifier()) + QLatin1String("Changed(") + attribute->qtType() + QLatin1String(" ")
+                  makeMethodName(attribute->identifier()) + QLatin1String("Changed(") + type + QLatin1String(" ")
                   + makeMethodName(attribute->identifier()) + QLatin1String(");\n"));
 }
 

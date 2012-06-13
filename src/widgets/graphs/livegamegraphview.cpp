@@ -16,10 +16,9 @@ void LiveGameGraphView::setupView(LiveGame *liveGame){
 
 void LiveGameGraphView::setLiveGame(LiveGame *liveGame)
 {
-    if(!m_liveGameCoordinateSystem.isNull())
-    {
-	scene()->removeItem(m_liveGameCoordinateSystem);
-	m_liveGameCoordinateSystem->deleteLater();
+    if(!m_liveGameCoordinateSystem.isNull()) {
+        scene()->removeItem(m_liveGameCoordinateSystem);
+        m_liveGameCoordinateSystem->deleteLater();
     }
 
     m_liveGameCoordinateSystem = new Items::LiveGameCoordinateSystem(liveGame);
@@ -36,6 +35,9 @@ void LiveGameGraphView::on_coordinateSystem_dimensionsChanged(QRectF)
 
 void LiveGameGraphView::resizeEvent(QResizeEvent * /*event*/)
 {
+    if(m_liveGameCoordinateSystem.isNull())
+        return;
+
     m_liveGameCoordinateSystem->updateScales(this->height(),this->width());
     centerOn(m_liveGameCoordinateSystem);
     setSceneRect(m_liveGameCoordinateSystem->boundingRect());

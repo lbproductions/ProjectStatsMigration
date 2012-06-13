@@ -20,6 +20,7 @@ public:
     Entity *entity() const;
     Property *property() const;
     QVariant dataForModel(int role = Qt::DisplayRole) const;
+    QVariant value() const;
     bool isEditable() const;
 
     // General

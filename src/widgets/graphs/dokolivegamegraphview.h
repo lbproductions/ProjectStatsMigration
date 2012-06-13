@@ -3,17 +3,17 @@
 
 #include "livegamegraphview.h"
 
-namespace Gui
-{
-namespace Graphs
-{
+namespace Gui {
+namespace Graphs {
 
-namespace Items
-{
+namespace Items {
 class DokoLiveGameCoordinateSystem;
 }
 
-class DokoLiveGameGraphView :public LiveGameGraphView
+}
+}
+
+class DokoLiveGameGraphView :public Gui::Graphs::LiveGameGraphView
 {
     Q_OBJECT
 public:
@@ -21,7 +21,5 @@ public:
 
     void setLiveGame(LiveGame *liveGame);
 };
-
-}}
 
 #endif // DOKOLIVEGAMEGRAPHVIEW_H
