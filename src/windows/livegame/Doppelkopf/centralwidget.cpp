@@ -2,6 +2,7 @@
 
 #include "dokolivegamewindow.h"
 #include "pointstable.h"
+#include "totalpointstable.h"
 
 #include <widgets/graphs/dokolivegamegraphview.h>
 #include <model/doppelkopflivegame.h>
@@ -51,6 +52,11 @@ CentralWidget::CentralWidget(DokoLiveGameWindow *parent) :
 
     m_pointsTable = new PointsTable(groupBoxPointsTable);
     groupBoxPointsTable->layout()->addWidget(m_pointsTable);
+
+    m_totalPointsTable = new TotalPointsTable(groupBoxTotalPointsTable);
+    groupBoxTotalPointsTable->layout()->addWidget(m_totalPointsTable);
+    groupBoxTotalPointsTable->layout()->setContentsMargins(5,5,0,0);
+    groupBoxTotalPointsTable->setFixedHeight(40);
 
     QHBoxLayout *l = new QHBoxLayout(this);
     l->addWidget(centralWidget);
@@ -119,6 +125,7 @@ void CentralWidget::setDoppelkopfLiveGame(DoppelkopfLiveGame *doppelkopfLiveGame
     m_doppelkopfLiveGame = doppelkopfLiveGame;
     m_graphView->setLiveGame(m_doppelkopfLiveGame);
     m_pointsTable->setDoppelkopfLiveGame(m_doppelkopfLiveGame);
+    m_totalPointsTable->setDoppelkopfLiveGame(m_doppelkopfLiveGame);
 }
 
 }

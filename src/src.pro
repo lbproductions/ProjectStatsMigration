@@ -176,7 +176,8 @@ SOURCES += main.cpp \
     windows/livegame/doppelkopf/centralwidget.cpp \
     windows/livegame/doppelkopf/pointstable.cpp \
     windows/livegame/doppelkopf/pointstableitem.cpp \
-    windows/livegame/doppelkopf/pointstabledelegate.cpp
+    windows/livegame/doppelkopf/pointstabledelegate.cpp \
+    windows/livegame/doppelkopf/totalpointstable.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -246,7 +247,8 @@ HEADERS  += \
     windows/livegame/doppelkopf/centralwidget.h \
     windows/livegame/doppelkopf/pointstable.h \
     windows/livegame/doppelkopf/pointstableitem.h \
-    windows/livegame/doppelkopf/pointstabledelegate.h
+    windows/livegame/doppelkopf/pointstabledelegate.h \
+    windows/livegame/doppelkopf/totalpointstable.h
 
 RESOURCES += \
     resources/resources.qrc

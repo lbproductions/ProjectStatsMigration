@@ -10,6 +10,7 @@ class DokoLiveGameGraphView;
 namespace DokoLiveGameWindowNS {
 
 class PointsTable;
+class TotalPointsTable;
 
 class CentralWidget : public QWidget
 {
@@ -25,6 +26,7 @@ private:
 
     DokoLiveGameGraphView *m_graphView;
     PointsTable *m_pointsTable;
+    TotalPointsTable *m_totalPointsTable;
 };
 
 }

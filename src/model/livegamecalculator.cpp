@@ -41,4 +41,16 @@ EntityVariantHash LiveGameCalculator::placement(const LBDatabase::Entity *entity
     return result;
 }
 
+QVariant LiveGameCalculator::totalPoints(const LBDatabase::Entity *entity) const
+{
+	const LiveGame *liveGame = static_cast<const LiveGame *>(entity);
+
+    int result = 0;
+    foreach(Round *round, liveGame->rounds()) {
+        result += qAbs(round->points(round->currentPlayingPlayers().at(0)));
+    }
+
+    return result;
+}
+
 // NEW METHODS HERE. DO NOT DELETE THIS LINE!

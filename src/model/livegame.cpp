@@ -17,6 +17,11 @@ LiveGame::State LiveGame::state() const
 	return static_cast<State>(value(LiveGameProperties::StateAttribute).value<int>());
 }
 
+int LiveGame::totalPoints() const
+{
+	return value(LiveGameProperties::TotalPointsAttribute).value<int>();
+}
+
 void LiveGame::setState(State state)
 {
 	if(state == this->state())

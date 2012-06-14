@@ -103,14 +103,14 @@ void PointsTable::resizeEvent(QResizeEvent* event)
     if(!m_doppelkopfLiveGame)
         return;
 
-    double w = (width() / (0.75 + m_doppelkopfLiveGame->players().size()) );
+    double w = (width() / (0.5 + m_doppelkopfLiveGame->players().size()) );
 
     for (int i = 0;  i < columnCount()-2; i++) {
         setColumnWidth(i,w-3);
         horizontalHeaderItem(i)->setSizeHint(QSize(w,50));
     }
-    setColumnWidth(columnCount()-1, w / 2);
-    setColumnWidth(columnCount()-1, w / 4);
+    setColumnWidth(columnCount()-1, w / 8);
+    setColumnWidth(columnCount()-1, w / 8);
     QTableWidget::resizeEvent(event);
 }
 
