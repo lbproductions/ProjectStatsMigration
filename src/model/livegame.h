@@ -47,7 +47,8 @@ public:
 	// END
 
 signals:
-    void stateChanged(LiveGame::State state);
+	void stateChanged(LiveGame::State state);
+	void roundsRoundAdded(Round *round);
 };
 
 Q_DECLARE_METATYPE(QList<LiveGame *>)

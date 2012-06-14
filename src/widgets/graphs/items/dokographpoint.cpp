@@ -87,13 +87,12 @@ void DokoGraphPoint::paint(QPainter *painter, const QStyleOptionGraphicsItem * /
     else if(m_dokoRound->trumpfabgabePlayer() == m_player){
         text = "T";
     }
-    else if(m_dokoRound->rePlayer1() == m_player || m_dokoRound->rePlayer2() == m_player){
+    else if(m_dokoRound->isRe(m_player)){
         text = "R";
     }
-//TODO: wenn round->currentPlayingPlayers implementiert ist anpassen:
-//    else if (m_dokoRound->currentplayingplayers.contains(player)){
-//        text = "C";
-//    }
+    else if (m_dokoRound->isContra(m_player)){
+        text = "C";
+    }
     else{
         text = "-";
     }

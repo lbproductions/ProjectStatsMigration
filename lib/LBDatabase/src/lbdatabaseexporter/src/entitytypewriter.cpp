@@ -227,6 +227,12 @@ void EntityTypeWriter::writeDeclaration(QString &header) const
         }
     }
 
+    foreach(Relation *relation, m_entityType->nonInhertitedRelations()) {
+        if(relation->isEditable() && !relation->isTranspose()) {
+           writeRelationChangedSignal(relation, header);
+        }
+    }
+
     header.append(QLatin1String("};\n\n"));
 
     header.append(QLatin1String("Q_DECLARE_METATYPE(QList<")+m_classname+QLatin1String(" *>)\n\n"));
@@ -460,6 +466,14 @@ void EntityTypeWriter::writeRelationImplementation(Relation *relation, QString &
     }
 }
 
+void EntityTypeWriter::writeRelationChangedSignal(Relation *relation, QString &header) const
+{
+    QString entityType = makeRelationType(relation);
+    header.append(QLatin1String("\tvoid ") +
+                  makeMethodName(relation->identifier()) + entityType + QLatin1String("Added(") + entityType + QLatin1String(" *")
+                  + makeMethodName(entityType) + QLatin1String(");\n"));
+}
+
 void EntityTypeWriter::writeFunctionGetterDeclaration(Function *function, QString &header) const
 {
     header.append(QLatin1String("\t") + function->qtTypeName() + QLatin1String(" ") +
@@ -570,12 +584,7 @@ QString EntityTypeWriter::makeRelationName(Relation *relation) const
 
 QString EntityTypeWriter::makeRelationType(Relation *relation) const
 {
-    if(relation->entityType() == m_entityType) {
-        return makeClassname(relation->entityTypeOther()->identifier());
-    }
-    else {
-        return makeClassname(relation->entityType()->identifier());
-    }
+    return makeClassname(relation->entityTypeOther()->identifier());
 }
 
 } // namespace LBDatabase

@@ -15,6 +15,8 @@ const QString SchweinereiPlayerRelation("schweinereiPlayer");
 const QString TrumpfabgabePlayerRelation("trumpfabgabePlayer");
 const QString DokoSoloPlayerRelation("dokoSoloPlayer");
 const QString CurrentPlayingPlayersRelation("currentPlayingPlayers");
+const QString IsReFunction("isRe");
+const QString IsContraFunction("isContra");
 } // namespace DoppelkopfRoundProperties
 
 class Player;
@@ -36,6 +38,8 @@ public:
 	void setDoko_soloPflicht(bool doko_soloPflicht);
 	void setDoko_soloType(const QString &doko_soloType);
 
+	bool isRe(const Player *player) const;
+	bool isContra(const Player *player) const;
 
 
 	Player *hochzeitPlayer() const;
@@ -44,7 +48,7 @@ public:
 	Player *schweinereiPlayer() const;
 	Player *trumpfabgabePlayer() const;
 	Player *dokoSoloPlayer() const;
-	QList<Round *> currentPlayingPlayers() const;
+	QList<Player *> currentPlayingPlayers() const;
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START

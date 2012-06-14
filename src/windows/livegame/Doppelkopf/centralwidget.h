@@ -9,6 +9,8 @@ class DokoLiveGameGraphView;
 
 namespace DokoLiveGameWindowNS {
 
+class PointsTable;
+
 class CentralWidget : public QWidget
 {
 
@@ -22,6 +24,7 @@ private:
     DoppelkopfLiveGame *m_doppelkopfLiveGame;
 
     DokoLiveGameGraphView *m_graphView;
+    PointsTable *m_pointsTable;
 };
 
 }

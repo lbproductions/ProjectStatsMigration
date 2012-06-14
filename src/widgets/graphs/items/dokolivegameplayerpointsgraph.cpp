@@ -18,8 +18,7 @@ DokoLiveGamePlayerPointsGraph::DokoLiveGamePlayerPointsGraph(Player *player, Dop
 
 void DokoLiveGamePlayerPointsGraph::addPoint(const QPoint &point)
 {
-    Q_UNUSED(point);
-    qWarning() << "DokoLiveGamePlayerPointsGraph::addPoint should never be called.";
+    Graph::addPoint(point);
 }
 
 void DokoLiveGamePlayerPointsGraph::update()
@@ -35,7 +34,7 @@ void DokoLiveGamePlayerPointsGraph::update()
     {
         if(i == 0)
         {
-            i=1;
+            i = 1;
             continue;
         }
         DokoGraphPoint* point = static_cast<DokoGraphPoint*>(gpoint);
@@ -74,6 +73,7 @@ void DokoLiveGamePlayerPointsGraph::addPoint(const QPoint &point, DoppelkopfRoun
 void DokoLiveGamePlayerPointsGraph::addRound(Round *r)
 {
     DoppelkopfRound* dokoRound = static_cast<DoppelkopfRound*>(r);
+    connect(dokoRound, SIGNAL(pointsChanged(const Player*,int)), this ,SLOT(update()));
     m_totalPoints += r->points(m_player);
     addPoint(QPoint(r->number()+1,m_totalPoints),dokoRound);
 }

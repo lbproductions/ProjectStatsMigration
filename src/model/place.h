@@ -60,6 +60,7 @@ signals:
 	void strasseChanged(QString strasse);
 	void nummerChanged(int nummer);
 	void commentChanged(QString comment);
+	void gamesGameAdded(Game *game);
 };
 
 Q_DECLARE_METATYPE(QList<Place *>)

@@ -46,6 +46,7 @@ protected:
 
     void writeRelationDeclaration(Relation *relation, QString &header) const;
     void writeRelationImplementation(Relation *relation, QString &source) const;
+    void writeRelationChangedSignal(Relation *relation, QString &header) const;
 
     void writeFunctionGetterDeclaration(Function *function, QString &header) const;
     void writeFunctionGetterImplementation(Function *function, QString &source) const;

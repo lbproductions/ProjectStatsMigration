@@ -2,7 +2,10 @@
 
 #include "livegame.h"
 #include "round.h"
+#include "doppelkopfround.h"
 #include "player.h"
+#include "playerscontext.h"
+#include "storage.h"
 
 DoppelkopfRoundCalculator::DoppelkopfRoundCalculator(QObject *parent) :
     LBDatabase::Calculator(parent)
@@ -35,3 +38,33 @@ RelatedEntities DoppelkopfRoundCalculator::currentPlayingPlayers(const LBDatabas
 
     return result;
 }
+
+EntityVariantHash DoppelkopfRoundCalculator::isRe(const LBDatabase::Entity *entity) const
+{
+	const DoppelkopfRound *doppelkopfRound = static_cast<const DoppelkopfRound *>(entity);
+    Storage *storage = static_cast<Storage *>(doppelkopfRound->context()->storage());
+
+    EntityVariantHash result;
+    foreach(Player *player, storage->playersContext()->players()) {
+        result.insert(player, player == doppelkopfRound->rePlayer1() || player == doppelkopfRound->rePlayer2());
+    }
+
+    return result;
+}
+
+EntityVariantHash DoppelkopfRoundCalculator::isContra(const LBDatabase::Entity *entity) const
+{
+    const DoppelkopfRound *doppelkopfRound = static_cast<const DoppelkopfRound *>(entity);
+    Storage *storage = static_cast<Storage *>(doppelkopfRound->context()->storage());
+
+    EntityVariantHash result;
+    foreach(Player *player, storage->playersContext()->players()) {
+        result.insert(player,
+                      doppelkopfRound->currentPlayingPlayers().contains(player) &&
+                      player != doppelkopfRound->rePlayer1() && player != doppelkopfRound->rePlayer2());
+    }
+
+    return result;
+}
+
+// NEW METHODS HERE. DO NOT DELETE THIS LINE!

@@ -12,4 +12,7 @@
         <file alias="play">graphics/icons/livegame/play.png</file>
         <file alias="schmeisserei">graphics/icons/livegame/schmeisserei.png</file>
     </qresource>
+    <qresource prefix="/stylesheets">
+        <file alias="pointstable">stylesheets/pointstable.css</file>
+    </qresource>
 </RCC>

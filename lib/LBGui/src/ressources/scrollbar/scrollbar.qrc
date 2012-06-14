@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/scrollbar/iphoto_dark">
+        <file alias="arrow_down">iphoto_dark/arrow_down.png</file>
+        <file alias="arrow_up">iphoto_dark/arrow_up.png</file>
+        <file alias="background">iphoto_dark/background.png</file>
+        <file alias="handle">iphoto_dark/handle.png</file>
+        <file alias="stylesheet">iphoto_dark/stylesheet.css</file>
+    </qresource>
+</RCC>

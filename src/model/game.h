@@ -62,6 +62,7 @@ signals:
 	void lengthChanged(QTime length);
 	void commentChanged(QString comment);
 	void positionChanged(const Player *player,int position);
+	void playersPlayerAdded(Player *player);
 };
 
 Q_DECLARE_METATYPE(QList<Game *>)

@@ -173,7 +173,10 @@ SOURCES += main.cpp \
     windows/livegame/livegameroundtable.cpp \
     windows/livegame/livegamedetailswidget.cpp \
     windows/livegame/doppelkopf/dokolivegamewindow.cpp \
-    windows/livegame/doppelkopf/centralwidget.cpp
+    windows/livegame/doppelkopf/centralwidget.cpp \
+    windows/livegame/doppelkopf/pointstable.cpp \
+    windows/livegame/doppelkopf/pointstableitem.cpp \
+    windows/livegame/doppelkopf/pointstabledelegate.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -240,7 +243,10 @@ HEADERS  += \
     windows/livegame/livegameroundtable.h \
     windows/livegame/livegamedetailswidget.h \
     windows/livegame/doppelkopf/dokolivegamewindow.h \
-    windows/livegame/doppelkopf/centralwidget.h
+    windows/livegame/doppelkopf/centralwidget.h \
+    windows/livegame/doppelkopf/pointstable.h \
+    windows/livegame/doppelkopf/pointstableitem.h \
+    windows/livegame/doppelkopf/pointstabledelegate.h
 
 RESOURCES += \
     resources/resources.qrc
@@ -251,3 +257,6 @@ FORMS += \
     wizards/newgame/livedokogameoptionswidget.ui \
     wizards/newgame/dokolivegamegroupbox.ui \
     wizards/newgame/chooseunfinishedgamedialog.ui
+
+OTHER_FILES += \
+    resources/stylesheets/pointstable.css

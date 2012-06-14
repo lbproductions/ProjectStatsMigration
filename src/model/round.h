@@ -70,7 +70,7 @@ signals:
 	void commentChanged(QString comment);
 	void startTimeChanged(QDateTime startTime);
 	void lengthChanged(QTime length);
-	void stateChanged(State state);
+	void stateChanged(Round::State state);
 	void pointsChanged(const Player *player,int points);
 };
 

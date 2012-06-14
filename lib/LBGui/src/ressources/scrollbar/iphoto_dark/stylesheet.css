@@ -1,0 +1,45 @@
+QScrollBar:vertical {
+    background: transparent;
+    background-image: url(:/scrollbar/iphoto_dark/background);
+    background-repeat: repeat-y;
+    width: 15px;
+    margin: 15px 0 14px 0;
+}
+
+QScrollBar::handle:vertical {
+    border-image: url(:/scrollbar/iphoto_dark/handle) 7 0 7 0;
+    border-top: 7px transparent;
+    border-bottom: 7px transparent;
+    border-right: 0px transparent;
+    border-left: 0px transparent;
+}
+
+QScrollBar::add-line:vertical {
+    border: none;
+    background: none;
+    height: 24px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 24px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::up-arrow:vertical {
+    height: 24px;
+    width: 15px;
+    background-image: url(:/scrollbar/iphoto_dark/arrow_up);
+}
+QScrollBar::down-arrow:vertical {
+    height: 25px;
+    width: 15px;
+    background-image: url(:/scrollbar/iphoto_dark/arrow_down);
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
+}

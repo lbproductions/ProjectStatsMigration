@@ -68,9 +68,19 @@ Player *DoppelkopfRound::dokoSoloPlayer() const
 	return relation<Player>(DoppelkopfRoundProperties::DokoSoloPlayerRelation)->firstEntity();
 }
 
-QList<Round *> DoppelkopfRound::currentPlayingPlayers() const
+QList<Player *> DoppelkopfRound::currentPlayingPlayers() const
 {
-	return relation<Round>(DoppelkopfRoundProperties::CurrentPlayingPlayersRelation)->entities();
+	return relation<Player>(DoppelkopfRoundProperties::CurrentPlayingPlayersRelation)->entities();
+}
+
+bool DoppelkopfRound::isRe(const Player *player) const
+{
+	return function(DoppelkopfRoundProperties::IsReFunction)->value(player).value<bool>();
+}
+
+bool DoppelkopfRound::isContra(const Player *player) const
+{
+	return function(DoppelkopfRoundProperties::IsContraFunction)->value(player).value<bool>();
 }
 
 

@@ -22,7 +22,7 @@ LiveGamePlayerPointsGraph::LiveGamePlayerPointsGraph(Player *player, LiveGame *l
 void LiveGamePlayerPointsGraph::setupGraph()
 {
     m_pen.setColor(m_player->color());
-    if(m_player->color() == QColor())
+    if(m_player->color() == QColor() || m_player->color() == QColor(0,0,0))
     {
         m_pen.setColor(QColor(255,255,255));
     }
