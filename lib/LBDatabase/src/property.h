@@ -7,7 +7,8 @@ namespace LBDatabase {
 
 class Context;
 class Entity;
-
+class EntityType;
+class PropertyValue;
 
 //! \cond PRIVATE
 class Property : public QObject
@@ -29,6 +30,8 @@ public:
     virtual Type propertyType() const = 0;
     virtual bool isEditable() const = 0;
     virtual bool isCalculated() const = 0;
+    virtual EntityType *entityType() const = 0;
+    virtual QList<PropertyValue *> propertyValues() const = 0;
 
 Q_SIGNALS:
     void displayNameChanged(QString);
@@ -43,6 +46,16 @@ private:
     virtual void fetchValues() = 0;
 };
 //! \endcond
+
+class DependencyMetaData {
+public:
+    int id;
+    int dependendPropertyId;
+    int dependencyPropertyId;
+    Property::Type dependendPropertyType;
+    Property::Type dependencyPropertyType;
+    int entityRelation; //-1 for self, 0 for all, >0 for a relation
+};
 
 } // namespace LBDatabase
 

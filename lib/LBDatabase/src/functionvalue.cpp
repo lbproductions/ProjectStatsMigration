@@ -155,7 +155,7 @@ void FunctionValue::setValue(const Entity *key, const QVariant &value)
     data.entityId = d->entity->id();
     data.keyEntityId = key->id();
     data.value = value;
-    data.rowId = 0;
+    data.rowId = d->rowIds.value(key);
 
     d->entity->storage()->driver()->setFunctionValue(this, data);
     d->values.insert(key, value);
@@ -163,9 +163,23 @@ void FunctionValue::setValue(const Entity *key, const QVariant &value)
     emit changed();
 }
 
-bool FunctionValue::isEditable() const
+void FunctionValue::recalculateAfterDependencyChange()
 {
-    return false;
+    Q_D(FunctionValue);
+    if(!d->function->isCalculated())
+        return; // non-calculated functions must not be recalculated!
+
+    QHash<const Entity *, QVariant> newValues = d->calculate();
+
+    if(d->cached && newValues == d->values)
+        return; // no change
+
+    if(d->function->isCached()) {
+        d->values = newValues;
+        d->cached = true;
+    }
+
+    emit changed();
 }
 
 } // namespace LBDatabase

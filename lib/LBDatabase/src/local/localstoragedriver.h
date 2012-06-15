@@ -24,6 +24,7 @@ public:
     QList<EnumAttributeMetaData> enumValues() const;
     QList<FunctionReimplementationMetaData> functionReimplementations() const;
     QList<RelationReimplementationMetaData> relationReimplementations() const;
+    QList<DependencyMetaData> dependencies() const;
 
     // Attributes
     QVariant attributeValue(const AttributeValue *value) const;

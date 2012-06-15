@@ -47,6 +47,16 @@ RelationValueBase::RelationValueBase(Relation *relation, Entity *parent) :
     connect(this, SIGNAL(changed()), entity()->context(), SLOT(onPropertyValueChanged()));
 }
 
+void RelationValueBase::addOtherEntityTo(RelationValueBase *rightValue, Entity *e, int id)
+{
+    rightValue->addOtherEntityWhileStartup(e, id);
+}
+
+void RelationValueBase::removeOtherEntityFrom(RelationValueBase *rightValue, Entity *e)
+{
+    rightValue->removeOtherEntity(e);
+}
+
 /*!
   Destroys the relation value.
   */

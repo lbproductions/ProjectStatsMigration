@@ -42,6 +42,7 @@ protected:
     EntityType *entityTypeOther;
 
     QList<EntityType *> reimplementingEntityTypes;
+    QList<PropertyValue *> propertyValues;
 
     Relation * q_ptr;
     Q_DECLARE_PUBLIC(Relation)
@@ -72,9 +73,8 @@ void RelationPrivate::init()
 
 void RelationPrivate::addPropertyValueToEntities()
 {
-    Q_Q(Relation);
     foreach(Entity *entity, entityType->entities()) {
-        entity->addRelationValue(new RelationValue<Entity>(q, entity));
+        addPropertyValue(entity);
     }
 
     if(!transpose && transposeRelation)
@@ -94,11 +94,11 @@ void RelationPrivate::fetchValues()
 
             RelationValueBase *leftValue = static_cast<RelationValueBase *>(leftEntity->propertyValue(q));
             if(leftValue)
-                leftValue->addOtherEntity(rightEntity, entities.rowId);
+                leftValue->addOtherEntityWhileStartup(rightEntity, entities.rowId);
 
             RelationValueBase *rightValue = static_cast<RelationValueBase *>(rightEntity->propertyValue(transposeRelation));
             if(rightValue)
-                rightValue->addOtherEntity(leftEntity, entities.rowId);
+                rightValue->addOtherEntityWhileStartup(leftEntity, entities.rowId);
         }
     }
 
@@ -115,10 +115,10 @@ void RelationPrivate::calculateValues()
 
             QList<Entity *> rightEntities = leftValue->calculate();
             foreach(Entity *rightEntity, rightEntities) {
-                leftValue->addOtherEntity(rightEntity, 0);
+                leftValue->addOtherEntityWhileStartup(rightEntity, 0);
                 RelationValueBase *rightValue = static_cast<RelationValueBase *>(rightEntity->propertyValue(transposeRelation));
                 if(rightValue)
-                    rightValue->addOtherEntity(leftEntity, 0);
+                    rightValue->addOtherEntityWhileStartup(leftEntity, 0);
             }
         }
     }
@@ -127,7 +127,9 @@ void RelationPrivate::calculateValues()
 void RelationPrivate::addPropertyValue(Entity *entity)
 {
     Q_Q(Relation);
-    entity->addRelationValue(new RelationValue<Entity>(q, entity));
+    RelationValue<Entity> *value = new RelationValue<Entity>(q, entity);
+    entity->addRelationValue(value);
+    propertyValues.append(value);
 }
 
 /******************************************************************************
@@ -253,6 +255,12 @@ EntityType *Relation::entityType() const
 {
     Q_D(const Relation);
     return d->entityType;
+}
+
+QList<PropertyValue *> Relation::propertyValues() const
+{
+    Q_D(const Relation);
+    return d->propertyValues;
 }
 
 EntityType *Relation::entityTypeOther() const

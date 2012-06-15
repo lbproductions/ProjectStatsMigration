@@ -38,9 +38,10 @@ public:
     Property::Type propertyType() const;
     bool isEditable() const;
     bool isCalculated() const;
+    EntityType *entityType() const;
+    QList<PropertyValue *> propertyValues() const;
 
     // Genereal
-    EntityType *entityType() const;
     EntityType *entityTypeOther() const;
     Cardinality cardinality() const;
     Direction direction() const;

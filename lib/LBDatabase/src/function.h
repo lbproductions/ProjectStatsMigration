@@ -25,6 +25,8 @@ public:
     Property::Type propertyType() const;
     bool isEditable() const;
     bool isCalculated() const;
+    EntityType *entityType() const;
+    QList<PropertyValue *> propertyValues() const;
 
     // General
     bool isCached() const;

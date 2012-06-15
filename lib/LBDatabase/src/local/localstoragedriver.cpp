@@ -29,6 +29,7 @@ const QString RelationsTableName("lbmeta_relations");
 const QString FunctionsTableName("lbmeta_functions");
 const QString FunctionReimplementationsTable("lbmeta_functionreimplementations");
 const QString RelationReimplementationsTable("lbmeta_relationreimplementations");
+const QString DependenciesTable("lbmeta_dependencies");
 
 namespace ContextColumns {
 const QString Identifier("identifier");
@@ -98,6 +99,13 @@ const QString Attribute("attribute");
 const QString Identifier("name");
 const QString Value("value");
 }
+namespace DependenciesColumns {
+const QString DependendPropertyId("dependendPropertyId");
+const QString DependencyPropertyId("dependencyPropertyId");
+const QString DependendPropertyType("dependendPropertyType");
+const QString DependencyPropertyType("dependencyPropertyType");
+const QString EntityRelation("entityRelation");
+}
 }
 
 namespace LBDatabase {
@@ -117,6 +125,7 @@ class LocalStorageDriverPrivate
     Table *metaDataTable;
     Table *relationsTable;
     Table *functionsTable;
+    Table *dependenciesTable;
 
     QString fileName;
 
@@ -161,6 +170,10 @@ bool LocalStorageDriverPrivate::init()
 
     functionsTable = database->table(FunctionsTableName);
     if(!functionsTable)
+        return false;
+
+    dependenciesTable = database->table(DependenciesTable);
+    if(!dependenciesTable)
         return false;
 
     return true;
@@ -328,6 +341,26 @@ QList<RelationReimplementationMetaData> LocalStorageDriver::relationReimplementa
         RelationReimplementationMetaData metaData;
         metaData.reimplementedRelationId = row->data(RelationReimplementationsColumns::ReimplementedRelation).toInt();
         metaData.reimplementingEntityTypeId = row->data(RelationReimplementationsColumns::ReimplementingEntityType).toInt();
+        metaDatas.append(metaData);
+    }
+    return metaDatas;
+}
+
+QList<DependencyMetaData> LocalStorageDriver::dependencies() const
+{
+    Q_D(const LocalStorageDriver);
+    QList<DependencyMetaData> metaDatas;
+    metaDatas.reserve(d->dependenciesTable->rows().count());
+    foreach(Row *row, d->dependenciesTable->rows()) {
+        DependencyMetaData metaData;
+        metaData.id = row->id();
+        metaData.dependendPropertyId = row->data(DependenciesColumns::DependendPropertyId).toInt();
+        metaData.dependencyPropertyId = row->data(DependenciesColumns::DependencyPropertyId).toInt();
+        metaData.dependendPropertyType =
+                static_cast<Property::Type>(row->data(DependenciesColumns::DependendPropertyType).toInt());
+        metaData.dependencyPropertyType =
+                static_cast<Property::Type>(row->data(DependenciesColumns::DependencyPropertyType).toInt());
+        metaData.entityRelation = row->data(DependenciesColumns::EntityRelation).toInt();
         metaDatas.append(metaData);
     }
     return metaDatas;

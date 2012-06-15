@@ -50,7 +50,10 @@ public:
     QList<EntityClass *> sort(const QString &sortAttributeName, SortingDirection dir = SortAscending);
 
 private:
-    void addOtherEntity(Entity *entity, int rowId);
+    void addOtherEntityWhileStartup(Entity *entity, int rowId);
+    void addOtherEntity(Entity *entity);
+    void removeOtherEntity(Entity *entity);
+    void recalculateAfterDependencyChange();
 
     QHash<EntityClass *, int> rowIds;
     QHash<FunctionValue *, QList<EntityClass *> > otherEntities;

@@ -8,6 +8,7 @@
 #include "function.h"
 #include "propertyvalue.h"
 #include "relation.h"
+#include "relationvalue.h"
 #include "storagedriver.h"
 
 #include <QFile>
@@ -37,6 +38,9 @@ class StoragePrivate {
     Context *addContext(const QString &name, const QString &baseEntityTypeName);
 
     Context *createContextInstance(const ContextMetaData &metaData);
+
+    void initDependency(DependencyMetaData metaData);
+    Property *property(Property::Type type, int id);
 
     StorageDriver *driver;
 
@@ -150,6 +154,11 @@ bool StoragePrivate::open()
         relation->calculateValues();
     }
 
+
+    foreach(DependencyMetaData metaData, driver->dependencies()) {
+        initDependency(metaData);
+    }
+
     return true;
 }
 
@@ -163,6 +172,55 @@ Context *StoragePrivate::createContextInstance(const ContextMetaData &metaData)
 
     QObject *object = contextMetaObjects.value(contextName).newInstance(Q_ARG(const::LBDatabase::ContextMetaData&,metaData), Q_ARG(::LBDatabase::Storage*, q));
     return static_cast<Context *>(object);
+}
+
+void StoragePrivate::initDependency(DependencyMetaData metaData)
+{
+    Property *dependend = property(metaData.dependendPropertyType, metaData.dependendPropertyId);
+    Property *dependency = property(metaData.dependencyPropertyType, metaData.dependencyPropertyId);
+
+    if(metaData.entityRelation == -1) {
+        foreach(Entity *entity, dependend->entityType()->entities()) {
+            PropertyValue *dependendProperty = entity->propertyValue(dependend);
+            PropertyValue *dependencyProperty = entity->propertyValue(dependency);
+            QObject::connect(dependencyProperty, SIGNAL(changed()), dependendProperty, SLOT(recalculateAfterDependencyChange()));
+        }
+    }
+    else if(metaData.entityRelation == 0) {
+        foreach(PropertyValue *dependencyProperty, dependend->propertyValues()) {
+            foreach(PropertyValue *dependendProperty, dependency->propertyValues()) {
+                QObject::connect(dependencyProperty, SIGNAL(changed()), dependendProperty, SLOT(recalculateAfterDependencyChange()));
+            }
+        }
+    }
+    else if(metaData.entityRelation > 0) {
+        Relation *relation = relations.value(metaData.entityRelation);
+        foreach(Entity *entity, dependend->entityType()->entities()) {
+            PropertyValue *dependendProperty = entity->propertyValue(dependend);
+            RelationValue<Entity> *relationValue = entity->relation<Entity>(relation->identifier());
+            foreach(Entity *relatedEntity, relationValue->entities()) {
+                PropertyValue *dependencyProperty = relatedEntity->propertyValue(dependency);
+                QObject::connect(dependencyProperty, SIGNAL(changed()), dependendProperty, SLOT(recalculateAfterDependencyChange()));
+            }
+        }
+    }
+}
+
+Property *StoragePrivate::property(Property::Type type, int id)
+{
+    switch(type) {
+    case Property::Attribute:
+    case Property::EnumAttribute:
+        return attributes.value(id);
+        break;
+    case Property::Function:
+        return functions.value(id);
+        break;
+    case Property::Relation:
+        return relations.value(id);
+        break;
+    }
+    return 0;
 }
 
 /******************************************************************************

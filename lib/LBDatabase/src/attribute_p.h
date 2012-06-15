@@ -18,6 +18,7 @@ protected:
 
     Storage *storage;
     EntityType *entityType;
+    QList<PropertyValue *> propertyValues;
 
     Attribute * q_ptr;
     Q_DECLARE_PUBLIC(Attribute)

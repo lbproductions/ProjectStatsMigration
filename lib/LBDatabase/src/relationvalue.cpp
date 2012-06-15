@@ -100,12 +100,12 @@ void RelationValue<EntityClass>::addEntity(EntityClass *entity)
 
     int id = relation()->storage()->driver()->addRelatedEntity(this, data);
 
-    addOtherEntity(entity, id);
+    addOtherEntityWhileStartup(entity, id);
     emit changed();
 }
 
 template<class EntityClass>
-void RelationValue<EntityClass>::addOtherEntity(Entity *entity, int rowId)
+void RelationValue<EntityClass>::addOtherEntityWhileStartup(Entity *entity, int rowId)
 {
     QList<EntityClass *> entities = otherEntities.value(0);
     EntityClass *entityCasted = static_cast<EntityClass *>(entity);
@@ -113,8 +113,67 @@ void RelationValue<EntityClass>::addOtherEntity(Entity *entity, int rowId)
         entities.append(entityCasted);
         otherEntities.insert(0, entities);
         rowIds.insert(entityCasted, rowId);
+        otherEntitiesSortedByAttribute.clear();
     }
 }
+
+template<class EntityClass>
+void RelationValue<EntityClass>::addOtherEntity(Entity *entity)
+{
+    addOtherEntityWhileStartup(entity, 0);
+}
+
+template<class EntityClass>
+void RelationValue<EntityClass>::removeOtherEntity(Entity *entity)
+{
+    if(!relation()->isTranspose())
+        return; // this is used by non-transpose relations when recalculating
+                // therefore it should only be called upon transpose relations
+
+    QList<EntityClass *> entities = otherEntities.value(0);
+    if(!entities.contains(entity))
+        return;
+
+    otherEntities.clear();
+    entities.removeAll(entity);
+    otherEntities.insert(0, entities);
+    otherEntitiesSortedByAttribute.clear();
+    emit changed();
+}
+
+template<class EntityClass>
+void RelationValue<EntityClass>::recalculateAfterDependencyChange()
+{
+    if(!relation()->isCalculated() || relation()->isTranspose())
+        return; // non-calculated and transpose relations must not be recalculated!
+
+    QList<Entity *> rightEntities = calculate();
+    if(rightEntities == entities())
+        return; // no change
+
+    Entity *e = entity();
+    Relation *transpose = relation()->transposeRelation();
+
+    foreach(EntityClass *rightEntity, entities()) {
+        RelationValueBase *rightValue =
+                static_cast<RelationValueBase *>(rightEntity->propertyValue(transpose));
+        if(!rightEntities.contains(e))
+            removeOtherEntityFrom(rightValue, e);
+    }
+
+    otherEntities.clear();
+
+    foreach(Entity *rightEntity, rightEntities) {
+        addOtherEntityWhileStartup(rightEntity, 0);
+        RelationValueBase *rightValue =
+                static_cast<RelationValueBase *>(rightEntity->propertyValue(transpose));
+        if(rightValue)
+            addOtherEntityTo(rightValue, e, 0);
+    }
+
+    emit changed();
+}
+
 
 template<class EntityClass, class SortType>
 class FunctionSorter

@@ -154,7 +154,7 @@ PropertyValue *Entity::propertyValue(Property *property) const
     return d->propertyValues.value(property, 0);
 }
 
-AttributeValue *Entity::attributeValue(const QString &name) const
+AttributeValue *Entity::attribute(const QString &name) const
 {
     return static_cast<LBDatabase::AttributeValue *>(propertyValue(entityType()->property(name)));
 }

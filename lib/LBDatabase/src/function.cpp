@@ -36,6 +36,7 @@ class FunctionPrivate {
     EntityType *keyEntityType;
 
     QList<EntityType *> reimplementingEntityTypes;
+    QList<PropertyValue *> propertyValues;
 
     Function * q_ptr;
     Q_DECLARE_PUBLIC(Function)
@@ -62,7 +63,9 @@ void FunctionPrivate::addPropertyValueToEntities()
 void FunctionPrivate::addPropertyValue(Entity *entity)
 {
     Q_Q(Function);
-    entity->addFunctionValue(new FunctionValue(q, entity));
+    FunctionValue *value = new FunctionValue(q, entity);
+    entity->addFunctionValue(value);
+    propertyValues.append(value);
 }
 
 void FunctionPrivate::fetchValues()
@@ -171,6 +174,18 @@ bool Function::isCalculated() const
 {
     Q_D(const Function);
     return d->metaData.calculated;
+}
+
+EntityType *Function::entityType() const
+{
+    Q_D(const Function);
+    return d->entityType;
+}
+
+QList<PropertyValue *> Function::propertyValues() const
+{
+    Q_D(const Function);
+    return d->propertyValues;
 }
 
 bool Function::isCached() const

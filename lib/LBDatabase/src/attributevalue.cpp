@@ -24,7 +24,7 @@ class AttributeValuePrivate {
     Entity *entity;
     Attribute *attribute;
 
-    mutable QVariant cachedData;
+    mutable QVariant cachedValue;
     mutable bool cached;
 
     AttributeValue * q_ptr;
@@ -117,13 +117,13 @@ bool AttributeValue::setData(const QVariant &data)
     if(!d->attribute->isEditable())
         return false;
 
-    if(data == d->cachedData)
+    if(data == d->cachedValue)
         return true;
 
     d->entity->storage()->driver()->setAttributeValue(this, data);
 
     if(d->attribute->isCached()) {
-        d->cachedData = data;
+        d->cachedValue = data;
         d->cached = true;
     }
     emit changed();
@@ -151,7 +151,7 @@ QVariant AttributeValue::value() const
     Q_D(const AttributeValue);
 
     if(d->cached)
-        return d->cachedData;
+        return d->cachedValue;
 
     QVariant value;
     if(d->attribute->isCalculated())
@@ -160,7 +160,7 @@ QVariant AttributeValue::value() const
         value = d->entity->storage()->driver()->attributeValue(this);
 
     if(d->attribute->isCached()) {
-        d->cachedData = value;
+        d->cachedValue = value;
         d->cached = true;
     }
     return value;
@@ -170,6 +170,26 @@ QVariant AttributeValue::calculate()
 {
     Q_D(AttributeValue);
     return d->calculate();
+}
+
+void AttributeValue::recalculateAfterDependencyChange()
+{
+    Q_D(AttributeValue);
+    if(!d->attribute->isCalculated())
+        return; // non-calculated attributes must not be recalculated!
+
+    QVariant newValue = calculate();
+
+    if(d->cached && newValue == d->cachedValue)
+        return; // no change
+
+    if(d->attribute->isCached()) {
+        d->cachedValue = newValue;
+        d->cached = true;
+    }
+
+    emit dataChanged(newValue);
+    emit changed();
 }
 
 } // namespace LBDatabase

@@ -40,6 +40,8 @@ public:
     Property::Type propertyType() const;
     bool isEditable() const;
     bool isCalculated() const;
+    EntityType *entityType() const;
+    QList<PropertyValue *> propertyValues() const;
 
     // General
     void setDisplayName(const QString &displayName);
@@ -50,7 +52,6 @@ public:
     void setCalculated(bool calculated);
     bool isCached() const;
     void setCached(bool cached);
-    EntityType *entityType() const;
     QVariant defaultValue() const;
     void setDefaultValue(QVariant defaultValue);
 

@@ -26,6 +26,8 @@ void TotalPointsTable::setDoppelkopfLiveGame(DoppelkopfLiveGame *doppelkopfLiveG
         return;
 
     m_doppelkopfLiveGame = doppelkopfLiveGame;
+    connect(m_doppelkopfLiveGame->function(LiveGameProperties::PointsFunction), SIGNAL(changed()), this, SLOT(updateContents()));
+    connect(m_doppelkopfLiveGame->attribute(LiveGameProperties::TotalPointsAttribute), SIGNAL(changed()), this, SLOT(updateContents()));
 
     insertRow(0);
     int column = 0;
@@ -69,6 +71,16 @@ void TotalPointsTable::resizeEvent(QResizeEvent* event)
     setColumnWidth(columnCount()-1, w / 8);
     setColumnWidth(columnCount()-1, w / 8);
     QTableWidget::resizeEvent(event);
+}
+
+void TotalPointsTable::updateContents()
+{
+    int column = 0;
+    foreach(Player *player, m_doppelkopfLiveGame->players()) {
+        item(0,column++)->setText(QString::number(m_doppelkopfLiveGame->points(player)));
+    }
+
+    item(0, column)->setText(QString::number(m_doppelkopfLiveGame->totalPoints()));
 }
 
 } // namespace DokoLiveGameWindowNS

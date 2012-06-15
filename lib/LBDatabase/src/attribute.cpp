@@ -40,7 +40,9 @@ void AttributePrivate::addPropertyValueToEntities()
 void AttributePrivate::addPropertyValue(Entity *entity)
 {
     Q_Q(Attribute);
-    entity->addAttributeValue(new AttributeValue(q, entity));
+    AttributeValue *value = new AttributeValue(q, entity);
+    entity->addAttributeValue(value);
+    propertyValues.append(value);
 }
 
 void AttributePrivate::fetchValues()
@@ -204,6 +206,12 @@ EntityType *Attribute::entityType() const
 {
     Q_D(const Attribute);
     return d->entityType;
+}
+
+QList<PropertyValue *> Attribute::propertyValues() const
+{
+    Q_D(const Attribute);
+    return d->propertyValues;
 }
 
 QVariant Attribute::defaultValue() const

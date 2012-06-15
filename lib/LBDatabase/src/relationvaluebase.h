@@ -27,7 +27,12 @@ protected:
 
     explicit RelationValueBase(Relation *relation, Entity *parent);
 
-    virtual void addOtherEntity(Entity *entity, int rowId) = 0;
+    virtual void addOtherEntityWhileStartup(Entity *entity, int rowId) = 0;
+    virtual void addOtherEntity(Entity *entity) = 0;
+    virtual void removeOtherEntity(Entity *entity) = 0;
+
+    void addOtherEntityTo(RelationValueBase *rightValue, Entity *e, int id);
+    void removeOtherEntityFrom(RelationValueBase *rightValue, Entity *e);
 
     QList<Entity *> calculate() const;
 

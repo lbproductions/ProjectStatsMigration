@@ -2,6 +2,7 @@
 #define LBDATABASE_H
 
 #include <LBDatabase/attribute.h>
+#include <LBDatabase/attributevalue.h>
 #include <LBDatabase/calculator.h>
 #include <LBDatabase/context.h>
 #include <LBDatabase/function.h>

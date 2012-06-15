@@ -23,6 +23,7 @@
 #include <QDesktopServices>
 #include <QMessageBox>
 #include <QSettings>
+#include <QElapsedTimer>
 
 namespace MainWindowNS {
 
@@ -41,7 +42,8 @@ Controller::Controller(MainWindow *mainWindow) :
         UpdaterPreferences::initializeUpdater(m_updater);
 
     QString storageLocation = QDesktopServices::storageLocation(QDesktopServices::DataLocation).append("/storage.lbstorage");
-    qDebug() << storageLocation;
+    QElapsedTimer timer;
+    timer.start();
     m_storage = new Storage(this);
     m_storage->setDriver(
                 new LBDatabase::LocalStorageDriver(
@@ -56,6 +58,7 @@ Controller::Controller(MainWindow *mainWindow) :
         msgBox.exec();
         exit(-1);
     }
+    qDebug() << "Opening the storage took "+QString::number(timer.elapsed())+"ms.";
 }
 
 MainWindow *Controller::mainWindow() const

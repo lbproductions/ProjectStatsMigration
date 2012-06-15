@@ -29,6 +29,7 @@ class EnumAttributeMetaData;
 class FunctionReimplementationMetaData;
 class RelationValueData;
 class RelationReimplementationMetaData;
+class DependencyMetaData;
 
 class StorageDriver : public QObject
 {
@@ -48,6 +49,7 @@ public:
     virtual QList<EnumAttributeMetaData> enumValues() const = 0;
     virtual QList<FunctionReimplementationMetaData> functionReimplementations() const = 0;
     virtual QList<RelationReimplementationMetaData> relationReimplementations() const = 0;
+    virtual QList<DependencyMetaData> dependencies() const = 0;
 
     // Attributes
     virtual QVariant attributeValue(const AttributeValue *value) const = 0;

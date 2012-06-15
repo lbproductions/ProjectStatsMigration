@@ -17,6 +17,9 @@ public:
     
     void resizeEvent(QResizeEvent *event);
 
+private slots:
+    void updateContents();
+
 private:
     DoppelkopfLiveGame *m_doppelkopfLiveGame;
 };

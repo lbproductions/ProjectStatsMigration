@@ -29,6 +29,9 @@ public:
 
 Q_SIGNALS:
     void changed();
+
+public Q_SLOTS:
+    virtual void recalculateAfterDependencyChange() = 0;
 };
 //! \endcond
 

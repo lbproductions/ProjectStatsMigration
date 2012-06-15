@@ -30,6 +30,9 @@ public:
 Q_SIGNALS:
     void dataChanged(QVariant dataForModel);
 
+public Q_SLOTS:
+    void recalculateAfterDependencyChange();
+
 private:
     friend class AttributePrivate;
     friend class LocalStorageDriver;

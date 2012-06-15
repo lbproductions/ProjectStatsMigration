@@ -41,7 +41,7 @@ public:
     // Property values
     QList<PropertyValue *> propertyValues() const;
     PropertyValue *propertyValue(Property *property) const;
-    AttributeValue *attributeValue(const QString &name) const;
+    AttributeValue *attribute(const QString &name) const;
     FunctionValue *function(const QString &name) const;
     template<class EntityClass>
     RelationValue<EntityClass> *relation(const QString &name) const;

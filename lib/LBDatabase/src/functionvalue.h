@@ -21,7 +21,6 @@ public:
     Property *property() const;
     QVariant dataForModel(int role = Qt::DisplayRole) const;
     QVariant value() const;
-    bool isEditable() const;
 
     // General
     Function *function() const;
@@ -38,6 +37,7 @@ private:
     explicit FunctionValue(Function *function, Entity *parent);
 
     void addValue(Entity *key, const FunctionValueData &dataForModel);
+    void recalculateAfterDependencyChange();
 
     QScopedPointer<FunctionValuePrivate> d_ptr;
     Q_DECLARE_PRIVATE(FunctionValue)
