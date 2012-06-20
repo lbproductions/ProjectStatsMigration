@@ -229,12 +229,73 @@ void NewRoundDialog::saveNormalRound()
 
 void NewRoundDialog::saveHochzeitRound()
 {
+    m_doppelkopfRound->setHochzeitPlayer(ui->comboBoxHochzeitHochzeit->currentPlayer());
+    m_doppelkopfRound->setRePlayer1(ui->comboBoxHochzeitHochzeit->currentPlayer());
+    m_doppelkopfRound->setRePlayer2(ui->comboBoxHochzeitFellow->currentPlayer());
+    m_doppelkopfRound->setComment(ui->textEditHochzeitComment->toPlainText());
+    if(ui->comboBoxHochzeitSchweine->currentPlayer())
+        m_doppelkopfRound->setSchweinereiPlayer(ui->comboBoxHochzeitSchweine->currentPlayer());
+
+    foreach(Player *p, m_doppelkopfRound->currentPlayingPlayers()) {
+        if(p == ui->comboBoxHochzeitHochzeit->currentPlayer() ||
+                p == ui->comboBoxHochzeitFellow->currentPlayer()) {
+            m_doppelkopfRound->setPoints(p, ui->spinBoxHochzeitPoints->value());
+        }
+        else {
+            m_doppelkopfRound->setPoints(p, -ui->spinBoxHochzeitPoints->value());
+        }
+    }
+    m_doppelkopfRound->setState(Round::Finished);
+
+    DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(m_doppelkopfRound->game());
+    game->addRound();
 }
 
 void NewRoundDialog::saveSoloRound()
 {
+    m_doppelkopfRound->setDokoSoloPlayer(ui->comboBoxSoloPlayer->currentPlayer());
+    m_doppelkopfRound->setRePlayer1(ui->comboBoxSoloPlayer->currentPlayer());
+    m_doppelkopfRound->setComment(ui->textEditSoloComment->toPlainText());
+    if(ui->comboBoxSoloSchweine->currentPlayer())
+        m_doppelkopfRound->setSchweinereiPlayer(ui->comboBoxSoloSchweine->currentPlayer());
+
+    m_doppelkopfRound->setDoko_soloType(ui->comboBoxSoloType->currentText());
+    m_doppelkopfRound->setDoko_soloPflicht(ui->checkBoxSoloPflicht->isChecked());
+
+    foreach(Player *p, m_doppelkopfRound->currentPlayingPlayers()) {
+        if(p == ui->comboBoxSoloPlayer->currentPlayer()) {
+            m_doppelkopfRound->setPoints(p, 3 * ui->spinBoxSoloPoints->value());
+        }
+        else {
+            m_doppelkopfRound->setPoints(p, -ui->spinBoxSoloPoints->value());
+        }
+    }
+    m_doppelkopfRound->setState(Round::Finished);
+
+    DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(m_doppelkopfRound->game());
+    game->addRound();
 }
 
 void NewRoundDialog::saveTrumpfabgabeRound()
 {
+    m_doppelkopfRound->setTrumpfabgabePlayer(ui->comboBoxTrumpfabgabePlayer->currentPlayer());
+    m_doppelkopfRound->setRePlayer1(ui->comboBoxTrumpfabgabePlayer->currentPlayer());
+    m_doppelkopfRound->setRePlayer2(ui->comboBoxTrumpfabgabeAccept->currentPlayer());
+    m_doppelkopfRound->setComment(ui->textEditTrumpfabgabeComment->toPlainText());
+    if(ui->comboBoxTrumpfabgabeSchweine->currentPlayer())
+        m_doppelkopfRound->setSchweinereiPlayer(ui->comboBoxTrumpfabgabeSchweine->currentPlayer());
+
+    foreach(Player *p, m_doppelkopfRound->currentPlayingPlayers()) {
+        if(p == ui->comboBoxTrumpfabgabePlayer->currentPlayer() ||
+                p == ui->comboBoxTrumpfabgabeAccept->currentPlayer()) {
+            m_doppelkopfRound->setPoints(p, ui->spinBoxTrumpfabgabePoints->value());
+        }
+        else {
+            m_doppelkopfRound->setPoints(p, -ui->spinBoxTrumpfabgabePoints->value());
+        }
+    }
+    m_doppelkopfRound->setState(Round::Finished);
+
+    DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(m_doppelkopfRound->game());
+    game->addRound();
 }
