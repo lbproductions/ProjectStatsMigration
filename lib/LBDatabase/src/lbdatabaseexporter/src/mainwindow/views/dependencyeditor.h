@@ -30,7 +30,10 @@ private slots:
 
     void save();
 
+
 private:
+    void addPossibleDependencies(LBDatabase::EntityType *dependencyType);
+
     Ui::DependencyEditor *ui;
 
     LBDatabase::DependencyMetaData m_metaData;
