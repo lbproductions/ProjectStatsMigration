@@ -5,6 +5,7 @@
 #include "livegame.h"
 #include "livegamecalculator.h"
 #include "doppelkopflivegame.h"
+#include "doppelkopflivegamecalculator.h"
 #include "skatlivegame.h"
 
 const QString GamesContext::Name("Games");
@@ -18,6 +19,8 @@ GamesContext::GamesContext(const ::LBDatabase::ContextMetaData &metaData, LBData
 	registerCalculatorClass<LiveGame,LiveGameCalculator>();
 
 	registerEntityClass<DoppelkopfLiveGame>();
+	registerCalculatorClass<DoppelkopfLiveGame,DoppelkopfLiveGameCalculator>();
+
 	registerEntityClass<SkatLiveGame>();
 }
 
@@ -46,8 +49,7 @@ DoppelkopfLiveGame *GamesContext::createDoppelkopfGame()
 {
     Storage *psstorage = static_cast<Storage *>(storage());
     DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(insertEntity(psstorage->entityType(DoppelkopfLiveGame::EntityTypeId)));
-    DoppelkopfRound *round1 = psstorage->roundsContext()->createDoppelkopfRound();
-    game->addRound(round1);
+    game->addRound();
     game->setDate(QDateTime::currentDateTime());
     return game;
 }

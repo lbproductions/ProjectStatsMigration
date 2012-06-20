@@ -104,12 +104,24 @@ public:
 	// END
 
 signals:
-	void weightChanged(int weight);
-	void sizeChanged(int size);
-	void genderChanged(QString gender);
-	void nameChanged(QString name);
+	void weightChanged(int);
+	void sizeChanged(int);
+	void genderChanged(QString);
+	void nameChanged(QString);
+	void gameCountChanged();
+	void pointsChanged();
+	void gamePointsChanged();
+	void averageChanged();
+	void weightedAverageChanged();
+	void diffAverageWeightedAverageChanged();
+	void winsChanged();
+	void lossesChanged();
+	void averagePlacementChanged();
+	void lastWinChanged();
+	void lastGameChanged();
 };
 
 Q_DECLARE_METATYPE(QList<Player *>)
+Q_DECLARE_METATYPE(Player *)
 
 #endif // PLAYER_H

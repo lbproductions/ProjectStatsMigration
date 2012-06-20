@@ -25,6 +25,7 @@ public:
 
 private slots:
     void addRound(Round *round);
+    void addLastRound();
 
 private:
     DoppelkopfLiveGame *m_doppelkopfLiveGame;

@@ -62,11 +62,20 @@ void CalculatorWriter::exportHeader() const
     startHeader(calculatorClass, header);
     startNamespace(header);
 
+    QString parentClass = QLatin1String("Calculator");
+    if(m_entityType->parentEntityType()) {
+        parentClass.prepend(makeClassname(m_entityType->parentEntityType()->identifier()));
+        writeInclude(parentClass, header);
+    }
+    else {
+        parentClass.prepend("LBDatabase::");
+    }
+
     header.append(QLatin1String(
-        "\nclass ")+calculatorClass+QLatin1String(" : public LBDatabase::Calculator\n"
+        "\nclass ")+calculatorClass+QLatin1String(" : public ")+parentClass+"\n"
         "{\n"
         "Q_OBJECT\n"
-        "public:\n\tQ_INVOKABLE explicit ")+
+        "public:\n\tQ_INVOKABLE explicit "+
             calculatorClass+QLatin1String("(QObject *parent = 0);\n\n")
     );
 
@@ -100,6 +109,14 @@ void CalculatorWriter::exportSource() const
 {
     QString calculatorClass = makeClassname(m_entityType->identifier() + QLatin1String("Calculator"));
     QString entityTypeClass = makeClassname(m_entityType->identifier());
+    QString parentClass = QLatin1String("Calculator");
+    if(m_entityType->parentEntityType()) {
+        parentClass.prepend(makeClassname(m_entityType->parentEntityType()->identifier()));
+    }
+    else {
+        parentClass.prepend("LBDatabase::");
+    }
+
     QString fileName = makeSourceFilename(calculatorClass);
     QString source = readFromFile(fileName);
 
@@ -112,9 +129,9 @@ void CalculatorWriter::exportSource() const
         source.append(QLatin1String("\n")+
                 calculatorClass+QLatin1String("::")+calculatorClass+QLatin1String(
         "(QObject *parent) :\n"
-            "\tCalculator(parent)\n"
+            "\t")+parentClass+"(parent)\n"
           "{\n"
-          "}\n\n"));
+          "}\n\n");
         source.append(InsertionPoint);
         endNamespace(source);
     }

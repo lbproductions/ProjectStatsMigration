@@ -37,9 +37,10 @@ public:
 	// END
 
 signals:
-	void typeChanged(QString type);
+	void typeChanged(QString);
 };
 
 Q_DECLARE_METATYPE(QList<Schmeisserei *>)
+Q_DECLARE_METATYPE(Schmeisserei *)
 
 #endif // SCHMEISSEREI_H

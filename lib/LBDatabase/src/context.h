@@ -47,6 +47,9 @@ public:
     Qt::ItemFlags flags(const QModelIndex &index) const;
 
 
+Q_SIGNALS:
+    void entityInserted(Entity*);
+
 private Q_SLOTS:
     void onEntityTypeNameChanged(QString identifier);
     void onPropertyDisplayNameChanged(QString displayName);

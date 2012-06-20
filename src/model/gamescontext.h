@@ -20,7 +20,6 @@ public:
 
 	// Write anything you want to remain unchanged between these comments: 
     //START
-
     DoppelkopfLiveGame *createDoppelkopfGame();
 
 	// END

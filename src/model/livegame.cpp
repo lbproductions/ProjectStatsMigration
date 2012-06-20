@@ -37,8 +37,8 @@ QList<Round *> LiveGame::rounds() const
 
 void LiveGame::addRound(Round *round)
 {
-
-relation<Round>(LiveGameProperties::RoundsRelation)->addEntity(round);
+	relation<Round>(LiveGameProperties::RoundsRelation)->addEntity(round);
+	emit roundsRoundAdded(round);
 }
 
 int LiveGame::points(const Player *player) const

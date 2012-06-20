@@ -47,6 +47,7 @@ public:
     Direction direction() const;
 
     bool isTranspose() const;
+    bool isEditableTranspose() const;
     Relation *transposeRelation() const;
 
     Storage* storage() const;
@@ -115,6 +116,7 @@ public:
     int entityTypeId;
     int entityTypeOtherId;
     bool editable;
+    bool editableTranspose;
     bool calculated;
 };
 

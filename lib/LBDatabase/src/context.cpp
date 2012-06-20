@@ -7,6 +7,7 @@
 #include "entitytype.h"
 #include "function.h"
 #include "relation.h"
+#include "relationvalue.h"
 #include "storage.h"
 #include "storagedriver.h"
 
@@ -154,10 +155,18 @@ Entity *ContextPrivate::insertEntity(EntityType *type)
         property->addPropertyValue(entity);
     }
 
-    //TODO: PropertyValues initialisieren
+    foreach(Property *p, type->properties()) {
+        PropertyValue *v = entity->propertyValue(p);
+        v->recalculateAfterDependencyChange();
+    }
+
+    foreach(Property *property, properties) {
+        property->initDependencies(entity);
+    }
 
     q->endInsertRows();
 
+    emit q->entityInserted(entity);
     return entity;
 }
 

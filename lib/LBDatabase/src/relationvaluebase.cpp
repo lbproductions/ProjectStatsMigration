@@ -47,14 +47,17 @@ RelationValueBase::RelationValueBase(Relation *relation, Entity *parent) :
     connect(this, SIGNAL(changed()), entity()->context(), SLOT(onPropertyValueChanged()));
 }
 
-void RelationValueBase::addOtherEntityTo(RelationValueBase *rightValue, Entity *e, int id)
+void RelationValueBase::addOtherEntityTo(RelationValueBase *rightValue, Entity *e, int rowId)
 {
-    rightValue->addOtherEntityWhileStartup(e, id);
+    rightValue->addOtherEntityWhileStartup(e, rowId);
+    emit rightValue->entityAdded(e);
+    emit rightValue->changed();
 }
 
 void RelationValueBase::removeOtherEntityFrom(RelationValueBase *rightValue, Entity *e)
 {
     rightValue->removeOtherEntity(e);
+    emit rightValue->changed();
 }
 
 /*!

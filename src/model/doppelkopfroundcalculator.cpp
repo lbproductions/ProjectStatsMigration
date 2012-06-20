@@ -8,7 +8,7 @@
 #include "storage.h"
 
 DoppelkopfRoundCalculator::DoppelkopfRoundCalculator(QObject *parent) :
-    LBDatabase::Calculator(parent)
+    RoundCalculator(parent)
 {
 }
 

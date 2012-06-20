@@ -8,7 +8,8 @@
 
 #include <QDebug>
 
-DrinkCalculator::DrinkCalculator(QObject *parent) :	Calculator(parent)
+DrinkCalculator::DrinkCalculator(QObject *parent) :
+    Calculator(parent)
 {
 }
 

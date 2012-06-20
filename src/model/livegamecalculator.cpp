@@ -6,7 +6,7 @@
 #include "storage.h"
 
 LiveGameCalculator::LiveGameCalculator(QObject *parent) :
-    Calculator(parent)
+    GameCalculator(parent)
 {
 }
 
@@ -47,7 +47,9 @@ QVariant LiveGameCalculator::totalPoints(const LBDatabase::Entity *entity) const
 
     int result = 0;
     foreach(Round *round, liveGame->rounds()) {
-        result += qAbs(round->points(round->currentPlayingPlayers().at(0)));
+        if(!round->currentPlayingPlayers().isEmpty()) {
+            result += qAbs(round->points(round->currentPlayingPlayers().first()));
+        }
     }
 
     return result;

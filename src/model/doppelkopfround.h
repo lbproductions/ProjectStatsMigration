@@ -43,11 +43,17 @@ public:
 
 
 	Player *hochzeitPlayer() const;
+	void setHochzeitPlayer(Player *hochzeitPlayer);
 	Player *rePlayer1() const;
+	void setRePlayer1(Player *rePlayer1);
 	Player *rePlayer2() const;
+	void setRePlayer2(Player *rePlayer2);
 	Player *schweinereiPlayer() const;
+	void setSchweinereiPlayer(Player *schweinereiPlayer);
 	Player *trumpfabgabePlayer() const;
+	void setTrumpfabgabePlayer(Player *trumpfabgabePlayer);
 	Player *dokoSoloPlayer() const;
+	void setDokoSoloPlayer(Player *dokoSoloPlayer);
 	QList<Player *> currentPlayingPlayers() const;
 
 	// Write anything you want to remain unchanged between these comments: 
@@ -55,10 +61,11 @@ public:
 	// END
 
 signals:
-	void doko_soloPflichtChanged(bool doko_soloPflicht);
-	void doko_soloTypeChanged(QString doko_soloType);
+	void doko_soloPflichtChanged(bool);
+	void doko_soloTypeChanged(QString);
 };
 
 Q_DECLARE_METATYPE(QList<DoppelkopfRound *>)
+Q_DECLARE_METATYPE(DoppelkopfRound *)
 
 #endif // DOPPELKOPFROUND_H

@@ -49,10 +49,12 @@ public:
 	// END
 
 signals:
-	void stateChanged(LiveGame::State state);
+	void stateChanged(LiveGame::State);
+	void totalPointsChanged();
 	void roundsRoundAdded(Round *round);
 };
 
 Q_DECLARE_METATYPE(QList<LiveGame *>)
+Q_DECLARE_METATYPE(LiveGame *)
 
 #endif // LIVEGAME_H

@@ -20,7 +20,7 @@ public:
     explicit Calculator(QObject *parent = 0);
     
     QVariant calculate(const Entity *entity, AttributeValue *attributeValue); // AttributeValue
-    QHash<const Entity *, QVariant> calculate(const Entity *entity, FunctionValue *functionValue); // FunctionValue
+    QHash<const Entity *, QVariant> calculate(const Entity *entity, const FunctionValue *functionValue); // FunctionValue
     QList<Entity *> calculate(const Entity *entity, const RelationValueBase *relationValue); // FunctionValue
 };
 

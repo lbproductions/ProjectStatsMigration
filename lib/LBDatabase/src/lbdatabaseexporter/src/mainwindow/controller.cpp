@@ -3,6 +3,7 @@
 #include "actions.h"
 #include "mainwindow.h"
 #include "views/entitytypeview.h"
+#include "views/propertiesview.h"
 
 #include "../cppexporter.h"
 
@@ -96,32 +97,32 @@ void Controller::showPreferences()
 
 void Controller::addAttribute()
 {
-    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->addAttribute();
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->propertiesView()->addAttribute();
 }
 
 void Controller::addFunction()
 {
-    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->addFunction();
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->propertiesView()->addFunction();
 }
 
 void Controller::addRelation()
 {
-    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->addRelation();
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->propertiesView()->addRelation();
 }
 
 void Controller::editAttribute()
 {
-    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->editAttribute();
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->propertiesView()->editAttribute();
 }
 
 void Controller::editFunction()
 {
-    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->editFunction();
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->propertiesView()->editFunction();
 }
 
 void Controller::editRelation()
 {
-    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->editRelation();
+    static_cast<MainWindowNS::EntityTypeView *>(m_mainWindow->centralWidget())->propertiesView()->editRelation();
 }
 
 void Controller::exportSource()

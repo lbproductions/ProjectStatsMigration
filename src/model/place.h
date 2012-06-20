@@ -55,14 +55,16 @@ public:
 	// END
 
 signals:
-	void plzChanged(int plz);
-	void ortChanged(QString ort);
-	void strasseChanged(QString strasse);
-	void nummerChanged(int nummer);
-	void commentChanged(QString comment);
+	void plzChanged(int);
+	void ortChanged(QString);
+	void strasseChanged(QString);
+	void nummerChanged(int);
+	void commentChanged(QString);
+	void gameCountChanged();
 	void gamesGameAdded(Game *game);
 };
 
 Q_DECLARE_METATYPE(QList<Place *>)
+Q_DECLARE_METATYPE(Place *)
 
 #endif // PLACE_H

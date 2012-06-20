@@ -53,10 +53,11 @@ public:
 	// END
 
 signals:
-	void orderIndicatorChanged(int orderIndicator);
-	void iconChanged(QString icon);
+	void orderIndicatorChanged(int);
+	void iconChanged(QString);
 };
 
 Q_DECLARE_METATYPE(QList<Category *>)
+Q_DECLARE_METATYPE(Category *)
 
 #endif // CATEGORY_H

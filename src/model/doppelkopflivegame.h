@@ -3,6 +3,7 @@
 
 #include <LBDatabase/LBDatabase.h>
 
+#include <QStringList>
 #include "livegame.h"
 
 namespace DoppelkopfLiveGameProperties {
@@ -23,8 +24,11 @@ const QString Doko_mitTrumpfsoloAttribute("doko_mitTrumpfsolo");
 const QString Doko_mitZuWenigTrumpfAttribute("doko_mitZuWenigTrumpf");
 const QString Doko_mitFleischlosAttribute("doko_mitFleischlos");
 const QString Doko_mitSchwarzsoloAttribute("doko_mitSchwarzsolo");
+const QString AllowedSoliAttribute("allowedSoli");
+const QString HasPflichtsoloFunction("hasPflichtsolo");
 } // namespace DoppelkopfLiveGameProperties
 
+class Player;
 
 class DoppelkopfLiveGame : public LiveGame
 {
@@ -53,6 +57,7 @@ public:
 	bool doko_mitZuWenigTrumpf() const;
 	bool doko_mitFleischlos() const;
 	bool doko_mitSchwarzsolo() const;
+	QStringList allowedSoli() const;
 
 	void setDoko_mitHochzeit(bool doko_mitHochzeit);
 	void setDoko_mitPflichtsolo(bool doko_mitPflichtsolo);
@@ -72,36 +77,40 @@ public:
 	void setDoko_mitFleischlos(bool doko_mitFleischlos);
 	void setDoko_mitSchwarzsolo(bool doko_mitSchwarzsolo);
 
+	bool hasPflichtsolo(const Player *player) const;
 
 
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
 
+    Round *addRound();
     static const QString GameName;
 
 	// END
 
 signals:
-	void doko_mitHochzeitChanged(bool doko_mitHochzeit);
-	void doko_mitPflichtsoloChanged(bool doko_mitPflichtsolo);
-	void doko_mitSchmeissereiChanged(bool doko_mitSchmeisserei);
-	void doko_mitSchweinereiChanged(bool doko_mitSchweinerei);
-	void doko_mitSoloChanged(bool doko_mitSolo);
-	void doko_mitTrumpfabgabeChanged(bool doko_mitTrumpfabgabe);
-	void doko_mitBubensoloChanged(bool doko_mitBubensolo);
-	void doko_mitDamensoloChanged(bool doko_mitDamensolo);
-	void doko_mitFarbsoloChanged(bool doko_mitFarbsolo);
-	void doko_mitFleischlossChanged(bool doko_mitFleischloss);
-	void doko_mitFuenfKoenigeChanged(bool doko_mitFuenfKoenige);
-	void doko_mitNeunzigPunkteChanged(bool doko_mitNeunzigPunkte);
-	void doko_mitTrumpfabgabeSchmeissereiChanged(bool doko_mitTrumpfabgabeSchmeisserei);
-	void doko_mitTrumpfsoloChanged(bool doko_mitTrumpfsolo);
-	void doko_mitZuWenigTrumpfChanged(bool doko_mitZuWenigTrumpf);
-	void doko_mitFleischlosChanged(bool doko_mitFleischlos);
-	void doko_mitSchwarzsoloChanged(bool doko_mitSchwarzsolo);
+	void doko_mitHochzeitChanged(bool);
+	void doko_mitPflichtsoloChanged(bool);
+	void doko_mitSchmeissereiChanged(bool);
+	void doko_mitSchweinereiChanged(bool);
+	void doko_mitSoloChanged(bool);
+	void doko_mitTrumpfabgabeChanged(bool);
+	void doko_mitBubensoloChanged(bool);
+	void doko_mitDamensoloChanged(bool);
+	void doko_mitFarbsoloChanged(bool);
+	void doko_mitFleischlossChanged(bool);
+	void doko_mitFuenfKoenigeChanged(bool);
+	void doko_mitNeunzigPunkteChanged(bool);
+	void doko_mitTrumpfabgabeSchmeissereiChanged(bool);
+	void doko_mitTrumpfsoloChanged(bool);
+	void doko_mitZuWenigTrumpfChanged(bool);
+	void doko_mitFleischlosChanged(bool);
+	void doko_mitSchwarzsoloChanged(bool);
+	void allowedSoliChanged();
 };
 
 Q_DECLARE_METATYPE(QList<DoppelkopfLiveGame *>)
+Q_DECLARE_METATYPE(DoppelkopfLiveGame *)
 
 #endif // DOPPELKOPFLIVEGAME_H

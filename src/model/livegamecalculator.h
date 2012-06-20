@@ -3,8 +3,9 @@
 
 #include <LBDatabase/LBDatabase.h>
 
+#include "gamecalculator.h"
 
-class LiveGameCalculator : public LBDatabase::Calculator
+class LiveGameCalculator : public GameCalculator
 {
 Q_OBJECT
 public:

@@ -41,5 +41,6 @@ signals:
 };
 
 Q_DECLARE_METATYPE(QList<Rule *>)
+Q_DECLARE_METATYPE(Rule *)
 
 #endif // RULE_H

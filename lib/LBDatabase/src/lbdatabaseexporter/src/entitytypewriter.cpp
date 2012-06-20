@@ -82,6 +82,9 @@ void EntityTypeWriter::writeNeededQtHeaders(QString &header) const
         else if(attribute->type() == Attribute::Color) {
             header.append(QLatin1String("#include <QColor>\n"));
         }
+        else if(attribute->type() == Attribute::StringList) {
+            header.append(QLatin1String("#include <QStringList>\n"));
+        }
     }
 }
 
@@ -217,7 +220,7 @@ void EntityTypeWriter::writeDeclaration(QString &header) const
     header.append(QLatin1String("signals:\n"));
 
     foreach(Attribute *attribute, m_entityType->nonInhertitedAttributes()) {
-        if(attribute->isEditable()) {
+        if(attribute->isEditable() || attribute->isCalculated()) {
            writeAttributeChangedSignal(attribute, header);
         }
     }
@@ -235,7 +238,8 @@ void EntityTypeWriter::writeDeclaration(QString &header) const
 
     header.append(QLatin1String("};\n\n"));
 
-    header.append(QLatin1String("Q_DECLARE_METATYPE(QList<")+m_classname+QLatin1String(" *>)\n\n"));
+    header.append(QLatin1String("Q_DECLARE_METATYPE(QList<")+m_classname+QLatin1String(" *>)\n"));
+    header.append(QLatin1String("Q_DECLARE_METATYPE(")+m_classname+QLatin1String(" *)\n\n"));
 }
 
 void EntityTypeWriter::writeImplementation(QString &source) const
@@ -397,12 +401,7 @@ void EntityTypeWriter::writeAttributeSetterImplementation(Attribute *attribute, 
 
 void EntityTypeWriter::writeAttributeChangedSignal(Attribute *attribute, QString &header) const
 {
-    QString type = attribute->qtType();
-    if(attribute->propertyType() == Property::EnumAttribute)
-        type.prepend(m_classname+"::");
-    header.append(QLatin1String("\tvoid ") +
-                  makeMethodName(attribute->identifier()) + QLatin1String("Changed(") + type + QLatin1String(" ")
-                  + makeMethodName(attribute->identifier()) + QLatin1String(");\n"));
+    header.append(QLatin1String("\tvoid ") + attribute->signalSignature() + QLatin1String(";\n"));
 }
 
 void EntityTypeWriter::writeRelationDeclaration(Relation *relation, QString &header) const
@@ -426,6 +425,17 @@ void EntityTypeWriter::writeRelationDeclaration(Relation *relation, QString &hea
         if(relation->isEditable() && !relation->isTranspose()) {
             header.append("\tvoid add"+entityType+"("+entityType+" *"+makeMethodName(relationName)+");\n");
         }
+    }
+
+    if(relation->isEditableTranspose() && relation->isTranspose()) {
+        header.append("\tvoid ");
+        if(relation->cardinality() == Relation::ManyToMany) {
+            header.append("add");
+        }
+        else {
+            header.append("set");
+        }
+        header.append(makeClassname(relationName)+"("+entityType+" *"+makeMethodName(relationName)+");\n");
     }
 }
 
@@ -460,9 +470,26 @@ void EntityTypeWriter::writeRelationImplementation(Relation *relation, QString &
          if(relation->isEditable() && !relation->isTranspose()) {
              source.append("void "+m_classname+"::add"+entityType+"("+entityType+" *"+makeMethodName(entityType)+")\n"
              "{\n"
-                           "\nrelation<"+entityType+">("+m_classname+"Properties::"+relationName+"Relation)->addEntity("+makeMethodName(entityType)+");\n"
-             "}\n\n");
+                           "\trelation<"+entityType+">("+m_classname+"Properties::"+relationName+"Relation)->addEntity("+makeMethodName(entityType)+");\n"
+                           "\temit " + makeMethodName(relation->identifier()) + entityType + QLatin1String("Added(") + makeMethodName(entityType) + QLatin1String(");\n"
+             "}\n\n"));
          }
+    }
+
+    if(relation->isEditableTranspose() && relation->isTranspose()) {
+        source.append("void "+m_classname+"::");
+        if(relation->cardinality() == Relation::ManyToMany) {
+            source.append("add");
+        }
+        else {
+            source.append("set");
+        }
+        source.append(makeClassname(relationName)+"("+entityType+" *"+makeMethodName(relationName)+")\n"
+        "{\n"
+                      "\trelation<"+entityType+">("+m_classname+"Properties::"+relationName+"Relation)->addEntity("+makeMethodName(relationName)+");\n"
+        "}\n\n");
+
+        //                      "\temit " + makeMethodName(relation->identifier()) + entityType + QLatin1String("Added(") + makeMethodName(entityType) + QLatin1String(");\n"
     }
 }
 

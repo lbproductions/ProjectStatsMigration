@@ -57,14 +57,15 @@ public:
 	// END
 
 signals:
-	void nameChanged(QString name);
-	void dateChanged(QDateTime date);
-	void lengthChanged(QTime length);
-	void commentChanged(QString comment);
+	void nameChanged(QString);
+	void dateChanged(QDateTime);
+	void lengthChanged(QTime);
+	void commentChanged(QString);
 	void positionChanged(const Player *player,int position);
 	void playersPlayerAdded(Player *player);
 };
 
 Q_DECLARE_METATYPE(QList<Game *>)
+Q_DECLARE_METATYPE(Game *)
 
 #endif // GAME_H

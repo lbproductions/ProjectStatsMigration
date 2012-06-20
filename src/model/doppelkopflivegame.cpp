@@ -1,5 +1,6 @@
 #include "doppelkopflivegame.h"
 
+#include "player.h"
 
 
 const QString DoppelkopfLiveGame::Name("doppelkopfLiveGame");
@@ -93,6 +94,11 @@ bool DoppelkopfLiveGame::doko_mitFleischlos() const
 bool DoppelkopfLiveGame::doko_mitSchwarzsolo() const
 {
 	return value(DoppelkopfLiveGameProperties::Doko_mitSchwarzsoloAttribute).value<bool>();
+}
+
+QStringList DoppelkopfLiveGame::allowedSoli() const
+{
+	return value(DoppelkopfLiveGameProperties::AllowedSoliAttribute).value<QStringList>();
 }
 
 void DoppelkopfLiveGame::setDoko_mitHochzeit(bool doko_mitHochzeit)
@@ -231,12 +237,33 @@ void DoppelkopfLiveGame::setDoko_mitSchwarzsolo(bool doko_mitSchwarzsolo)
 	emit doko_mitSchwarzsoloChanged(doko_mitSchwarzsolo);
 }
 
+bool DoppelkopfLiveGame::hasPflichtsolo(const Player *player) const
+{
+	return function(DoppelkopfLiveGameProperties::HasPflichtsoloFunction)->value(player).value<bool>();
+}
+
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
+#include "storage.h"
+#include "doppelkopfround.h"
+#include "roundscontext.h"
+
 QString DoppelkopfLiveGame::displayName() const
 {
 	return Entity::displayName();
+}
+
+Round *DoppelkopfLiveGame::addRound()
+{
+    Storage *psstorage = static_cast<Storage *>(storage());
+    DoppelkopfRound *round = psstorage->roundsContext()->createDoppelkopfRound();
+    if(rounds().isEmpty())
+        round->setNumber(1);
+    else
+        round->setNumber(rounds().last()->number() + 1);
+    LiveGame::addRound(round);
+    return round;
 }
 
 const QString DoppelkopfLiveGame::GameName(QObject::tr("Doppelkopf"));

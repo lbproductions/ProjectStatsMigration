@@ -27,7 +27,8 @@ public:
         Time,       // 7
         Bool,       // 8
         Color,      // 9
-        Enum        //10
+        Enum,       //10
+        StringList  //11
     };
 
     ~Attribute();
@@ -61,9 +62,13 @@ public:
     static QStringList typeNames();
     static Type typeNameToType(const QString &typeName);
 
+    QVariant::Type variantType() const;
+    static QVariant::Type typeToVariantType(Type type);
     virtual QString qtType() const;
     static QStringList qtTypeNames();
     static QString typeToQtType(Type type);
+
+    QString signalSignature() const;
 
     // Used by drivers
     int columnIndex() const;

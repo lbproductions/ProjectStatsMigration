@@ -56,6 +56,7 @@ public:
     Relation *addRelation(RelationMetaData &metaData);
 
     // Used for export
+    QString className();
     QList<Property *> nonInhertitedProperties() const;
     QList<Attribute *> nonInhertitedAttributes() const;
     QList<Relation *> nonInhertitedRelations() const;
@@ -117,5 +118,7 @@ public:
 };
 
 } // namespace LBDatabase
+
+Q_DECLARE_METATYPE(LBDatabase::EntityType *)
 
 #endif // LBDATABASE_ENTITYTYPE_H

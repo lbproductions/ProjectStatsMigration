@@ -39,8 +39,7 @@ class StoragePrivate {
 
     Context *createContextInstance(const ContextMetaData &metaData);
 
-    void initDependency(DependencyMetaData metaData);
-    Property *property(Property::Type type, int id);
+    Property *property(Property::Type type, int id) const;
 
     StorageDriver *driver;
 
@@ -156,7 +155,12 @@ bool StoragePrivate::open()
 
 
     foreach(DependencyMetaData metaData, driver->dependencies()) {
-        initDependency(metaData);
+        Property *dependend = property(metaData.dependendPropertyType, metaData.dependendPropertyId);
+        dependend->addDependency(metaData);
+    }
+
+    foreach(Property *property, properties) {
+        property->initDependenciesForAllEntities();
     }
 
     return true;
@@ -174,39 +178,7 @@ Context *StoragePrivate::createContextInstance(const ContextMetaData &metaData)
     return static_cast<Context *>(object);
 }
 
-void StoragePrivate::initDependency(DependencyMetaData metaData)
-{
-    Property *dependend = property(metaData.dependendPropertyType, metaData.dependendPropertyId);
-    Property *dependency = property(metaData.dependencyPropertyType, metaData.dependencyPropertyId);
-
-    if(metaData.entityRelation == -1) {
-        foreach(Entity *entity, dependend->entityType()->entities()) {
-            PropertyValue *dependendProperty = entity->propertyValue(dependend);
-            PropertyValue *dependencyProperty = entity->propertyValue(dependency);
-            QObject::connect(dependencyProperty, SIGNAL(changed()), dependendProperty, SLOT(recalculateAfterDependencyChange()));
-        }
-    }
-    else if(metaData.entityRelation == 0) {
-        foreach(PropertyValue *dependencyProperty, dependend->propertyValues()) {
-            foreach(PropertyValue *dependendProperty, dependency->propertyValues()) {
-                QObject::connect(dependencyProperty, SIGNAL(changed()), dependendProperty, SLOT(recalculateAfterDependencyChange()));
-            }
-        }
-    }
-    else if(metaData.entityRelation > 0) {
-        Relation *relation = relations.value(metaData.entityRelation);
-        foreach(Entity *entity, dependend->entityType()->entities()) {
-            PropertyValue *dependendProperty = entity->propertyValue(dependend);
-            RelationValue<Entity> *relationValue = entity->relation<Entity>(relation->identifier());
-            foreach(Entity *relatedEntity, relationValue->entities()) {
-                PropertyValue *dependencyProperty = relatedEntity->propertyValue(dependency);
-                QObject::connect(dependencyProperty, SIGNAL(changed()), dependendProperty, SLOT(recalculateAfterDependencyChange()));
-            }
-        }
-    }
-}
-
-Property *StoragePrivate::property(Property::Type type, int id)
+Property *StoragePrivate::property(Property::Type type, int id) const
 {
     switch(type) {
     case Property::Attribute:
@@ -494,6 +466,12 @@ QList<EntityType *> Storage::entityTypes() const
 {
     Q_D(const Storage);
     return d->entityTypes.values();
+}
+
+Property *Storage::property(Property::Type type, int id) const
+{
+    Q_D(const Storage);
+    return d->property(type, id);
 }
 
 } // namespace LBDatabase

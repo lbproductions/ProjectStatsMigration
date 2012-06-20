@@ -10,6 +10,7 @@
 #include "storagedriver.h"
 
 #include <QVariant>
+#include <QMetaMethod>
 
 namespace LBDatabase {
 
@@ -20,6 +21,8 @@ class AttributeValuePrivate {
     AttributeValuePrivate() : cached(false) {}
 
     QVariant calculate();
+
+    void connectSignal();
 
     Entity *entity;
     Attribute *attribute;
@@ -39,6 +42,25 @@ QVariant AttributeValuePrivate::calculate()
         return QVariant();
 
     return calculator->calculate(entity,q);
+}
+
+void AttributeValuePrivate::connectSignal()
+{
+    Q_Q(AttributeValue);
+
+    QObject::connect(q, SIGNAL(changed()), entity->context(), SLOT(onPropertyValueChanged()));
+
+    if(attribute->isCalculated()) {
+        int i = q->metaObject()->indexOfMethod("changed()");
+        if(i < 0)
+            return;
+        QMetaMethod changedSignal = q->metaObject()->method(i);
+        i = entity->metaObject()->indexOfMethod(attribute->signalSignature().toAscii());
+        if(i < 0)
+            return;
+        QMetaMethod trueSignal = entity->metaObject()->method(i);
+        QObject::connect(q, changedSignal, entity, trueSignal);
+    }
 }
 
 /******************************************************************************
@@ -71,7 +93,8 @@ AttributeValue::AttributeValue(Attribute *attribute, Entity *parent) :
     d->q_ptr = this;
     d->attribute = attribute;
     d->entity = parent;
-    connect(this, SIGNAL(changed()), entity()->context(), SLOT(onPropertyValueChanged()));
+
+    d->connectSignal();
 }
 
 /*!

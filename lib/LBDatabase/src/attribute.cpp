@@ -45,10 +45,6 @@ void AttributePrivate::addPropertyValue(Entity *entity)
     propertyValues.append(value);
 }
 
-void AttributePrivate::fetchValues()
-{
-}
-
 /******************************************************************************
 ** Attribute
 */
@@ -127,8 +123,6 @@ void Attribute::addPropertyValue(Entity *entity)
 
 void Attribute::fetchValues()
 {
-    Q_D(Attribute);
-    d->fetchValues();
 }
 
 /*!
@@ -315,13 +309,38 @@ QStringList Attribute::typeNames()
     "Time" <<
     "Bool" <<
     "Color" <<
-    "Enum";
+    "Enum" <<
+    "StringList";
     return names;
 }
 
 Attribute::Type Attribute::typeNameToType(const QString &typeName)
 {
     return static_cast<Type>(typeNames().indexOf(typeName));
+}
+
+QVariant::Type Attribute::variantType() const
+{
+    return Attribute::typeToVariantType(type());
+}
+
+QVariant::Type Attribute::typeToVariantType(Attribute::Type type)
+{
+    QList<QVariant::Type> types;
+    types << QVariant::Invalid <<
+    QVariant::String <<
+    QVariant::Int <<
+    QVariant::Double <<
+    QVariant::Icon <<
+    QVariant::Pixmap <<
+    QVariant::DateTime <<
+    QVariant::Time <<
+    QVariant::Bool <<
+    QVariant::Color <<
+    QVariant::Int <<
+    QVariant::StringList;
+
+    return types.at(static_cast<int>(type));
 }
 
 QString Attribute::qtType() const
@@ -338,6 +357,19 @@ QString Attribute::typeToQtType(Type type)
     return Attribute::qtTypeNames().at(static_cast<int>(type));
 }
 
+QString Attribute::signalSignature() const
+{
+    Q_D(const Attribute);
+    QString type;
+    if(!isCalculated()) {
+        type = qtType();
+        if(propertyType() == Property::EnumAttribute)
+            type.prepend(d->entityType->className()+"::");
+    }
+
+    return identifier() + QLatin1String("Changed(") + type + QLatin1String(")");
+}
+
 QStringList Attribute::qtTypeNames()
 {
     QStringList names;
@@ -351,7 +383,8 @@ QStringList Attribute::qtTypeNames()
     "QTime" << //Time
     "bool" << //Bool
     "QColor" << //Color
-    "Enum"; //Enum
+    "Enum" << //Enum
+    "QStringList"; //StringList
     return names;
 }
 

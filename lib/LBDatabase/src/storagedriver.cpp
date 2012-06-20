@@ -8,5 +8,4 @@ StorageDriver::StorageDriver(QObject *parent) :
 
 }
 
-
 } // namespace LBDatabase

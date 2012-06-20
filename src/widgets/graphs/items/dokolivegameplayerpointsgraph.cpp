@@ -61,6 +61,9 @@ bool xCoordinateLessThan1(GraphPoint *p1, GraphPoint *p2)
 
 void DokoLiveGamePlayerPointsGraph::addPoint(const QPoint &point, DoppelkopfRound *r)
 {
+    if(r->state() != Round::Finished)
+        return;
+
     DokoGraphPoint *graphPoint = new DokoGraphPoint(point,this,r);
     m_points.append(graphPoint);
 

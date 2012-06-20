@@ -177,7 +177,10 @@ SOURCES += main.cpp \
     windows/livegame/doppelkopf/pointstable.cpp \
     windows/livegame/doppelkopf/pointstableitem.cpp \
     windows/livegame/doppelkopf/pointstabledelegate.cpp \
-    windows/livegame/doppelkopf/totalpointstable.cpp
+    windows/livegame/doppelkopf/totalpointstable.cpp \
+    windows/livegame/doppelkopf/newrounddialog.cpp \
+    widgets/playerscombobox.cpp \
+    model/doppelkopflivegamecalculator.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -248,7 +251,10 @@ HEADERS  += \
     windows/livegame/doppelkopf/pointstable.h \
     windows/livegame/doppelkopf/pointstableitem.h \
     windows/livegame/doppelkopf/pointstabledelegate.h \
-    windows/livegame/doppelkopf/totalpointstable.h
+    windows/livegame/doppelkopf/totalpointstable.h \
+    windows/livegame/doppelkopf/newrounddialog.h \
+    widgets/playerscombobox.h \
+    model/doppelkopflivegamecalculator.h
 
 RESOURCES += \
     resources/resources.qrc
@@ -258,7 +264,8 @@ FORMS += \
     wizards/newgame/livegamegeneraloptionswidget.ui \
     wizards/newgame/livedokogameoptionswidget.ui \
     wizards/newgame/dokolivegamegroupbox.ui \
-    wizards/newgame/chooseunfinishedgamedialog.ui
+    wizards/newgame/chooseunfinishedgamedialog.ui \
+    windows/livegame/doppelkopf/newrounddialog.ui
 
 OTHER_FILES += \
     resources/stylesheets/pointstable.css

@@ -43,9 +43,19 @@ Player *DoppelkopfRound::hochzeitPlayer() const
 	return relation<Player>(DoppelkopfRoundProperties::HochzeitPlayerRelation)->firstEntity();
 }
 
+void DoppelkopfRound::setHochzeitPlayer(Player *hochzeitPlayer)
+{
+	relation<Player>(DoppelkopfRoundProperties::HochzeitPlayerRelation)->addEntity(hochzeitPlayer);
+}
+
 Player *DoppelkopfRound::rePlayer1() const
 {
 	return relation<Player>(DoppelkopfRoundProperties::RePlayer1Relation)->firstEntity();
+}
+
+void DoppelkopfRound::setRePlayer1(Player *rePlayer1)
+{
+	relation<Player>(DoppelkopfRoundProperties::RePlayer1Relation)->addEntity(rePlayer1);
 }
 
 Player *DoppelkopfRound::rePlayer2() const
@@ -53,9 +63,19 @@ Player *DoppelkopfRound::rePlayer2() const
 	return relation<Player>(DoppelkopfRoundProperties::RePlayer2Relation)->firstEntity();
 }
 
+void DoppelkopfRound::setRePlayer2(Player *rePlayer2)
+{
+	relation<Player>(DoppelkopfRoundProperties::RePlayer2Relation)->addEntity(rePlayer2);
+}
+
 Player *DoppelkopfRound::schweinereiPlayer() const
 {
 	return relation<Player>(DoppelkopfRoundProperties::SchweinereiPlayerRelation)->firstEntity();
+}
+
+void DoppelkopfRound::setSchweinereiPlayer(Player *schweinereiPlayer)
+{
+	relation<Player>(DoppelkopfRoundProperties::SchweinereiPlayerRelation)->addEntity(schweinereiPlayer);
 }
 
 Player *DoppelkopfRound::trumpfabgabePlayer() const
@@ -63,9 +83,19 @@ Player *DoppelkopfRound::trumpfabgabePlayer() const
 	return relation<Player>(DoppelkopfRoundProperties::TrumpfabgabePlayerRelation)->firstEntity();
 }
 
+void DoppelkopfRound::setTrumpfabgabePlayer(Player *trumpfabgabePlayer)
+{
+	relation<Player>(DoppelkopfRoundProperties::TrumpfabgabePlayerRelation)->addEntity(trumpfabgabePlayer);
+}
+
 Player *DoppelkopfRound::dokoSoloPlayer() const
 {
 	return relation<Player>(DoppelkopfRoundProperties::DokoSoloPlayerRelation)->firstEntity();
+}
+
+void DoppelkopfRound::setDokoSoloPlayer(Player *dokoSoloPlayer)
+{
+	relation<Player>(DoppelkopfRoundProperties::DokoSoloPlayerRelation)->addEntity(dokoSoloPlayer);
 }
 
 QList<Player *> DoppelkopfRound::currentPlayingPlayers() const

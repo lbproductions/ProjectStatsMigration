@@ -20,7 +20,7 @@ namespace LBDatabase {
 class FunctionValuePrivate {
     FunctionValuePrivate() : cached(false) {}
 
-    QHash<const Entity *, QVariant> calculate();
+    QHash<const Entity *, QVariant> calculate() const;
 
     Entity *entity;
     Function *function;
@@ -34,9 +34,9 @@ class FunctionValuePrivate {
     Q_DECLARE_PUBLIC(FunctionValue)
 };
 
-QHash<const Entity *, QVariant> FunctionValuePrivate::calculate()
+QHash<const Entity *, QVariant> FunctionValuePrivate::calculate() const
 {
-    Q_Q(FunctionValue);
+    Q_Q(const FunctionValue);
     Calculator *calculator = entity->entityType()->calculator();
 
     if(calculator)
@@ -170,6 +170,8 @@ void FunctionValue::recalculateAfterDependencyChange()
         return; // non-calculated functions must not be recalculated!
 
     QHash<const Entity *, QVariant> newValues = d->calculate();
+
+    qDebug() << d->function->identifier() << "of" << d->entity->displayName() << "recalculating.";
 
     if(d->cached && newValues == d->values)
         return; // no change

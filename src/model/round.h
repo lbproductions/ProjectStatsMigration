@@ -66,14 +66,15 @@ public:
 	// END
 
 signals:
-	void numberChanged(int number);
-	void commentChanged(QString comment);
-	void startTimeChanged(QDateTime startTime);
-	void lengthChanged(QTime length);
-	void stateChanged(Round::State state);
+	void numberChanged(int);
+	void commentChanged(QString);
+	void startTimeChanged(QDateTime);
+	void lengthChanged(QTime);
+	void stateChanged(Round::State);
 	void pointsChanged(const Player *player,int points);
 };
 
 Q_DECLARE_METATYPE(QList<Round *>)
+Q_DECLARE_METATYPE(Round *)
 
 #endif // ROUND_H

@@ -50,6 +50,8 @@ public:
     QList<EntityClass *> sort(const QString &sortAttributeName, SortingDirection dir = SortAscending);
 
 private:
+    friend class ContextPrivate;
+
     void addOtherEntityWhileStartup(Entity *entity, int rowId);
     void addOtherEntity(Entity *entity);
     void removeOtherEntity(Entity *entity);

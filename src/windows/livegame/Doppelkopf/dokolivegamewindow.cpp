@@ -1,8 +1,10 @@
 #include "dokolivegamewindow.h"
 
 #include "centralwidget.h"
+#include "newrounddialog.h"
 
 #include <model/doppelkopflivegame.h>
+#include <model/doppelkopfround.h>
 
 #include <QAction>
 
@@ -60,6 +62,9 @@ void DokoLiveGameWindow::showNewSchmeissereiDialog()
 
 void DokoLiveGameWindow::showNewRoundDialog()
 {
+    NewRoundDialog dialog(this);
+    dialog.setDoppelkopfRound(static_cast<DoppelkopfRound *>(m_doppelkopfLiveGame->rounds().last()));
+    dialog.exec();
 }
 
 void DokoLiveGameWindow::showEndGameDialog()

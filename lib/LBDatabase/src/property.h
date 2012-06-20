@@ -9,6 +9,7 @@ class Context;
 class Entity;
 class EntityType;
 class PropertyValue;
+class DependencyMetaData;
 
 //! \cond PRIVATE
 class Property : public QObject
@@ -33,8 +34,13 @@ public:
     virtual EntityType *entityType() const = 0;
     virtual QList<PropertyValue *> propertyValues() const = 0;
 
+    QList<DependencyMetaData> dependencies() const;
+
 Q_SIGNALS:
     void displayNameChanged(QString);
+
+private Q_SLOTS:
+    void updateDependenciesWithInsertedEntity(Entity *newDependencyEntity);
 
 private:
     friend class StoragePrivate;
@@ -42,8 +48,13 @@ private:
 
     virtual void addPropertyValueToEntities() = 0;
     virtual void addPropertyValue(Entity *entity) = 0;
+    void addDependency(const DependencyMetaData &metaData);
+    void initDependenciesForAllEntities();
+    void initDependencies(Entity *entity);
 
     virtual void fetchValues() = 0;
+
+    QList<DependencyMetaData> m_dependencies;
 };
 //! \endcond
 

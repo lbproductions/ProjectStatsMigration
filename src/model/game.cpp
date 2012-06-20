@@ -76,8 +76,8 @@ QList<Player *> Game::players() const
 
 void Game::addPlayer(Player *player)
 {
-
-relation<Player>(GameProperties::PlayersRelation)->addEntity(player);
+	relation<Player>(GameProperties::PlayersRelation)->addEntity(player);
+	emit playersPlayerAdded(player);
 }
 
 int Game::position(const Player *player) const

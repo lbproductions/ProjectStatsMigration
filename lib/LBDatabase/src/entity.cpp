@@ -151,6 +151,15 @@ QList<PropertyValue *> Entity::propertyValues() const
 PropertyValue *Entity::propertyValue(Property *property) const
 {
     Q_D(const Entity);
+
+    if(property == 0) {
+    QHashIterator<Property *, PropertyValue *> it(d->propertyValues);
+    while(it.hasNext()) {
+        it.next();
+        qDebug() << it.key() << it.key()->identifier() << it.value();
+    }
+    }
+
     return d->propertyValues.value(property, 0);
 }
 

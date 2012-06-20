@@ -87,6 +87,7 @@ const QString TableName("tableName");
 const QString ColumnName("columnName");
 const QString ColumnNameRight("columnNameRight");
 const QString Editable("editable");
+const QString EditableTranspose("editableTranspose");
 const QString Calculated("calculated");
 const QString Direction("direction");
 }
@@ -292,6 +293,7 @@ QList<RelationMetaData> LocalStorageDriver::relations() const
         metaData.cardinality = static_cast<Relation::Cardinality>(row->data(RelationColumns::Cardinality).toInt());
         metaData.direction = static_cast<Relation::Direction>(row->data(RelationColumns::Direction).toInt());
         metaData.editable = row->data(RelationColumns::Editable).toBool();
+        metaData.editableTranspose = row->data(RelationColumns::EditableTranspose).toBool();
         metaData.calculated = row->data(RelationColumns::Calculated).toBool();
         metaData.entityTypeId = row->data(RelationColumns::EntityTypeLeft).toInt();
         metaData.entityTypeOtherId = row->data(RelationColumns::EntityTypeRight).toInt();
@@ -364,6 +366,19 @@ QList<DependencyMetaData> LocalStorageDriver::dependencies() const
         metaDatas.append(metaData);
     }
     return metaDatas;
+}
+
+void LocalStorageDriver::addDependency(DependencyMetaData &metaData)
+{
+    Q_D(LocalStorageDriver);
+    Row *row = d->dependenciesTable->appendRow();
+    metaData.id = row->id();
+
+    row->setData(DependenciesColumns::DependendPropertyId, metaData.dependendPropertyId);
+    row->setData(DependenciesColumns::DependencyPropertyId, metaData.dependencyPropertyId);
+    row->setData(DependenciesColumns::DependendPropertyType, metaData.dependendPropertyType);
+    row->setData(DependenciesColumns::DependencyPropertyType, metaData.dependencyPropertyType);
+    row->setData(DependenciesColumns::EntityRelation, metaData.entityRelation);
 }
 
 QVariant LocalStorageDriver::attributeValue(const AttributeValue *value) const

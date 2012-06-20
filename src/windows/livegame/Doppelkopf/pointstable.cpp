@@ -64,6 +64,10 @@ void PointsTable::setDoppelkopfLiveGame(DoppelkopfLiveGame *doppelkopfLiveGame)
 void PointsTable::addRound(Round* round)
 {
     DoppelkopfRound* dokoround = static_cast<DoppelkopfRound*>(round);
+    if(dokoround->state() != Round::Finished) {
+        connect(dokoround, SIGNAL(stateChanged(Round::State)), this, SLOT(addLastRound()));
+        return;
+    }
 
     insertRow(rowCount());
     int column = 0;
@@ -90,6 +94,11 @@ void PointsTable::addRound(Round* round)
     setVerticalHeaderItem(rowCount()-1,item1);
 
     scrollToBottom();
+}
+
+void PointsTable::addLastRound()
+{
+    addRound(m_doppelkopfLiveGame->rounds().last());
 }
 
 PointsTableItem* PointsTable::itemAtIndex(const QModelIndex& index)

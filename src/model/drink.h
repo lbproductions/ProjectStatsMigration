@@ -55,12 +55,15 @@ public:
 	// END
 
 signals:
-	void nameChanged(QString name);
-	void typeChanged(QString type);
-	void sizeChanged(double size);
-	void alcChanged(double alc);
+	void nameChanged(QString);
+	void typeChanged(QString);
+	void sizeChanged(double);
+	void alcChanged(double);
+	void drinkCountChanged();
+	void mostDrinksChanged();
 };
 
 Q_DECLARE_METATYPE(QList<Drink *>)
+Q_DECLARE_METATYPE(Drink *)
 
 #endif // DRINK_H

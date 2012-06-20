@@ -302,6 +302,12 @@ bool Relation::isTranspose() const
     return d->transpose;
 }
 
+bool Relation::isEditableTranspose() const
+{
+    Q_D(const Relation);
+    return d->metaData.editableTranspose;
+}
+
 Relation *Relation::transposeRelation() const
 {
     Q_D(const Relation);

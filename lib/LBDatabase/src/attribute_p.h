@@ -12,7 +12,6 @@ protected:
     void init();
     void addPropertyValueToEntities();
     void addPropertyValue(Entity *entity);
-    void fetchValues();
 
     AttributeMetaData metaData;
 

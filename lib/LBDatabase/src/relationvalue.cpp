@@ -90,18 +90,29 @@ EntityClass *RelationValue<EntityClass>::firstEntity() const
 template<class EntityClass>
 void RelationValue<EntityClass>::addEntity(EntityClass *entity)
 {
-    if(!relation()->isEditable() || relation()->isTranspose())
-        return;
+    if((relation()->transposeRelation()->isEditableTranspose() || relation()->isEditable()) && !relation()->isTranspose()) {
+        RelationValueData data;
+        data.rowId = rowIds.value(entity,0);
+        data.leftId = this->entity()->id();
+        data.rightId = entity->id();
 
-    RelationValueData data;
-    data.rowId = rowIds.value(entity,0);
-    data.leftId = this->entity()->id();
-    data.rightId = entity->id();
+        int id = relation()->storage()->driver()->addRelatedEntity(this, data);
 
-    int id = relation()->storage()->driver()->addRelatedEntity(this, data);
+        addOtherEntityWhileStartup(entity, id);
 
-    addOtherEntityWhileStartup(entity, id);
-    emit changed();
+        RelationValueBase *rightValue = static_cast<RelationValueBase *>(entity->propertyValue(relation()->transposeRelation()));
+        if(rightValue)
+            addOtherEntityTo(rightValue, this->entity(), data.rowId);
+
+        emit entityAdded(entity);
+        emit changed();
+    }
+    else if(relation()->isEditableTranspose() && relation()->isTranspose()) {
+        RelationValue<Entity> *transpose = static_cast<RelationValue<Entity> *>(entity->propertyValue(relation()->transposeRelation()));
+        transpose->addEntity(this->entity());
+        emit entityAdded(entity);
+        emit changed();
+    }
 }
 
 template<class EntityClass>
@@ -124,12 +135,13 @@ void RelationValue<EntityClass>::addOtherEntity(Entity *entity)
 }
 
 template<class EntityClass>
-void RelationValue<EntityClass>::removeOtherEntity(Entity *entity)
+void RelationValue<EntityClass>::removeOtherEntity(Entity *e)
 {
     if(!relation()->isTranspose())
         return; // this is used by non-transpose relations when recalculating
                 // therefore it should only be called upon transpose relations
 
+    EntityClass *entity = static_cast<EntityClass *>(e);
     QList<EntityClass *> entities = otherEntities.value(0);
     if(!entities.contains(entity))
         return;
@@ -148,8 +160,6 @@ void RelationValue<EntityClass>::recalculateAfterDependencyChange()
         return; // non-calculated and transpose relations must not be recalculated!
 
     QList<Entity *> rightEntities = calculate();
-    if(rightEntities == entities())
-        return; // no change
 
     Entity *e = entity();
     Relation *transpose = relation()->transposeRelation();

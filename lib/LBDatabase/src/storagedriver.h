@@ -51,6 +51,8 @@ public:
     virtual QList<RelationReimplementationMetaData> relationReimplementations() const = 0;
     virtual QList<DependencyMetaData> dependencies() const = 0;
 
+    virtual void addDependency(DependencyMetaData &metaData) = 0;
+
     // Attributes
     virtual QVariant attributeValue(const AttributeValue *value) const = 0;
     virtual void setAttributeValue(const AttributeValue *value, const QVariant &data) = 0;

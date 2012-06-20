@@ -3,8 +3,9 @@
 
 #include <LBDatabase/LBDatabase.h>
 
+#include "roundcalculator.h"
 
-class DoppelkopfRoundCalculator : public LBDatabase::Calculator
+class DoppelkopfRoundCalculator : public RoundCalculator
 {
 Q_OBJECT
 public:

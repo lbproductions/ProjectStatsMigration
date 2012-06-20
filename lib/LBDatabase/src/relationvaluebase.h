@@ -22,6 +22,9 @@ public:
     // General
     Relation *relation() const;
 
+Q_SIGNALS:
+    void entityAdded(Entity *entity);
+
 protected:
     friend class RelationPrivate;
 
@@ -31,7 +34,7 @@ protected:
     virtual void addOtherEntity(Entity *entity) = 0;
     virtual void removeOtherEntity(Entity *entity) = 0;
 
-    void addOtherEntityTo(RelationValueBase *rightValue, Entity *e, int id);
+    void addOtherEntityTo(RelationValueBase *rightValue, Entity *e, int rowId);
     void removeOtherEntityFrom(RelationValueBase *rightValue, Entity *e);
 
     QList<Entity *> calculate() const;

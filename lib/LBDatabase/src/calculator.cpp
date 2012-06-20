@@ -31,7 +31,7 @@ QVariant Calculator::calculate(const Entity *entity, AttributeValue *attributeVa
     return result;
 }
 
-QHash<const Entity *, QVariant> Calculator::calculate(const Entity *entity, FunctionValue *functionValue)
+QHash<const Entity *, QVariant> Calculator::calculate(const Entity *entity, const FunctionValue *functionValue)
 {
     QString methodName = functionValue->property()->identifier() + QLatin1String("(const LBDatabase::Entity*)");
 

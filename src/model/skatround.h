@@ -38,10 +38,11 @@ public:
 	// END
 
 signals:
-	void skat_gameTypeChanged(QString skat_gameType);
-	void skat_trumpfColorChanged(QString skat_trumpfColor);
+	void skat_gameTypeChanged(QString);
+	void skat_trumpfColorChanged(QString);
 };
 
 Q_DECLARE_METATYPE(QList<SkatRound *>)
+Q_DECLARE_METATYPE(SkatRound *)
 
 #endif // SKATROUND_H

@@ -26,6 +26,8 @@ public:
     QList<RelationReimplementationMetaData> relationReimplementations() const;
     QList<DependencyMetaData> dependencies() const;
 
+    void addDependency(DependencyMetaData &metaData);
+
     // Attributes
     QVariant attributeValue(const AttributeValue *value) const;
     void setAttributeValue(const AttributeValue *value, const QVariant &data);

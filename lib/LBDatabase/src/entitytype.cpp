@@ -370,6 +370,11 @@ Relation *EntityType::addRelation(RelationMetaData &metaData)
     return relation;
 }
 
+QString EntityType::className()
+{
+    return identifier().left(1).toUpper()+identifier().mid(1);
+}
+
 QList<Property *> EntityType::nonInhertitedProperties() const
 {
     QList<Property *> list = properties();

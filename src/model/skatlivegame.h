@@ -41,12 +41,13 @@ public:
 	// END
 
 signals:
-	void skat_gameEndChanged(QString skat_gameEnd);
-	void skat_maxPointsChanged(int skat_maxPoints);
-	void skat_maxRoundsChanged(int skat_maxRounds);
-	void skat_mitRamschenChanged(bool skat_mitRamschen);
+	void skat_gameEndChanged(QString);
+	void skat_maxPointsChanged(int);
+	void skat_maxRoundsChanged(int);
+	void skat_mitRamschenChanged(bool);
 };
 
 Q_DECLARE_METATYPE(QList<SkatLiveGame *>)
+Q_DECLARE_METATYPE(SkatLiveGame *)
 
 #endif // SKATLIVEGAME_H

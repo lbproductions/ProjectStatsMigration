@@ -35,6 +35,8 @@ public:
     EntityType *entityType(int id) const;
     QList<EntityType *> entityTypes() const;
 
+    Property *property(Property::Type type, int id) const;
+
 protected:
 
     template<class ContextClass>
@@ -81,5 +83,6 @@ Q_DECLARE_METATYPE(LBDatabase::Storage*)
 Q_DECLARE_METATYPE(LBDatabase::Attribute*)
 Q_DECLARE_METATYPE(LBDatabase::Relation*)
 Q_DECLARE_METATYPE(LBDatabase::Function*)
+Q_DECLARE_METATYPE(LBDatabase::Property*)
 
 #endif // LBDATABASE_STORAGE_H

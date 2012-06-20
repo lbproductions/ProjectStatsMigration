@@ -41,9 +41,10 @@ public:
 	// END
 
 signals:
-	void timeChanged(QDateTime time);
+	void timeChanged(QDateTime);
 };
 
 Q_DECLARE_METATYPE(QList<LiveDrink *>)
+Q_DECLARE_METATYPE(LiveDrink *)
 
 #endif // LIVEDRINK_H

@@ -97,7 +97,6 @@ SOURCES += main.cpp \
     misc/logger.cpp \
     mainwindow/views/sampleview.cpp \
     preferences/updaterpreferences.cpp \
-    mainwindow/views/entitytypeview.cpp \
     mainwindow/views/attributeeditor.cpp \
     mainwindow/views/functioneditor.cpp \
     mainwindow/views/relationseditor.cpp \
@@ -107,7 +106,11 @@ SOURCES += main.cpp \
     contextwriter.cpp \
     calculatorwriter.cpp \
     writer.cpp \
-    storagewriter.cpp
+    storagewriter.cpp \
+    mainwindow/views/propertiesview.cpp \
+    mainwindow/views/entitytypeview.cpp \
+    mainwindow/views/dependenciesview.cpp \
+    mainwindow/views/dependencyeditor.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -118,7 +121,6 @@ HEADERS  += \
     mainwindow/views/sampleview.h \
     misc/updater.h \
     preferences/updaterpreferences.h \
-    mainwindow/views/entitytypeview.h \
     mainwindow/views/attributeeditor.h \
     mainwindow/views/functioneditor.h \
     mainwindow/views/relationseditor.h \
@@ -128,16 +130,22 @@ HEADERS  += \
     contextwriter.h \
     calculatorwriter.h \
     writer.h \
-    storagewriter.h
+    storagewriter.h \
+    mainwindow/views/propertiesview.h \
+    mainwindow/views/entitytypeview.h \
+    mainwindow/views/dependenciesview.h \
+    mainwindow/views/dependencyeditor.h
 
 OTHER_FILES += \
     ../util/deployment/mac/deploy.sh
 
 FORMS += \
-    mainwindow/views/entitytypeview.ui \
     mainwindow/views/attributeeditor.ui \
     mainwindow/views/functioneditor.ui \
-    mainwindow/views/relationseditor.ui
+    mainwindow/views/relationseditor.ui \
+    mainwindow/views/propertiesview.ui \
+    mainwindow/views/dependenciesview.ui \
+    mainwindow/views/dependencyeditor.ui
 
 RESOURCES += \
     resources/icons/icons.qrc
