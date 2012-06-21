@@ -33,6 +33,7 @@ private slots:
 
 private:
     void addPossibleDependencies(LBDatabase::EntityType *dependencyType);
+    void addParentDependencies(LBDatabase::EntityType *dependencyType);
 
     Ui::DependencyEditor *ui;
 

@@ -66,7 +66,7 @@ Controller::Controller(MainWindow *mainWindow) :
     }
     qDebug() << "Opening the storage took "+QString::number(timer.elapsed())+"ms.";
 
-    openEntityWindow(m_storage->gamesContext()->game(38));
+    openEntityWindow(m_storage->gamesContext()->game(296));
 }
 
 MainWindow *Controller::mainWindow() const

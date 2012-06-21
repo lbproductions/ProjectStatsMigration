@@ -52,11 +52,13 @@ void DependencyEditor::relationChanged(int index)
     if(index == 0) {
         ui->comboBoxDependency->clear();
         addPossibleDependencies(m_entityType);
+        addParentDependencies(m_entityType->parentEntityType());
     }
     else if(index <= m_entityType->context()->storage()->entityTypes().size()) {
         ui->comboBoxDependency->clear();
         LBDatabase::EntityType *type = ui->comboBoxRelation->itemData(index).value<LBDatabase::EntityType *>();
         addPossibleDependencies(type);
+        addParentDependencies(type->parentEntityType());
     }
     else {
         ui->comboBoxDependency->clear();
@@ -65,6 +67,7 @@ void DependencyEditor::relationChanged(int index)
         if(!m_entityType->properties().contains(relation) && relation->transposeRelation())
             type = relation->transposeRelation()->entityTypeOther();
         addPossibleDependencies(type);
+        addParentDependencies(type->parentEntityType());
     }
     ui->comboBoxDependency->setCurrentIndex(0);
 }
@@ -109,6 +112,17 @@ void DependencyEditor::addPossibleDependencies(LBDatabase::EntityType *dependenc
     foreach(LBDatabase::EntityType *child, dependencyType->childEntityTypes()) {
         addPossibleDependencies(child);
     }
+}
+
+void DependencyEditor::addParentDependencies(LBDatabase::EntityType *dependencyType)
+{
+    if(!dependencyType)
+        return;
+
+    foreach(LBDatabase::Property *p, dependencyType->nonInhertitedProperties()) {
+        ui->comboBoxDependency->addItem(p->identifier(), QVariant::fromValue<LBDatabase::Property *>(p));
+    }
+    addParentDependencies(dependencyType->parentEntityType());
 }
 
 } // namespace MainWindowNS

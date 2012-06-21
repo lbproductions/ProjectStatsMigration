@@ -188,7 +188,9 @@ RelatedEntities PlayerCalculator::roundsDealt(const LBDatabase::Entity *entity) 
 
     foreach(Game *game, player->games()) {
         LiveGame *g = static_cast<LiveGame *>(game);
-        for(int i = g->players().indexOf(const_cast<Player *const>(player)); i < g->rounds().size(); i += g->players().size()) {
+        for(int i = g->players().indexOf(const_cast<Player *const>(player))-1; i < g->rounds().size(); i += g->players().size()) {
+            if(i == -1)
+                i += g->players().size();
             rounds.append(g->rounds().at(i));
         }
     }
