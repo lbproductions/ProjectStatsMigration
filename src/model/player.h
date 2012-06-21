@@ -39,6 +39,7 @@ const QString PlacesRelation("places");
 const QString GamesRelation("games");
 const QString DrinksRelation("drinks");
 const QString RoundsRelation("rounds");
+const QString RoundsDealtRelation("roundsDealt");
 } // namespace PlayerProperties
 
 class Schmeisserei;
@@ -98,6 +99,7 @@ public:
 	QList<Game *> games() const;
 	QList<Drink *> drinks() const;
 	QList<Round *> rounds() const;
+	QList<Round *> roundsDealt() const;
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
@@ -119,6 +121,8 @@ signals:
 	void averagePlacementChanged();
 	void lastWinChanged();
 	void lastGameChanged();
+	void roundsChanged();
+	void roundsDealtChanged();
 };
 
 Q_DECLARE_METATYPE(QList<Player *>)

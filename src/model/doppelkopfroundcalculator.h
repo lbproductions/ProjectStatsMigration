@@ -12,6 +12,8 @@ public:
 	Q_INVOKABLE explicit DoppelkopfRoundCalculator(QObject *parent = 0);
 
 	
+	Q_INVOKABLE QVariant roundPoints(const LBDatabase::Entity *entity) const;
+	
 	Q_INVOKABLE EntityVariantHash isRe(const LBDatabase::Entity *entity) const;
 	
 	Q_INVOKABLE EntityVariantHash isContra(const LBDatabase::Entity *entity) const;

@@ -129,17 +129,16 @@ PointsTableTotalItem::PointsTableTotalItem(DoppelkopfRound *round) :
     setFlags(flags() & ~Qt::ItemIsSelectable);
     setTextAlignment(Qt::AlignCenter);
 
-    connect(round, SIGNAL(pointsChanged(const Player*,int)), this, SLOT(onPointsChanged(const Player*,int)));
-    onPointsChanged(0, round->points(round->currentPlayingPlayers().at(0)));
+    connect(round, SIGNAL(roundPointsChanged()), this, SLOT(onPointsChanged()));
+    onPointsChanged();
 }
 
-void PointsTableTotalItem::onPointsChanged(const Player* player, int points)
+void PointsTableTotalItem::onPointsChanged()
 {
-    points = qAbs(points);
-    if(m_doppelkopfRound->dokoSoloPlayer() && m_doppelkopfRound->dokoSoloPlayer() == player)
-        points /= 3;
-
-    setText(QString::number(points));
+    QString text = QString::number(m_doppelkopfRound->roundPoints());
+    if(m_doppelkopfRound->roundPoints() > 0)
+        text.prepend('+');
+    setText(text);
 }
 
 int PointsTableTotalItem::points() const

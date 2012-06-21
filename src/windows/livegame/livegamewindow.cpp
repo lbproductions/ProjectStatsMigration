@@ -51,7 +51,7 @@ void LiveGameWindow::setupToolBar()
     connect(m_actionShowEndGameDialog,SIGNAL(triggered()),this,SLOT(showEndGameDialog()));
     m_toolBar->addAction(m_actionShowEndGameDialog);
 
-    QWidget* spacer = new QWidget();
+    QWidget* spacer = new QWidget(m_toolBar);
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_toolBar->addWidget(spacer);
 
@@ -63,7 +63,7 @@ void LiveGameWindow::setupToolBar()
     connect(m_actionShowAddDrinkDialog,SIGNAL(triggered()),this,SLOT(showAddDrinkDialog()));
     m_toolBar->addAction(m_actionShowAddDrinkDialog);
 
-    spacer = new QWidget();
+    spacer = new QWidget(m_toolBar);
     spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     m_toolBar->addWidget(spacer);
 

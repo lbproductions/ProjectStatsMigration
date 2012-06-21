@@ -99,6 +99,11 @@ QList<Player *> Round::currentPlayingPlayers() const
 	return relation<Player>(RoundProperties::CurrentPlayingPlayersRelation)->entities();
 }
 
+Player *Round::dealer() const
+{
+	return relation<Player>(RoundProperties::DealerRelation)->firstEntity();
+}
+
 int Round::points(const Player *player) const
 {
 	return function(RoundProperties::PointsFunction)->value(player).value<int>();

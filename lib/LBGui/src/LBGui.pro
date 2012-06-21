@@ -93,7 +93,8 @@ RESOURCES += \
     ressources/sheet/sheet.qrc \
     ressources/itunesApplyBar/itunesApplyBar.qrc \
     ressources/toolbar/toolbar.qrc \
-    ressources/scrollbar/scrollbar.qrc
+    ressources/scrollbar/scrollbar.qrc \
+    ressources/general/general.qrc
 
 macx {
     HEADERS += \

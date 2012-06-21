@@ -16,6 +16,7 @@ const QString LiveDrinksRelation("liveDrinks");
 const QString SchmeissereienPerRoundRelation("SchmeissereienPerRound");
 const QString GameRelation("game");
 const QString CurrentPlayingPlayersRelation("currentPlayingPlayers");
+const QString DealerRelation("dealer");
 const QString PointsFunction("points");
 } // namespace RoundProperties
 
@@ -60,6 +61,7 @@ public:
 	QList<Schmeisserei *> schmeissereienPerRound() const;
 	LiveGame *game() const;
 	QList<Player *> currentPlayingPlayers() const;
+	Player *dealer() const;
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
@@ -72,6 +74,8 @@ signals:
 	void lengthChanged(QTime);
 	void stateChanged(Round::State);
 	void pointsChanged(const Player *player,int points);
+	void currentPlayingPlayersChanged();
+	void dealerChanged();
 };
 
 Q_DECLARE_METATYPE(QList<Round *>)

@@ -7,8 +7,13 @@ class DoppelkopfLiveGame;
 class DokoLiveGameWindow;
 class DokoLiveGameGraphView;
 
+namespace LiveGameWindowNS {
+class DrinksSidebarPage;
+}
+
 namespace DokoLiveGameWindowNS {
 
+class StatisticsSidebar;
 class PointsTable;
 class TotalPointsTable;
 
@@ -27,6 +32,8 @@ private:
     DokoLiveGameGraphView *m_graphView;
     PointsTable *m_pointsTable;
     TotalPointsTable *m_totalPointsTable;
+    LiveGameWindowNS::DrinksSidebarPage *m_drinksPage;
+    StatisticsSidebar *m_rightSidebar;
 };
 
 }

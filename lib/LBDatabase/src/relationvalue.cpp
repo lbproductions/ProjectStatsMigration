@@ -3,6 +3,8 @@
 
 #include "relationvalue.h"
 
+#include <QMetaMethod>
+
 namespace LBDatabase {
 
 template<class EntityClass, class SortType>
@@ -12,6 +14,17 @@ template<class EntityClass>
 RelationValue<EntityClass>::RelationValue(Relation *relation, Entity *parent) :
     RelationValueBase(relation, parent)
 {
+    if(relation->isCalculated()) {
+        int i = metaObject()->indexOfMethod("changed()");
+        if(i < 0)
+            return;
+        QMetaMethod changedSignal = metaObject()->method(i);
+        i = parent->metaObject()->indexOfMethod(QString(relation->identifier() + "Changed()").toAscii());
+        if(i < 0)
+            return;
+        QMetaMethod trueSignal = parent->metaObject()->method(i);
+        QObject::connect(this, changedSignal, parent, trueSignal);
+    }
 }
 
 template<class EntityClass>

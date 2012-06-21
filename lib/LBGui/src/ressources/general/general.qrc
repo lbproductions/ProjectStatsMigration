@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/general">
+        <file alias="background_linen">background_linen.png</file>
+    </qresource>
+</RCC>

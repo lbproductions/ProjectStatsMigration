@@ -231,7 +231,7 @@ void EntityTypeWriter::writeDeclaration(QString &header) const
     }
 
     foreach(Relation *relation, m_entityType->nonInhertitedRelations()) {
-        if(relation->isEditable() && !relation->isTranspose()) {
+        if(relation->isCalculated() || relation->isEditable() && !relation->isTranspose()) {
            writeRelationChangedSignal(relation, header);
         }
     }
@@ -496,9 +496,15 @@ void EntityTypeWriter::writeRelationImplementation(Relation *relation, QString &
 void EntityTypeWriter::writeRelationChangedSignal(Relation *relation, QString &header) const
 {
     QString entityType = makeRelationType(relation);
-    header.append(QLatin1String("\tvoid ") +
+    if(relation->isCalculated()) {
+        header.append(QLatin1String("\tvoid ") +
+                  makeMethodName(relation->identifier()) + QLatin1String("Changed();\n"));
+    }
+    else {
+        header.append(QLatin1String("\tvoid ") +
                   makeMethodName(relation->identifier()) + entityType + QLatin1String("Added(") + entityType + QLatin1String(" *")
                   + makeMethodName(entityType) + QLatin1String(");\n"));
+    }
 }
 
 void EntityTypeWriter::writeFunctionGetterDeclaration(Function *function, QString &header) const

@@ -10,6 +10,8 @@ GroupBox::GroupBox(QWidget *parent) :
     QGroupBox(parent)
 {
     QHBoxLayout *layout = new QHBoxLayout(this);
+    layout->setContentsMargins(5,5,5,5);
+    layout->setSpacing(0);
     setLayout(layout);
 }
 

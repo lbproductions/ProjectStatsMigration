@@ -8,6 +8,8 @@
 namespace DoppelkopfRoundProperties {
 const QString Doko_soloPflichtAttribute("doko_soloPflicht");
 const QString Doko_soloTypeAttribute("doko_soloType");
+const QString RoundPointsAttribute("roundPoints");
+const QString WinnerAttribute("winner");
 const QString HochzeitPlayerRelation("hochzeitPlayer");
 const QString RePlayer1Relation("rePlayer1");
 const QString RePlayer2Relation("rePlayer2");
@@ -32,11 +34,21 @@ public:
 
 	QString displayName() const;
 
+	enum Winner {
+		Re = 1,
+		Contra = 2,
+		Draw = 3,
+		Unknown = 4
+	};
+
 	bool doko_soloPflicht() const;
 	QString doko_soloType() const;
+	int roundPoints() const;
+	Winner winner() const;
 
 	void setDoko_soloPflicht(bool doko_soloPflicht);
 	void setDoko_soloType(const QString &doko_soloType);
+	void setWinner(Winner winner);
 
 	bool isRe(const Player *player) const;
 	bool isContra(const Player *player) const;
@@ -63,6 +75,9 @@ public:
 signals:
 	void doko_soloPflichtChanged(bool);
 	void doko_soloTypeChanged(QString);
+	void roundPointsChanged();
+	void winnerChanged(DoppelkopfRound::Winner);
+	void currentPlayingPlayersChanged();
 };
 
 Q_DECLARE_METATYPE(QList<DoppelkopfRound *>)

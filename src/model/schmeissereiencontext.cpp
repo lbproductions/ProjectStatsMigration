@@ -25,4 +25,15 @@ QList<Schmeisserei*> SchmeissereienContext::schmeissereien() const
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
+
+#include "storage.h"
+
+Schmeisserei *SchmeissereienContext::createSchmeisserei()
+{
+    Storage *psstorage = static_cast<Storage *>(storage());
+    Schmeisserei *s = static_cast<Schmeisserei *>(insertEntity(psstorage->entityType(Schmeisserei::EntityTypeId)));
+    return s;
+}
+
+
 	// END

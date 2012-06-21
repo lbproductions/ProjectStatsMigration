@@ -101,6 +101,21 @@ QStringList DoppelkopfLiveGame::allowedSoli() const
 	return value(DoppelkopfLiveGameProperties::AllowedSoliAttribute).value<QStringList>();
 }
 
+QStringList DoppelkopfLiveGame::allowedSchmeissereien() const
+{
+	return value(DoppelkopfLiveGameProperties::AllowedSchmeissereienAttribute).value<QStringList>();
+}
+
+int DoppelkopfLiveGame::reWins() const
+{
+	return value(DoppelkopfLiveGameProperties::ReWinsAttribute).value<int>();
+}
+
+int DoppelkopfLiveGame::contraWins() const
+{
+	return value(DoppelkopfLiveGameProperties::ContraWinsAttribute).value<int>();
+}
+
 void DoppelkopfLiveGame::setDoko_mitHochzeit(bool doko_mitHochzeit)
 {
 	if(doko_mitHochzeit == this->doko_mitHochzeit())

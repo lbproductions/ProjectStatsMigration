@@ -32,6 +32,8 @@ public:
 	Q_INVOKABLE QVariant lastWin(const LBDatabase::Entity *entity) const;
 	
 	Q_INVOKABLE QVariant lastGame(const LBDatabase::Entity *entity) const;
+	
+	Q_INVOKABLE RelatedEntities roundsDealt(const LBDatabase::Entity *entity) const;
 };
 
 #endif // PLAYERCALCULATOR_H

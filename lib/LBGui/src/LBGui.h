@@ -26,6 +26,7 @@
 
 
 #define LBGUI_INIT_RESOURCES \
+    Q_INIT_RESOURCE(general); \
     Q_INIT_RESOURCE(tabwidget); \
     Q_INIT_RESOURCE(sidebar); \
     Q_INIT_RESOURCE(groupbox); \
@@ -36,7 +37,7 @@
     Q_INIT_RESOURCE(preferenceswindow); \
     Q_INIT_RESOURCE(sheet); \
     Q_INIT_RESOURCE(itunesApplyBar); \
-    Q_INIT_RESOURCE(toolbar);//
-    //Q_INIT_RESOURCE(scrollbar)
+    Q_INIT_RESOURCE(toolbar); \
+    Q_INIT_RESOURCE(scrollbar)
 
 #endif // LBGUI_H

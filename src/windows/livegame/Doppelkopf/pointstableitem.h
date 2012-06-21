@@ -48,7 +48,7 @@ public:
     void setPoints(int points);
 
 private slots:
-    void onPointsChanged(const Player *, int);
+    void onPointsChanged();
 };
 
 }

@@ -30,7 +30,9 @@ public:
 
 
 	Player *player() const;
+	void setPlayer(Player *player);
 	Round *round() const;
+	void setRound(Round *round);
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START

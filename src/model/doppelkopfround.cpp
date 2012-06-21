@@ -22,6 +22,16 @@ QString DoppelkopfRound::doko_soloType() const
 	return value(DoppelkopfRoundProperties::Doko_soloTypeAttribute).value<QString>();
 }
 
+int DoppelkopfRound::roundPoints() const
+{
+	return value(DoppelkopfRoundProperties::RoundPointsAttribute).value<int>();
+}
+
+DoppelkopfRound::Winner DoppelkopfRound::winner() const
+{
+	return static_cast<Winner>(value(DoppelkopfRoundProperties::WinnerAttribute).value<int>());
+}
+
 void DoppelkopfRound::setDoko_soloPflicht(bool doko_soloPflicht)
 {
 	if(doko_soloPflicht == this->doko_soloPflicht())
@@ -36,6 +46,14 @@ void DoppelkopfRound::setDoko_soloType(const QString &doko_soloType)
 		return;
 	setValue(DoppelkopfRoundProperties::Doko_soloTypeAttribute,QVariant::fromValue<QString>(doko_soloType));
 	emit doko_soloTypeChanged(doko_soloType);
+}
+
+void DoppelkopfRound::setWinner(Winner winner)
+{
+	if(winner == this->winner())
+		return;
+	setValue(DoppelkopfRoundProperties::WinnerAttribute,QVariant::fromValue<int>(winner));
+	emit winnerChanged(winner);
 }
 
 Player *DoppelkopfRound::hochzeitPlayer() const

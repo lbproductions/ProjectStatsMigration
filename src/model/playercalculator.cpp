@@ -3,6 +3,8 @@
 #include "player.h"
 
 #include "game.h"
+#include "livegame.h"
+#include "round.h"
 
 #include <QDateTime>
 
@@ -177,6 +179,21 @@ QVariant PlayerCalculator::gameCount(const LBDatabase::Entity *entity) const
 {
 	const Player *player = static_cast<const Player *>(entity);
     return QVariant(player->games().size());
+}
+
+RelatedEntities PlayerCalculator::roundsDealt(const LBDatabase::Entity *entity) const
+{
+	const Player *player = static_cast<const Player *>(entity);
+    RelatedEntities rounds;
+
+    foreach(Game *game, player->games()) {
+        LiveGame *g = static_cast<LiveGame *>(game);
+        for(int i = g->players().indexOf(const_cast<Player *const>(player)); i < g->rounds().size(); i += g->players().size()) {
+            rounds.append(g->rounds().at(i));
+        }
+    }
+
+    return rounds;
 }
 
 // NEW METHODS HERE. DO NOT DELETE THIS LINE!

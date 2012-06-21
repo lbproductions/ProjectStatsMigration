@@ -5,6 +5,12 @@
 
 #include <model/storage.h>
 #include <model/doppelkopflivegame.h>
+#include <model/gamescontext.h>
+
+#include <model/roundscontext.h>
+#include <model/round.h>
+#include <model/doppelkopfround.h>
+
 #include <preferences/updaterpreferences.h>
 #include <wizards/newgame/newgamewizard.h>
 #include <windows/livegame/doppelkopf/dokolivegamewindow.h>
@@ -59,6 +65,8 @@ Controller::Controller(MainWindow *mainWindow) :
         exit(-1);
     }
     qDebug() << "Opening the storage took "+QString::number(timer.elapsed())+"ms.";
+
+    openEntityWindow(m_storage->gamesContext()->game(38));
 }
 
 MainWindow *Controller::mainWindow() const

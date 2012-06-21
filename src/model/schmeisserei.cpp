@@ -30,9 +30,19 @@ Player *Schmeisserei::player() const
 	return relation<Player>(SchmeissereiProperties::PlayerRelation)->firstEntity();
 }
 
+void Schmeisserei::setPlayer(Player *player)
+{
+	relation<Player>(SchmeissereiProperties::PlayerRelation)->addEntity(player);
+}
+
 Round *Schmeisserei::round() const
 {
 	return relation<Round>(SchmeissereiProperties::RoundRelation)->firstEntity();
+}
+
+void Schmeisserei::setRound(Round *round)
+{
+	relation<Round>(SchmeissereiProperties::RoundRelation)->addEntity(round);
 }
 
 

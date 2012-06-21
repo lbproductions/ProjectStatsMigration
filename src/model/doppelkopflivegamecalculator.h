@@ -14,6 +14,12 @@ public:
 	
 	Q_INVOKABLE QVariant allowedSoli(const LBDatabase::Entity *entity) const;
 	
+	Q_INVOKABLE QVariant allowedSchmeissereien(const LBDatabase::Entity *entity) const;
+	
+	Q_INVOKABLE QVariant reWins(const LBDatabase::Entity *entity) const;
+	
+	Q_INVOKABLE QVariant contraWins(const LBDatabase::Entity *entity) const;
+	
 	Q_INVOKABLE EntityVariantHash hasPflichtsolo(const LBDatabase::Entity *entity) const;
 };
 

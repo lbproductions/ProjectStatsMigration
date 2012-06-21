@@ -9,6 +9,8 @@ class NewRoundDialog;
 
 class DoppelkopfRound;
 
+namespace DokoLiveGameWindowNS {
+
 class NewRoundDialog : public QDialog
 {
     Q_OBJECT
@@ -37,5 +39,7 @@ private:
     Ui::NewRoundDialog *ui;
     DoppelkopfRound *m_doppelkopfRound;
 };
+
+}
 
 #endif // NEWROUNDDIALOG_H

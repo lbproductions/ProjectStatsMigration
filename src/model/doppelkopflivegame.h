@@ -4,6 +4,7 @@
 #include <LBDatabase/LBDatabase.h>
 
 #include <QStringList>
+#include <QStringList>
 #include "livegame.h"
 
 namespace DoppelkopfLiveGameProperties {
@@ -25,6 +26,9 @@ const QString Doko_mitZuWenigTrumpfAttribute("doko_mitZuWenigTrumpf");
 const QString Doko_mitFleischlosAttribute("doko_mitFleischlos");
 const QString Doko_mitSchwarzsoloAttribute("doko_mitSchwarzsolo");
 const QString AllowedSoliAttribute("allowedSoli");
+const QString AllowedSchmeissereienAttribute("allowedSchmeissereien");
+const QString ReWinsAttribute("reWins");
+const QString ContraWinsAttribute("contraWins");
 const QString HasPflichtsoloFunction("hasPflichtsolo");
 } // namespace DoppelkopfLiveGameProperties
 
@@ -58,6 +62,9 @@ public:
 	bool doko_mitFleischlos() const;
 	bool doko_mitSchwarzsolo() const;
 	QStringList allowedSoli() const;
+	QStringList allowedSchmeissereien() const;
+	int reWins() const;
+	int contraWins() const;
 
 	void setDoko_mitHochzeit(bool doko_mitHochzeit);
 	void setDoko_mitPflichtsolo(bool doko_mitPflichtsolo);
@@ -108,6 +115,9 @@ signals:
 	void doko_mitFleischlosChanged(bool);
 	void doko_mitSchwarzsoloChanged(bool);
 	void allowedSoliChanged();
+	void allowedSchmeissereienChanged();
+	void reWinsChanged();
+	void contraWinsChanged();
 };
 
 Q_DECLARE_METATYPE(QList<DoppelkopfLiveGame *>)

@@ -55,4 +55,53 @@ EntityVariantHash DoppelkopfLiveGameCalculator::hasPflichtsolo(const LBDatabase:
     return result;
 }
 
+QVariant DoppelkopfLiveGameCalculator::allowedSchmeissereien(const LBDatabase::Entity *entity) const
+{
+	const DoppelkopfLiveGame *doppelkopfLiveGame = static_cast<const DoppelkopfLiveGame *>(entity);
+
+    QStringList schmeissereien;
+    if(doppelkopfLiveGame->doko_mitFuenfKoenige()) {
+        schmeissereien << trUtf8("5 Könige");
+    }
+    if(doppelkopfLiveGame->doko_mitZuWenigTrumpf()) {
+        schmeissereien << tr("< 3 Trumpf");
+    }
+    if(doppelkopfLiveGame->doko_mitTrumpfabgabeSchmeisserei()) {
+        schmeissereien << tr("Trumpfabgabe nicht genommen");
+    }
+    if(doppelkopfLiveGame->doko_mitNeunzigPunkte()) {
+        schmeissereien << tr("> 90 Punkte");
+    }
+
+    return schmeissereien;
+}
+
+QVariant DoppelkopfLiveGameCalculator::reWins(const LBDatabase::Entity *entity) const
+{
+	const DoppelkopfLiveGame *doppelkopfLiveGame = static_cast<const DoppelkopfLiveGame *>(entity);
+
+    int wins = 0;
+    foreach(Round *r, doppelkopfLiveGame->rounds()) {
+        DoppelkopfRound *round = static_cast<DoppelkopfRound *>(r);
+        if(round->winner() == DoppelkopfRound::Re)
+            ++wins;
+    }
+
+    return wins;
+}
+
+QVariant DoppelkopfLiveGameCalculator::contraWins(const LBDatabase::Entity *entity) const
+{
+    const DoppelkopfLiveGame *doppelkopfLiveGame = static_cast<const DoppelkopfLiveGame *>(entity);
+
+    int wins = 0;
+    foreach(Round *r, doppelkopfLiveGame->rounds()) {
+        DoppelkopfRound *round = static_cast<DoppelkopfRound *>(r);
+        if(round->winner() == DoppelkopfRound::Contra)
+            ++wins;
+    }
+
+    return wins;
+}
+
 // NEW METHODS HERE. DO NOT DELETE THIS LINE!

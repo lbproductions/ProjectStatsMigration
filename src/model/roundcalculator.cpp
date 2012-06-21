@@ -24,3 +24,5 @@ RelatedEntities RoundCalculator::currentPlayingPlayers(const LBDatabase::Entity 
     }
     return result;
 }
+
+// NEW METHODS HERE. DO NOT DELETE THIS LINE!

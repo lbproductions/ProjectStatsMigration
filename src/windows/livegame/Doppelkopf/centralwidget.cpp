@@ -3,6 +3,11 @@
 #include "dokolivegamewindow.h"
 #include "pointstable.h"
 #include "totalpointstable.h"
+#include "statisticssidebar.h"
+
+#include "../livegamesidebar.h"
+#include "../sidebarpage.h"
+#include "../drinkssidebarpage.h"
 
 #include <widgets/graphs/dokolivegamegraphview.h>
 #include <model/doppelkopflivegame.h>
@@ -18,11 +23,11 @@ CentralWidget::CentralWidget(DokoLiveGameWindow *parent) :
     m_doppelkopfLiveGame(0)
 {
     setAutoFillBackground(true);
-    setBackgroundRole(QPalette::Background);
-    QPalette p(palette());
-    p.setColor(QPalette::Background, QColor(55,55,55));
+    QPalette p = palette();
+    p.setColor(QPalette::Window, QColor(55,55,55));
     setPalette(p);
 
+    // Central
     QSplitter* splitterCentral = new QSplitter(Qt::Vertical,this);
     LBGui::GroupBox* groupBoxPointsTable = new LBGui::GroupBox(splitterCentral);
     LBGui::GroupBox* groupBoxTotalPointsTable = new LBGui::GroupBox(splitterCentral);
@@ -35,9 +40,9 @@ CentralWidget::CentralWidget(DokoLiveGameWindow *parent) :
     splitterCentral->addWidget(groupBoxTotalPointsTable);
     splitterCentral->addWidget(groupBoxGraph);
 
-    splitterCentral->setStretchFactor(0,1);
-    splitterCentral->setStretchFactor(1,0);
-    splitterCentral->setStretchFactor(2,2);
+//    splitterCentral->setStretchFactor(0,1);
+//    splitterCentral->setStretchFactor(1,0);
+//    splitterCentral->setStretchFactor(2,2);
 
     QWidget* centralWidget = new QWidget(this);
     QLayout* centralLayout = new QVBoxLayout(this);
@@ -58,59 +63,40 @@ CentralWidget::CentralWidget(DokoLiveGameWindow *parent) :
     groupBoxTotalPointsTable->layout()->setContentsMargins(5,5,0,0);
     groupBoxTotalPointsTable->setFixedHeight(40);
 
+    // Left
+    LBGui::Splitter* leftSplitter = new LBGui::Splitter(Qt::Horizontal);
+    leftSplitter->setStyle(LBGui::Splitter::MacOSFullscreenStyle);
+    leftSplitter->setDirection(LBGui::Splitter::LeftToRight);
+
+    LiveGameWindowNS::LiveGameSidebar *leftSideBar = new LiveGameWindowNS::LiveGameSidebar(leftSplitter);
+    m_drinksPage = new LiveGameWindowNS::DrinksSidebarPage(leftSideBar);
+
+    leftSideBar->addPage(tr("Drinks"), m_drinksPage);
+    //leftSideBar->addPage(tr("Statistics"), new LiveGameWindowNS::SidebarPage(leftSideBar));
+
+    leftSplitter->addWidget(leftSideBar);
+    leftSplitter->addWidget(centralWidget);
+    leftSplitter->setStretchFactor(0,0);
+    leftSplitter->setStretchFactor(1,1);
+
+
+
+    LBGui::Splitter* rightSplitter = new LBGui::Splitter(Qt::Horizontal);
+    rightSplitter->setStyle(LBGui::Splitter::MacOSFullscreenStyle);
+    rightSplitter->setDirection(LBGui::Splitter::LeftToRight);
+
+    m_rightSidebar = new StatisticsSidebar(leftSplitter);
+    rightSplitter->addWidget(leftSplitter);
+    rightSplitter->addWidget(m_rightSidebar);
+
+    rightSplitter->setStretchFactor(0,1);
+    rightSplitter->setStretchFactor(1,0);
+
     QHBoxLayout *l = new QHBoxLayout(this);
-    l->addWidget(centralWidget);
+    l->setContentsMargins(0,0,0,0);
+    l->setSpacing(0);
+    l->addWidget(rightSplitter);
     setLayout(l);
-
-//    Gui::Misc::Splitter* leftSplitter = new Gui::Misc::Splitter(Qt::Horizontal);
-//    leftSplitter->setFullscreen(true);
-//    leftSplitter->setLeftToRight(true);
-//    leftSplitter->addWidget(new BeerWidget(m_livegame,leftSplitter));
-//    leftSplitter->addWidget(centralWidget);
-//    leftSplitter->setStretchFactor(0,0);
-//    leftSplitter->setStretchFactor(1,1);
-
-//    Gui::Misc::Splitter* rightSplitter = new Gui::Misc::Splitter(Qt::Horizontal);
-//    rightSplitter->setFullscreen(true);
-//    rightSplitter->addWidget(leftSplitter);
-//    rightSplitter->addWidget(m_infoBox);
-//    rightSplitter->setStretchFactor(0,1);
-//    rightSplitter->setStretchFactor(1,0);
-
-//    QLayout* l = new QVBoxLayout(this);
-//    l->setSpacing(0);
-//    l->setContentsMargins(0,0,0,0);
-//    l->addWidget(rightSplitter);
-//    setLayout(l);
-
-//    m_playerTotalPointsTable->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    m_playerTotalPointsTable->setGridStyle(Qt::NoPen);
-//    m_playerTotalPointsTable->horizontalHeader()->hide();
-//    m_playerTotalPointsTable->verticalHeader()->hide();
-//    int i = 0;
-//    for (;i<m_playerTotalPointsTable->columnCount();i++)
-//    {
-//         Gui::Misc::ConnectableTableWidgetItem* item = new Gui::Misc::ConnectableTableWidgetItem();
-//         item->setTextAlignment(Qt::AlignCenter);
-//         item->setFont(QFont("Lucia Grande",35,QFont::Bold,false));
-//         item->setFlags(item->flags() & ~Qt::ItemIsEditable & ~Qt::ItemIsSelectable);
-
-//         if(i < m_livegame->playersSortedByPosition->value().size())
-//         {
-//             m_livegame->points->mappingFutureWatcher(m_livegame->playersSortedByPosition->value().at(i))->connectTo(item);
-//         }
-//         else
-//         {
-//             m_livegame->totalPoints->futureWatcher()->connectTo(item);
-//         }
-//         m_playerTotalPointsTable->setItem(0,i,item);
-//    }
-
-//    m_playerTotalPointsTable->setRowHeight(0,35);
-//    m_playerTotalPointsTable->setMaximumHeight(m_playerTotalPointsTable->rowHeight(0));
-
-//    m_playerTotalPointsTable->setStyleSheet("QWidget{margin: 0px; padding: 0px; background:transparent; color: white;}");
-//    updateSizes();
 }
 
 CentralWidget::~CentralWidget()
@@ -126,6 +112,11 @@ void CentralWidget::setDoppelkopfLiveGame(DoppelkopfLiveGame *doppelkopfLiveGame
     m_graphView->setLiveGame(m_doppelkopfLiveGame);
     m_pointsTable->setDoppelkopfLiveGame(m_doppelkopfLiveGame);
     m_totalPointsTable->setDoppelkopfLiveGame(m_doppelkopfLiveGame);
+    m_rightSidebar->setDoppelkopfLiveGame(m_doppelkopfLiveGame);
+
+    foreach(Player *p, doppelkopfLiveGame->players()) {
+        m_drinksPage->addPlayer(p);
+    }
 }
 
 }

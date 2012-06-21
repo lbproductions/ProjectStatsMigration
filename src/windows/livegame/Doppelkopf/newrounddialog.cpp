@@ -6,6 +6,8 @@
 #include <model/doppelkopflivegame.h>
 #include <model/roundscontext.h>
 
+namespace DokoLiveGameWindowNS {
+
 NewRoundDialog::NewRoundDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::NewRoundDialog),
@@ -298,4 +300,6 @@ void NewRoundDialog::saveTrumpfabgabeRound()
 
     DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(m_doppelkopfRound->game());
     game->addRound();
+}
+
 }

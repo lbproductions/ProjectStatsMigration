@@ -67,4 +67,13 @@ EntityVariantHash DoppelkopfRoundCalculator::isContra(const LBDatabase::Entity *
     return result;
 }
 
+QVariant DoppelkopfRoundCalculator::roundPoints(const LBDatabase::Entity *entity) const
+{
+	const DoppelkopfRound *doppelkopfRound = static_cast<const DoppelkopfRound *>(entity);
+    int points = doppelkopfRound->points(doppelkopfRound->rePlayer1());
+    if(doppelkopfRound->dokoSoloPlayer())
+        points /= 3;
+    return points;
+}
+
 // NEW METHODS HERE. DO NOT DELETE THIS LINE!

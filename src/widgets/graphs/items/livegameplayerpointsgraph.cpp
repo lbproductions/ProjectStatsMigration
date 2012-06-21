@@ -17,6 +17,7 @@ LiveGamePlayerPointsGraph::LiveGamePlayerPointsGraph(Player *player, LiveGame *l
     m_liveGame(liveGame),
     m_totalPoints(0)
 {
+    connect(liveGame, SIGNAL(roundsRoundAdded(Round*)), this, SLOT(addRound(Round*)));
 }
 
 void LiveGamePlayerPointsGraph::setupGraph()

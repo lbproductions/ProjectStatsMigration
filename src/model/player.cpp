@@ -200,6 +200,11 @@ QList<Round *> Player::rounds() const
 	return relation<Round>(PlayerProperties::RoundsRelation)->entities();
 }
 
+QList<Round *> Player::roundsDealt() const
+{
+	return relation<Round>(PlayerProperties::RoundsDealtRelation)->entities();
+}
+
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START

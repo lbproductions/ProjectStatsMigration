@@ -17,7 +17,6 @@ void Label::paintEvent(QPaintEvent *e)
         p.setPen(m_dropshadowColor);
         QRect rect = contentsRect();
         p.setFont(font());
-        rect.adjust(0,5,0,5);
         p.drawText(rect,text());
         p.setPen(m_foregroundColor);
         rect.adjust(0,-1,0,-1);

@@ -170,8 +170,6 @@ SOURCES += main.cpp \
     model/categoriescontext.cpp \
     model/skatround.cpp \
     model/skatlivegame.cpp \
-    windows/livegame/livegameroundtable.cpp \
-    windows/livegame/livegamedetailswidget.cpp \
     windows/livegame/doppelkopf/dokolivegamewindow.cpp \
     windows/livegame/doppelkopf/centralwidget.cpp \
     windows/livegame/doppelkopf/pointstable.cpp \
@@ -180,7 +178,14 @@ SOURCES += main.cpp \
     windows/livegame/doppelkopf/totalpointstable.cpp \
     windows/livegame/doppelkopf/newrounddialog.cpp \
     widgets/playerscombobox.cpp \
-    model/doppelkopflivegamecalculator.cpp
+    model/doppelkopflivegamecalculator.cpp \
+    windows/livegame/doppelkopf/newschmeissereidialog.cpp \
+    windows/livegame/sidebarpage.cpp \
+    windows/livegame/livegamesidebar.cpp \
+    windows/livegame/drinkssidebarpage.cpp \
+    windows/livegame/playerdrinksgroupbox.cpp \
+    windows/livegame/doppelkopf/statisticssidebar.cpp \
+    windows/livegame/doppelkopf/statisticsgeneralpage.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -244,8 +249,6 @@ HEADERS  += \
     model/categoriescontext.h \
     model/skatround.h \
     model/skatlivegame.h \
-    windows/livegame/livegameroundtable.h \
-    windows/livegame/livegamedetailswidget.h \
     windows/livegame/doppelkopf/dokolivegamewindow.h \
     windows/livegame/doppelkopf/centralwidget.h \
     windows/livegame/doppelkopf/pointstable.h \
@@ -254,7 +257,14 @@ HEADERS  += \
     windows/livegame/doppelkopf/totalpointstable.h \
     windows/livegame/doppelkopf/newrounddialog.h \
     widgets/playerscombobox.h \
-    model/doppelkopflivegamecalculator.h
+    model/doppelkopflivegamecalculator.h \
+    windows/livegame/doppelkopf/newschmeissereidialog.h \
+    windows/livegame/sidebarpage.h \
+    windows/livegame/livegamesidebar.h \
+    windows/livegame/drinkssidebarpage.h \
+    windows/livegame/playerdrinksgroupbox.h \
+    windows/livegame/doppelkopf/statisticssidebar.h \
+    windows/livegame/doppelkopf/statisticsgeneralpage.h
 
 RESOURCES += \
     resources/resources.qrc
@@ -265,7 +275,9 @@ FORMS += \
     wizards/newgame/livedokogameoptionswidget.ui \
     wizards/newgame/dokolivegamegroupbox.ui \
     wizards/newgame/chooseunfinishedgamedialog.ui \
-    windows/livegame/doppelkopf/newrounddialog.ui
+    windows/livegame/doppelkopf/newrounddialog.ui \
+    windows/livegame/doppelkopf/newschmeissereidialog.ui
 
 OTHER_FILES += \
-    resources/stylesheets/pointstable.css
+    resources/stylesheets/pointstable.css \
+    resources/stylesheets/livegamesidebar.css

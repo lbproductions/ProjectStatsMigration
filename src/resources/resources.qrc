@@ -14,5 +14,6 @@
     </qresource>
     <qresource prefix="/stylesheets">
         <file alias="pointstable">stylesheets/pointstable.css</file>
+        <file alias="livegamesidebar">stylesheets/livegamesidebar.css</file>
     </qresource>
 </RCC>

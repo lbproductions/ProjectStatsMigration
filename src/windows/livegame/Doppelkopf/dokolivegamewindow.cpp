@@ -2,6 +2,7 @@
 
 #include "centralwidget.h"
 #include "newrounddialog.h"
+#include "newschmeissereidialog.h"
 
 #include <model/doppelkopflivegame.h>
 #include <model/doppelkopfround.h>
@@ -58,11 +59,14 @@ void DokoLiveGameWindow::reflectState(LiveGame::State state)
 
 void DokoLiveGameWindow::showNewSchmeissereiDialog()
 {
+    DokoLiveGameWindowNS::NewSchmeissereiDialog dialog(this);
+    dialog.setDoppelkopfRound(static_cast<DoppelkopfRound *>(m_doppelkopfLiveGame->rounds().last()));
+    dialog.exec();
 }
 
 void DokoLiveGameWindow::showNewRoundDialog()
 {
-    NewRoundDialog dialog(this);
+    DokoLiveGameWindowNS::NewRoundDialog dialog(this);
     dialog.setDoppelkopfRound(static_cast<DoppelkopfRound *>(m_doppelkopfLiveGame->rounds().last()));
     dialog.exec();
 }
