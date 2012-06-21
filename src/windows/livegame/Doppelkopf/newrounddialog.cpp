@@ -23,15 +23,19 @@ NewRoundDialog::NewRoundDialog(QWidget *parent) :
     ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
     connect(ui->comboBoxNormalRe1, SIGNAL(currentIndexChanged(int)), this, SLOT(checkNormalRoundContents()));
     connect(ui->comboBoxNormalRe2, SIGNAL(currentIndexChanged(int)), this, SLOT(checkNormalRoundContents()));
+    connect(ui->spinBoxNormalPoints,SIGNAL(valueChanged(int)), this, SLOT(checkNormalRoundContents()));
 
     connect(ui->comboBoxHochzeitHochzeit, SIGNAL(currentIndexChanged(int)), this, SLOT(checkHochzeitRoundContents()));
     connect(ui->comboBoxHochzeitFellow, SIGNAL(currentIndexChanged(int)), this, SLOT(checkHochzeitRoundContents()));
+    connect(ui->spinBoxHochzeitPoints,SIGNAL(valueChanged(int)),this, SLOT(checkHochzeitRoundContents()));
 
     connect(ui->comboBoxSoloPlayer, SIGNAL(currentIndexChanged(int)), this, SLOT(checkSoloRoundContents()));
     connect(ui->comboBoxSoloType, SIGNAL(currentIndexChanged(int)), this, SLOT(checkSoloRoundContents()));
+    connect(ui->spinBoxSoloPoints,SIGNAL(valueChanged(int)), this, SLOT(checkSoloRoundContents()));
 
     connect(ui->comboBoxTrumpfabgabePlayer, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTrumpfabgabeRoundContents()));
     connect(ui->comboBoxTrumpfabgabeAccept, SIGNAL(currentIndexChanged(int)), this, SLOT(checkTrumpfabgabeRoundContents()));
+    connect(ui->spinBoxTrumpfabgabePoints,SIGNAL(valueChanged(int)),this, SLOT(checkTrumpfabgabeRoundContents()));
 
     connect(ui->buttonGroup, SIGNAL(buttonClicked(int)), this, SLOT(setCurrentPage(int)));
 
@@ -90,6 +94,18 @@ void NewRoundDialog::setDoppelkopfRound(DoppelkopfRound *round)
     ui->pushButtonSolo->setEnabled(!game->allowedSoli().isEmpty());
     ui->pushButtonHochzeit->setEnabled(game->doko_mitHochzeit());
     ui->pushButtonTrumpfabgabe->setEnabled(game->doko_mitTrumpfabgabe());
+
+    ui->comboBoxWinner->addItem("Re");
+    ui->comboBoxWinner->addItem("Contra");
+
+    ui->comboBoxTrumpfabgabeWinner->addItem("Re");
+    ui->comboBoxTrumpfabgabeWinner->addItem("Contra");
+
+    ui->comboBoxSoloWinner->addItem("Re");
+    ui->comboBoxSoloWinner->addItem("Contra");
+
+    ui->comboBoxHochzeitWinner->addItem("Re");
+    ui->comboBoxHochzeitWinner->addItem("Contra");
 }
 
 void NewRoundDialog::setCurrentPage(int index)
@@ -128,6 +144,24 @@ void NewRoundDialog::checkNormalRoundContents()
 
     ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(ui->comboBoxNormalRe1->currentPlayer() &&
                                                               ui->comboBoxNormalRe2->currentPlayer());
+
+    if(ui->spinBoxNormalPoints->value() == 0)
+    {
+        ui->comboBoxWinner->setEnabled(true);
+    }
+    else
+    {
+        ui->comboBoxWinner->setEnabled(false);
+
+        if(ui->spinBoxNormalPoints->value() > 0)
+        {
+            ui->comboBoxWinner->setCurrentIndex(ui->comboBoxWinner->findText("Re"));
+        }
+        if(ui->spinBoxNormalPoints->value() < 0)
+        {
+            ui->comboBoxWinner->setCurrentIndex(ui->comboBoxWinner->findText("Contra"));
+        }
+    }
 }
 
 void NewRoundDialog::checkHochzeitRoundContents()
@@ -144,13 +178,31 @@ void NewRoundDialog::checkHochzeitRoundContents()
 
     ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(ui->comboBoxHochzeitHochzeit->currentPlayer() &&
                                                               ui->comboBoxHochzeitFellow->currentPlayer());
+
+    if(ui->spinBoxHochzeitPoints->value() == 0)
+    {
+        ui->comboBoxHochzeitWinner->setEnabled(true);
+    }
+    else
+    {
+        ui->comboBoxHochzeitWinner->setEnabled(false);
+
+        if(ui->spinBoxHochzeitPoints->value() > 0)
+        {
+            ui->comboBoxHochzeitWinner->setCurrentIndex(ui->comboBoxHochzeitWinner->findText("Re"));
+        }
+        if(ui->spinBoxHochzeitPoints->value() < 0)
+        {
+            ui->comboBoxHochzeitWinner->setCurrentIndex(ui->comboBoxHochzeitWinner->findText("Contra"));
+        }
+    }
 }
 
 void NewRoundDialog::checkSoloRoundContents()
 {
     DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(m_doppelkopfRound->game());
     if(!game->doko_mitPflichtsolo() ||
-       (ui->comboBoxSoloPlayer->currentPlayer() && game->hasPflichtsolo(ui->comboBoxSoloPlayer->currentPlayer()))) {
+            (ui->comboBoxSoloPlayer->currentPlayer() && game->hasPflichtsolo(ui->comboBoxSoloPlayer->currentPlayer()))) {
         ui->checkBoxSoloPflicht->setChecked(false);
         ui->checkBoxSoloPflicht->setEnabled(false);
     }
@@ -168,6 +220,24 @@ void NewRoundDialog::checkSoloRoundContents()
     }
 
     ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(ui->comboBoxSoloPlayer->currentPlayer());
+
+    if(ui->spinBoxSoloPoints->value() == 0)
+    {
+        ui->comboBoxSoloWinner->setEnabled(true);
+    }
+    else
+    {
+        ui->comboBoxSoloWinner->setEnabled(false);
+
+        if(ui->spinBoxSoloPoints->value() > 0)
+        {
+            ui->comboBoxSoloWinner->setCurrentIndex(ui->comboBoxSoloWinner->findText("Re"));
+        }
+        if(ui->spinBoxSoloPoints->value() < 0)
+        {
+            ui->comboBoxSoloWinner->setCurrentIndex(ui->comboBoxSoloWinner->findText("Contra"));
+        }
+    }
 }
 
 void NewRoundDialog::checkTrumpfabgabeRoundContents()
@@ -184,6 +254,24 @@ void NewRoundDialog::checkTrumpfabgabeRoundContents()
 
     ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(ui->comboBoxTrumpfabgabePlayer->currentPlayer() &&
                                                               ui->comboBoxTrumpfabgabeAccept->currentPlayer());
+
+    if(ui->spinBoxTrumpfabgabePoints->value() == 0)
+    {
+        ui->comboBoxTrumpfabgabeWinner->setEnabled(true);
+    }
+    else
+    {
+        ui->comboBoxTrumpfabgabeWinner->setEnabled(false);
+
+        if(ui->spinBoxTrumpfabgabePoints->value() > 0)
+        {
+            ui->comboBoxTrumpfabgabeWinner->setCurrentIndex(ui->comboBoxTrumpfabgabeWinner->findText("Re"));
+        }
+        if(ui->spinBoxTrumpfabgabePoints->value() < 0)
+        {
+            ui->comboBoxTrumpfabgabeWinner->setCurrentIndex(ui->comboBoxTrumpfabgabeWinner->findText("Contra"));
+        }
+    }
 }
 
 void NewRoundDialog::save()
@@ -224,6 +312,14 @@ void NewRoundDialog::saveNormalRound()
         }
     }
     m_doppelkopfRound->setState(Round::Finished);
+    if(ui->comboBoxWinner->currentText() == "Re")
+    {
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Re);
+    }
+    else
+    {
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Contra);
+    }
 
     DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(m_doppelkopfRound->game());
     game->addRound();
@@ -248,6 +344,15 @@ void NewRoundDialog::saveHochzeitRound()
         }
     }
     m_doppelkopfRound->setState(Round::Finished);
+
+    if(ui->comboBoxHochzeitWinner->currentText() == "Re")
+    {
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Re);
+    }
+    else
+    {
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Contra);
+    }
 
     DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(m_doppelkopfRound->game());
     game->addRound();
@@ -274,6 +379,15 @@ void NewRoundDialog::saveSoloRound()
     }
     m_doppelkopfRound->setState(Round::Finished);
 
+    if(ui->comboBoxSoloWinner->currentText() == "Re")
+    {
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Re);
+    }
+    else
+    {
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Contra);
+    }
+
     DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(m_doppelkopfRound->game());
     game->addRound();
 }
@@ -297,6 +411,15 @@ void NewRoundDialog::saveTrumpfabgabeRound()
         }
     }
     m_doppelkopfRound->setState(Round::Finished);
+
+    if(ui->comboBoxTrumpfabgabeWinner->currentText() == "Re")
+    {
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Re);
+    }
+    else
+    {
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Contra);
+    }
 
     DoppelkopfLiveGame *game = static_cast<DoppelkopfLiveGame *>(m_doppelkopfRound->game());
     game->addRound();
