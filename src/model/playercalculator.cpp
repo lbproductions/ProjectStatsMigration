@@ -198,4 +198,22 @@ RelatedEntities PlayerCalculator::roundsDealt(const LBDatabase::Entity *entity) 
     return rounds;
 }
 
+RelatedEntities PlayerCalculator::gamesCurrentDealer(const LBDatabase::Entity *entity) const
+{
+	const Player *player = static_cast<const Player *>(entity);
+
+    RelatedEntities games;
+    foreach(Game *game, player->games()) {
+        LiveGame *g = static_cast<LiveGame *>(game);
+        int pos = g->players().indexOf(const_cast<Player *const>(player));
+        if(!g->rounds().isEmpty() &&
+            (g->rounds().size() % (pos + g->players().size()) == 0 ||
+             g->rounds().size() == pos)) {
+            games.append(g);
+        }
+    }
+
+	return RelatedEntities();
+}
+
 // NEW METHODS HERE. DO NOT DELETE THIS LINE!

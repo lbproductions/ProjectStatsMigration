@@ -41,6 +41,11 @@ void LiveGame::addRound(Round *round)
 	emit roundsRoundAdded(round);
 }
 
+QList<Player *> LiveGame::currentDealer() const
+{
+	return relation<Player>(LiveGameProperties::CurrentDealerRelation)->entities();
+}
+
 int LiveGame::points(const Player *player) const
 {
 	return function(LiveGameProperties::PointsFunction)->value(player).value<int>();

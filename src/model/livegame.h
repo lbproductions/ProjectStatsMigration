@@ -9,6 +9,7 @@ namespace LiveGameProperties {
 const QString StateAttribute("state");
 const QString TotalPointsAttribute("totalPoints");
 const QString RoundsRelation("rounds");
+const QString CurrentDealerRelation("currentDealer");
 const QString PointsFunction("points");
 const QString PlacementFunction("placement");
 } // namespace LiveGameProperties
@@ -43,6 +44,7 @@ public:
 
 	QList<Round *> rounds() const;
 	void addRound(Round *rounds);
+	QList<Player *> currentDealer() const;
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
@@ -52,6 +54,7 @@ signals:
 	void stateChanged(LiveGame::State);
 	void totalPointsChanged();
 	void roundsRoundAdded(Round *round);
+	void currentDealerChanged();
 };
 
 Q_DECLARE_METATYPE(QList<LiveGame *>)

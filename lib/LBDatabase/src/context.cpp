@@ -160,7 +160,7 @@ Entity *ContextPrivate::insertEntity(EntityType *type)
         v->recalculateAfterDependencyChange();
     }
 
-    foreach(Property *property, properties) {
+    foreach(Property *property, type->properties()) {
         property->initDependencies(entity);
     }
 

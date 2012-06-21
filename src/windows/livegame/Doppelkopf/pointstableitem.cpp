@@ -106,6 +106,11 @@ int PointsTablePlayerItem::points() const
 
 void PointsTablePlayerItem::setPoints(int points)
 {
+    if(points < 0)
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Contra);
+    else if(points > 0)
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Re);
+
     if(m_doppelkopfRound->isContra(m_player))
         points = -points;
 
@@ -148,6 +153,11 @@ int PointsTableTotalItem::points() const
 
 void PointsTableTotalItem::setPoints(int points)
 {
+    if(points < 0)
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Contra);
+    else if(points > 0)
+        m_doppelkopfRound->setWinner(DoppelkopfRound::Re);
+
     foreach(Player* player, m_doppelkopfRound->currentPlayingPlayers())
     {
         if(m_doppelkopfRound->isRe(player)) {

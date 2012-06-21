@@ -40,6 +40,7 @@ const QString GamesRelation("games");
 const QString DrinksRelation("drinks");
 const QString RoundsRelation("rounds");
 const QString RoundsDealtRelation("roundsDealt");
+const QString GamesCurrentDealerRelation("gamesCurrentDealer");
 } // namespace PlayerProperties
 
 class Schmeisserei;
@@ -50,6 +51,7 @@ class Place;
 class Game;
 class Drink;
 class Round;
+class LiveGame;
 
 class Player : public LBDatabase::Entity
 {
@@ -100,6 +102,7 @@ public:
 	QList<Drink *> drinks() const;
 	QList<Round *> rounds() const;
 	QList<Round *> roundsDealt() const;
+	QList<LiveGame *> gamesCurrentDealer() const;
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
@@ -123,6 +126,7 @@ signals:
 	void lastGameChanged();
 	void roundsChanged();
 	void roundsDealtChanged();
+	void gamesCurrentDealerChanged();
 };
 
 Q_DECLARE_METATYPE(QList<Player *>)

@@ -20,6 +20,18 @@ public:
 	
 	Q_INVOKABLE QVariant contraWins(const LBDatabase::Entity *entity) const;
 	
+	Q_INVOKABLE QVariant hochzeitenCount(const LBDatabase::Entity *entity) const;
+	
+	Q_INVOKABLE QVariant soliCount(const LBDatabase::Entity *entity) const;
+	
+	Q_INVOKABLE QVariant pflichtsoliCount(const LBDatabase::Entity *entity) const;
+	
+	Q_INVOKABLE QVariant trumpfabgabenCount(const LBDatabase::Entity *entity) const;
+	
+	Q_INVOKABLE QVariant schmeissereienCount(const LBDatabase::Entity *entity) const;
+	
+	Q_INVOKABLE QVariant schweinereienCount(const LBDatabase::Entity *entity) const;
+	
 	Q_INVOKABLE EntityVariantHash hasPflichtsolo(const LBDatabase::Entity *entity) const;
 };
 

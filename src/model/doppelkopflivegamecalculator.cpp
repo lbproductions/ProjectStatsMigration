@@ -104,4 +104,77 @@ QVariant DoppelkopfLiveGameCalculator::contraWins(const LBDatabase::Entity *enti
     return wins;
 }
 
+QVariant DoppelkopfLiveGameCalculator::schweinereienCount(const LBDatabase::Entity *entity) const
+{
+	const DoppelkopfLiveGame *doppelkopfLiveGame = static_cast<const DoppelkopfLiveGame *>(entity);
+    int count = 0;
+    foreach(Round *r, doppelkopfLiveGame->rounds()) {
+        DoppelkopfRound *dr = static_cast<DoppelkopfRound *>(r);
+        if(dr->schweinereiPlayer())
+            ++count;
+    }
+    return count;
+}
+
+QVariant DoppelkopfLiveGameCalculator::schmeissereienCount(const LBDatabase::Entity *entity) const
+{
+    const DoppelkopfLiveGame *doppelkopfLiveGame = static_cast<const DoppelkopfLiveGame *>(entity);
+    int count = 0;
+    foreach(Round *r, doppelkopfLiveGame->rounds()) {
+        DoppelkopfRound *dr = static_cast<DoppelkopfRound *>(r);
+        if(!dr->schmeissereienPerRound().isEmpty())
+            count += dr->schmeissereienPerRound().count();
+    }
+    return count;
+}
+
+QVariant DoppelkopfLiveGameCalculator::trumpfabgabenCount(const LBDatabase::Entity *entity) const
+{
+    const DoppelkopfLiveGame *doppelkopfLiveGame = static_cast<const DoppelkopfLiveGame *>(entity);
+    int count = 0;
+    foreach(Round *r, doppelkopfLiveGame->rounds()) {
+        DoppelkopfRound *dr = static_cast<DoppelkopfRound *>(r);
+        if(dr->trumpfabgabePlayer())
+            ++count;
+    }
+    return count;
+}
+
+QVariant DoppelkopfLiveGameCalculator::pflichtsoliCount(const LBDatabase::Entity *entity) const
+{
+    const DoppelkopfLiveGame *doppelkopfLiveGame = static_cast<const DoppelkopfLiveGame *>(entity);
+    int count = 0;
+    foreach(Round *r, doppelkopfLiveGame->rounds()) {
+        DoppelkopfRound *dr = static_cast<DoppelkopfRound *>(r);
+        if(dr->doko_soloPflicht())
+            ++count;
+    }
+    return count;
+}
+
+QVariant DoppelkopfLiveGameCalculator::soliCount(const LBDatabase::Entity *entity) const
+{
+    const DoppelkopfLiveGame *doppelkopfLiveGame = static_cast<const DoppelkopfLiveGame *>(entity);
+    int count = 0;
+
+    foreach(Round *r, doppelkopfLiveGame->rounds()) {
+        DoppelkopfRound *dr = static_cast<DoppelkopfRound *>(r);
+        if(!dr->doko_soloType().isEmpty())
+            ++count;
+    }
+    return count;
+}
+
+QVariant DoppelkopfLiveGameCalculator::hochzeitenCount(const LBDatabase::Entity *entity) const
+{
+    const DoppelkopfLiveGame *doppelkopfLiveGame = static_cast<const DoppelkopfLiveGame *>(entity);
+    int count = 0;
+    foreach(Round *r, doppelkopfLiveGame->rounds()) {
+        DoppelkopfRound *dr = static_cast<DoppelkopfRound *>(r);
+        if(dr->hochzeitPlayer())
+            ++count;
+    }
+    return count;
+}
+
 // NEW METHODS HERE. DO NOT DELETE THIS LINE!

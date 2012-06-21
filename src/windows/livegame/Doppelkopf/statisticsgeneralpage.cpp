@@ -48,6 +48,26 @@ void StatisticsGeneralPage::setDoppelkopfLiveGame(DoppelkopfLiveGame *game)
     m_game = game;
     updateLengthLabel();
     updateDealerLabel();
+    updateNumberOfRoundsLabel();
+    updateReVsContraLabel();
+    updateHochzeitenLabel();
+    updateSoliLabel();
+    updatePflichsoliLabel();
+    updateTrumpfabgabenLabel();
+    updateSchmeissereienLabel();
+    updateSchweinereienLabel();
+
+    connect(game, SIGNAL(lengthChanged(QTime)), this, SLOT(updateLengthLabel()));
+    connect(game, SIGNAL(currentDealerChanged()), this, SLOT(updateDealerLabel()));
+    connect(game, SIGNAL(roundsRoundAdded(Round*)), this, SLOT(updateNumberOfRoundsLabel()));
+    connect(game, SIGNAL(reWinsChanged()), this, SLOT(updateReVsContraLabel()));
+    connect(game, SIGNAL(contraWinsChanged()), this, SLOT(updateReVsContraLabel()));
+    connect(game, SIGNAL(hochzeitenCountChanged()), this, SLOT(updateHochzeitenLabel()));
+    connect(game, SIGNAL(soliCountChanged()), this, SLOT(updateSoliLabel()));
+    connect(game, SIGNAL(pflichtsoliCountChanged()), this, SLOT(updatePflichsoliLabel()));
+    connect(game, SIGNAL(trumpfabgabenCountChanged()), this, SLOT(updateTrumpfabgabenLabel()));
+    connect(game, SIGNAL(schmeissereienCountChanged()), this, SLOT(updateSchmeissereienLabel()));
+    connect(game, SIGNAL(schweinereienCountChanged()), this, SLOT(updateSchweinereienLabel()));
 }
 
 void StatisticsGeneralPage::updateCurrentTimeLabel()
@@ -75,30 +95,37 @@ void StatisticsGeneralPage::updateNumberOfRoundsLabel()
 
 void StatisticsGeneralPage::updateReVsContraLabel()
 {
+    m_reVsContraLabel->setText(QString::number(m_game->reWins())+QLatin1String(" : ")+QString::number(m_game->contraWins()));
 }
 
 void StatisticsGeneralPage::updateHochzeitenLabel()
 {
+    m_hochzeitenLabel->setText(QString::number(m_game->hochzeitenCount()));
 }
 
 void StatisticsGeneralPage::updateSoliLabel()
 {
+    m_soliLabel->setText(QString::number(m_game->soliCount()));
 }
 
 void StatisticsGeneralPage::updatePflichsoliLabel()
 {
+    m_pflichsoliLabel->setText(QString::number(m_game->pflichtsoliCount()));
 }
 
 void StatisticsGeneralPage::updateTrumpfabgabenLabel()
 {
+    m_trumpfabgabenLabel->setText(QString::number(m_game->trumpfabgabenCount()));
 }
 
 void StatisticsGeneralPage::updateSchmeissereienLabel()
 {
+    m_schmeissereienLabel->setText(QString::number(m_game->schmeissereienCount()));
 }
 
 void StatisticsGeneralPage::updateSchweinereienLabel()
 {
+    m_schweinereienLabel->setText(QString::number(m_game->schweinereienCount()));
 }
 
 QLabel *StatisticsGeneralPage::addLabel(const QString &title, const QString &text)

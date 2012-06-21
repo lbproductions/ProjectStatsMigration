@@ -29,6 +29,12 @@ const QString AllowedSoliAttribute("allowedSoli");
 const QString AllowedSchmeissereienAttribute("allowedSchmeissereien");
 const QString ReWinsAttribute("reWins");
 const QString ContraWinsAttribute("contraWins");
+const QString HochzeitenCountAttribute("hochzeitenCount");
+const QString SoliCountAttribute("soliCount");
+const QString PflichtsoliCountAttribute("pflichtsoliCount");
+const QString TrumpfabgabenCountAttribute("trumpfabgabenCount");
+const QString SchmeissereienCountAttribute("schmeissereienCount");
+const QString SchweinereienCountAttribute("schweinereienCount");
 const QString HasPflichtsoloFunction("hasPflichtsolo");
 } // namespace DoppelkopfLiveGameProperties
 
@@ -65,6 +71,12 @@ public:
 	QStringList allowedSchmeissereien() const;
 	int reWins() const;
 	int contraWins() const;
+	int hochzeitenCount() const;
+	int soliCount() const;
+	int pflichtsoliCount() const;
+	int trumpfabgabenCount() const;
+	int schmeissereienCount() const;
+	int schweinereienCount() const;
 
 	void setDoko_mitHochzeit(bool doko_mitHochzeit);
 	void setDoko_mitPflichtsolo(bool doko_mitPflichtsolo);
@@ -118,6 +130,12 @@ signals:
 	void allowedSchmeissereienChanged();
 	void reWinsChanged();
 	void contraWinsChanged();
+	void hochzeitenCountChanged();
+	void soliCountChanged();
+	void pflichtsoliCountChanged();
+	void trumpfabgabenCountChanged();
+	void schmeissereienCountChanged();
+	void schweinereienCountChanged();
 };
 
 Q_DECLARE_METATYPE(QList<DoppelkopfLiveGame *>)

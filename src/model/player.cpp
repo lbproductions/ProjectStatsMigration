@@ -8,6 +8,7 @@
 #include "game.h"
 #include "drink.h"
 #include "round.h"
+#include "livegame.h"
 
 
 const QString Player::Name("player");
@@ -203,6 +204,11 @@ QList<Round *> Player::rounds() const
 QList<Round *> Player::roundsDealt() const
 {
 	return relation<Round>(PlayerProperties::RoundsDealtRelation)->entities();
+}
+
+QList<LiveGame *> Player::gamesCurrentDealer() const
+{
+	return relation<LiveGame>(PlayerProperties::GamesCurrentDealerRelation)->entities();
 }
 
 

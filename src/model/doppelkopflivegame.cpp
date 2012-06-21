@@ -116,6 +116,36 @@ int DoppelkopfLiveGame::contraWins() const
 	return value(DoppelkopfLiveGameProperties::ContraWinsAttribute).value<int>();
 }
 
+int DoppelkopfLiveGame::hochzeitenCount() const
+{
+	return value(DoppelkopfLiveGameProperties::HochzeitenCountAttribute).value<int>();
+}
+
+int DoppelkopfLiveGame::soliCount() const
+{
+	return value(DoppelkopfLiveGameProperties::SoliCountAttribute).value<int>();
+}
+
+int DoppelkopfLiveGame::pflichtsoliCount() const
+{
+	return value(DoppelkopfLiveGameProperties::PflichtsoliCountAttribute).value<int>();
+}
+
+int DoppelkopfLiveGame::trumpfabgabenCount() const
+{
+	return value(DoppelkopfLiveGameProperties::TrumpfabgabenCountAttribute).value<int>();
+}
+
+int DoppelkopfLiveGame::schmeissereienCount() const
+{
+	return value(DoppelkopfLiveGameProperties::SchmeissereienCountAttribute).value<int>();
+}
+
+int DoppelkopfLiveGame::schweinereienCount() const
+{
+	return value(DoppelkopfLiveGameProperties::SchweinereienCountAttribute).value<int>();
+}
+
 void DoppelkopfLiveGame::setDoko_mitHochzeit(bool doko_mitHochzeit)
 {
 	if(doko_mitHochzeit == this->doko_mitHochzeit())

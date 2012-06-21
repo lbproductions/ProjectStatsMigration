@@ -38,16 +38,18 @@ void Property::initDependencies(Entity *entity)
         PropertyValue *dependendProperty = entity->propertyValue(this);
         Property *dependency = entityType()->context()->storage()->property(metaData.dependencyPropertyType, metaData.dependencyPropertyId);
 
-        if(metaData.dependencyPropertyType == Property::Relation &&
-           !entity->propertyValue(dependency)) {
-            dependency = static_cast<LBDatabase::Relation *>(dependency)->transposeRelation();
-        }
-
         if(metaData.entityRelation == -1) {
+            if(metaData.dependencyPropertyType == Property::Relation &&
+               !entity->propertyValue(dependency)) {
+                dependency = static_cast<LBDatabase::Relation *>(dependency)->transposeRelation();
+            }
+
             PropertyValue *dependencyProperty = entity->propertyValue(dependency);
 
-            //qDebug() << "Connecting" << entity->displayName() << dependency->identifier() << dependencyProperty << "to" << entity->displayName() << this->identifier() << dependendProperty;
-            QObject::connect(dependencyProperty, SIGNAL(changed()), dependendProperty, SLOT(recalculateAfterDependencyChange()));
+            if(!dependencyProperty)
+                qDebug() << "Cannot connect " << entity->displayName() << dependency->identifier() << dependencyProperty << "to" << entity->displayName() << this->identifier() << dependendProperty;
+            else
+                QObject::connect(dependencyProperty, SIGNAL(changed()), dependendProperty, SLOT(recalculateAfterDependencyChange()));
         }
         else if(metaData.entityRelation == 0) {
             QObject::connect(dependency->entityType()->context(), SIGNAL(entityInserted(Entity*)), this, SLOT(updateDependenciesWithInsertedEntity(Entity*)));
@@ -62,9 +64,17 @@ void Property::initDependencies(Entity *entity)
             QObject::connect(relationValue, SIGNAL(changed()), dependendProperty, SLOT(recalculateAfterDependencyChange()));
             QObject::connect(relationValue, SIGNAL(entityAdded(Entity*)), this, SLOT(updateDependenciesWithInsertedEntity(Entity*)));
 
+            if(metaData.dependencyPropertyType == Property::Relation &&
+               !relationValue->relation()->entityTypeOther()->properties().contains(dependency)) {
+                dependency = static_cast<LBDatabase::Relation *>(dependency)->transposeRelation();
+            }
+
             foreach(Entity *relatedEntity, relationValue->entities()) {
                 PropertyValue *dependencyProperty = relatedEntity->propertyValue(dependency);
-                QObject::connect(dependencyProperty, SIGNAL(changed()), dependendProperty, SLOT(recalculateAfterDependencyChange()));
+                if(!dependencyProperty)
+                    qDebug() << "Cannot connect " << relatedEntity->displayName() << dependency->identifier() << dependencyProperty << "to" << entity->displayName() << this->identifier() << dependendProperty;
+                else
+                    QObject::connect(dependencyProperty, SIGNAL(changed()), dependendProperty, SLOT(recalculateAfterDependencyChange()));
             }
         }
     }
