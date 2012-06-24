@@ -50,6 +50,8 @@ public:
     QString qtTypeName() const;
     QList<EntityType *> reimplementingEntityTypes() const;
 
+    EntityType *returnEntityType() const;
+
 Q_SIGNALS:
     void identifierChanged(QString);
     void typeChanged(Attribute::Type);
@@ -81,6 +83,7 @@ public:
     int entityTypeId;
     int keyEntityTypeId;
     Attribute::Type type;
+    int returnEntityTypeId;
     bool calculated;
     bool cached;
     bool editable;

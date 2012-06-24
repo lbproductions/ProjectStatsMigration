@@ -167,7 +167,16 @@ EntityType *Function::keyEntityType() const
 QString Function::qtTypeName() const
 {
     Q_D(const Function);
-    return Attribute::typeToQtType(d->metaData.type);
+
+    QString type = Attribute::typeToQtType(d->metaData.type);
+
+    if(this->type() == Attribute::Entity || this->type() == Attribute::EntityList) {
+        EntityType *e = entityType()->context()->storage()->entityType(d->metaData.returnEntityTypeId);
+        if(e)
+            type = type.replace("LBDatabase::Entity", e->className());
+    }
+
+    return type;
 }
 
 bool Function::isCalculated() const
@@ -267,6 +276,12 @@ QList<EntityType *> Function::reimplementingEntityTypes() const
 {
     Q_D(const Function);
     return d->reimplementingEntityTypes;
+}
+
+EntityType *Function::returnEntityType() const
+{
+    Q_D(const Function);
+    return entityType()->context()->storage()->entityType(d->metaData.returnEntityTypeId);
 }
 
 void Function::addPropertyValueToEntities()

@@ -3,7 +3,7 @@
 
 #include <LBDatabase/LBDatabase.h>
 
-#include <QIcon>
+#include <QPixmap>
 
 namespace DrinkProperties {
 const QString NameAttribute("name");
@@ -35,7 +35,7 @@ public:
 	QString type() const;
 	double size() const;
 	double alc() const;
-	QIcon icon() const;
+	QPixmap icon() const;
 	int drinkCount() const;
 	QString mostDrinks() const;
 

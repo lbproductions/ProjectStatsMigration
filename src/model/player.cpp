@@ -46,7 +46,7 @@ QColor Player::color() const
 
 QPixmap Player::avatar() const
 {
-	return value(PlayerProperties::AvatarAttribute).value<QPixmap>();
+	return QPixmap(value(PlayerProperties::AvatarAttribute).toString());
 }
 
 int Player::gameCount() const
@@ -144,6 +144,12 @@ QList<Schmeisserei *> Player::schmeissereien() const
 QList<LiveDrink *> Player::liveDrinks() const
 {
 	return relation<LiveDrink>(PlayerProperties::LiveDrinksRelation)->entities();
+}
+
+void Player::addLiveDrink(LiveDrink *liveDrink)
+{
+	relation<LiveDrink>(PlayerProperties::LiveDrinksRelation)->addEntity(liveDrink);
+	emit liveDrinksLiveDrinkAdded(liveDrink);
 }
 
 QList<DoppelkopfRound *> Player::dokoHochzeiten() const

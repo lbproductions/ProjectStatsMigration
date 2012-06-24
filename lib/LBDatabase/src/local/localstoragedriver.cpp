@@ -54,6 +54,7 @@ const QString EntityTypeId("entityTypeId");
 const QString Calculated("calculated");
 const QString CacheData("cacheData");
 const QString Type("type");
+const QString ReturnEntityType("returnEntityType");
 const QString Editable("editable");
 const QString DefaultValue("defaultValue");
 }
@@ -69,6 +70,7 @@ const QString KeyEntityType("keyEntityType");
 const QString Calculated("calculated");
 const QString CacheData("cacheData");
 const QString Type("type");
+const QString ReturnEntityType("returnEntityType");
 const QString Editable("editable");
 }
 namespace FunctionReimplementationsColumns {
@@ -248,6 +250,7 @@ QList<AttributeMetaData> LocalStorageDriver::attributes() const
         metaData.editable = row->data(AttributeColumns::Editable).toBool();
         metaData.entityTypeId = row->data(AttributeColumns::EntityTypeId).toInt();
         metaData.type = static_cast<Attribute::Type>(row->data(AttributeColumns::Type).toInt());
+        metaData.returnEntityTypeId = row->data(AttributeColumns::ReturnEntityType).toInt();
         metaData.defaultValue = row->data(AttributeColumns::DefaultValue);
         metaDatas.append(metaData);
     }
@@ -273,6 +276,7 @@ QList<FunctionMetaData> LocalStorageDriver::functions() const
         metaData.keyEntityTypeId = row->data(FunctionColumns::KeyEntityType).toInt();
         metaData.tableName = row->data(FunctionColumns::TableName).toString();
         metaData.type = static_cast<Attribute::Type>(row->data(FunctionColumns::Type).toInt());
+        metaData.returnEntityTypeId = row->data(FunctionColumns::ReturnEntityType).toInt();
         metaData.valueColumnName = row->data(FunctionColumns::ValueColumnName).toString();
         metaDatas.append(metaData);
     }

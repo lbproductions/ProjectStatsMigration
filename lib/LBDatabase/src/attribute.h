@@ -8,6 +8,7 @@
 namespace LBDatabase {
 
 class AttributeMetaData;
+class Entity;
 class EntityType;
 class Storage;
 
@@ -28,7 +29,9 @@ public:
         Bool,       // 8
         Color,      // 9
         Enum,       //10
-        StringList  //11
+        StringList, //11
+        Entity,     //12
+        EntityList  //13
     };
 
     ~Attribute();
@@ -68,6 +71,8 @@ public:
     static QStringList qtTypeNames();
     static QString typeToQtType(Type type);
 
+    EntityType *returnEntityType() const;
+
     QString signalSignature() const;
 
     // Used by drivers
@@ -90,7 +95,7 @@ protected:
     explicit Attribute(AttributePrivate &dd, const AttributeMetaData &metaData, Storage *parent);
 
     void addPropertyValueToEntities();
-    void addPropertyValue(Entity *entity);
+    void addPropertyValue(LBDatabase::Entity *entity);
 
     void fetchValues();
 
@@ -111,6 +116,7 @@ public:
     bool cached;
     bool editable;
     Attribute::Type type;
+    int returnEntityTypeId;
     QVariant defaultValue;
 };
 

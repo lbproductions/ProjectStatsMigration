@@ -25,4 +25,15 @@ QList<LiveDrink*> LiveDrinksContext::liveDrinks() const
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
+
+#include "storage.h"
+
+LiveDrink *LiveDrinksContext::createLiveDrink()
+{
+    Storage *psstorage = static_cast<Storage *>(storage());
+    LiveDrink *drink = static_cast<LiveDrink *>(insertEntity(psstorage->entityType(LiveDrink::EntityTypeId)));
+    drink->setTime(QDateTime::currentDateTime());
+    return drink;
+}
+
 	// END

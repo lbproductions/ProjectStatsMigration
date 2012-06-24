@@ -185,7 +185,8 @@ SOURCES += main.cpp \
     windows/livegame/drinkssidebarpage.cpp \
     windows/livegame/playerdrinksgroupbox.cpp \
     windows/livegame/doppelkopf/statisticssidebar.cpp \
-    windows/livegame/doppelkopf/statisticsgeneralpage.cpp
+    windows/livegame/doppelkopf/statisticsgeneralpage.cpp \
+    model/categorycalculator.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -264,10 +265,12 @@ HEADERS  += \
     windows/livegame/drinkssidebarpage.h \
     windows/livegame/playerdrinksgroupbox.h \
     windows/livegame/doppelkopf/statisticssidebar.h \
-    windows/livegame/doppelkopf/statisticsgeneralpage.h
+    windows/livegame/doppelkopf/statisticsgeneralpage.h \
+    model/categorycalculator.h
 
 RESOURCES += \
-    resources/resources.qrc
+    resources/resources.qrc \
+    resources/drinks.qrc
 
 FORMS += \
     wizards/newgame/livesummarywidget.ui \

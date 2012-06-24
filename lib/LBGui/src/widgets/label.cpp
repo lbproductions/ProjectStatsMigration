@@ -38,4 +38,20 @@ void Label::setForegroundColor(const QColor &color)
     m_foregroundColor = color;
 }
 
+void Label::mouseReleaseEvent(QMouseEvent *event)
+{
+    QLabel::mouseReleaseEvent(event);
+
+    if(event->button() == Qt::LeftButton)
+        emit clicked();
+}
+
+void Label::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    QLabel::mouseReleaseEvent(event);
+
+    if(event->button() == Qt::LeftButton)
+        emit doubleClicked();
+}
+
 } // namespace LBGui

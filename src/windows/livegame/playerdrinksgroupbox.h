@@ -5,6 +5,7 @@
 
 class Player;
 class LiveDrink;
+class LiveGame;
 
 namespace LiveGameWindowNS {
 
@@ -28,17 +29,23 @@ private:
 
 class PlayerDrinksGroupBox : public LBGui::GroupBox
 {
+    Q_OBJECT
 public:
     PlayerDrinksGroupBox(QWidget *parent = 0);
 
     void setPlayer(Player *player);
+    void setLiveGame(LiveGame *liveGame);
+
+private slots:
+    void updateDrinks();
+    void onDrinkDoubleClicked(LiveDrink*);
 
 private:
     void setName(const QString &name);
-    void updateDrinks();
 
     LBGui::Label *m_nameLabel;
     Player *m_player;
+    LiveGame *m_liveGame;
 
     QGridLayout *m_drinksLayout;
 };

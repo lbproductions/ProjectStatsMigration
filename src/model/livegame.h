@@ -11,11 +11,13 @@ const QString TotalPointsAttribute("totalPoints");
 const QString RoundsRelation("rounds");
 const QString CurrentDealerRelation("currentDealer");
 const QString PointsFunction("points");
+const QString DrinksPerPlayerFunction("drinksPerPlayer");
 const QString PlacementFunction("placement");
 } // namespace LiveGameProperties
 
 class Round;
 class Player;
+class LiveDrink;
 
 class LiveGame : public Game
 {
@@ -39,6 +41,7 @@ public:
 	void setState(State state);
 
 	int points(const Player *player) const;
+	QList<LiveDrink *>  drinksPerPlayer(const Player *player) const;
 	int placement(const Player *player) const;
 
 

@@ -6,6 +6,8 @@
 #include <LBDatabase/context.h>
 #include <LBDatabase/entitytype.h>
 
+#include <QDebug>
+
 namespace LBDatabase {
 
 ContextWriter::ContextWriter(const CppExporter *exporter) :
@@ -36,6 +38,7 @@ void ContextWriter::writeDeclaration(QString &header) const
 {
     QString oldContent = readFromFile(makeHeaderFilename(m_classname));
     QString extraContent = extractExtraContent(oldContent);
+
 
     QString contextName = makeClassname(m_context->identifier() + QLatin1String("Context"));
     QString baseEntityTypeName = makeClassname(m_context->baseEntityType()->identifier());

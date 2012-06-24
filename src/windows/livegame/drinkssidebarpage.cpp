@@ -15,10 +15,16 @@ DrinksSidebarPage::DrinksSidebarPage(LiveGameSidebar *parent) :
     setLayout(l);
 }
 
+void DrinksSidebarPage::setLiveGame(LiveGame *liveGame)
+{
+    m_liveGame = liveGame;
+}
+
 void DrinksSidebarPage::addPlayer(Player *player)
 {
     PlayerDrinksGroupBox *gb = new PlayerDrinksGroupBox(this);
     gb->setPlayer(player);
+    gb->setLiveGame(m_liveGame);
     layout()->addWidget(gb);
 }
 

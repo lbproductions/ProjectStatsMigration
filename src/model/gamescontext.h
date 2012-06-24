@@ -19,9 +19,9 @@ public:
 	QList<Game *> games() const;
 
 	// Write anything you want to remain unchanged between these comments: 
-    //START
-    DoppelkopfLiveGame *createDoppelkopfGame();
+	//START
 
+    DoppelkopfLiveGame *createDoppelkopfGame();
 	// END
 };
 

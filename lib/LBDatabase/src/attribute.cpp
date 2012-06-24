@@ -115,7 +115,7 @@ void Attribute::addPropertyValueToEntities()
 /*!
   Adds an AttributeValue instance to the given \a entity.
   */
-void Attribute::addPropertyValue(Entity *entity)
+void Attribute::addPropertyValue(LBDatabase::Entity *entity)
 {
     Q_D(Attribute);
     d->addPropertyValue(entity);
@@ -258,6 +258,10 @@ void Attribute::setType(Attribute::Type type)
     if(type == d->metaData.type)
         return;
 
+    if((type == Entity || type == EntityList) &&
+            !isCalculated())
+        return; // only calculated attributes may contain entities.
+
     d->metaData.type = type;
     d->storage->driver()->setAttributeType(d->metaData.id, type);
     emit typeChanged(type);
@@ -310,7 +314,9 @@ QStringList Attribute::typeNames()
     "Bool" <<
     "Color" <<
     "Enum" <<
-    "StringList";
+    "StringList" <<
+    "Entity" <<
+    "EntityList";
     return names;
 }
 
@@ -338,7 +344,9 @@ QVariant::Type Attribute::typeToVariantType(Attribute::Type type)
     QVariant::Bool <<
     QVariant::Color <<
     QVariant::Int <<
-    QVariant::StringList;
+    QVariant::StringList <<
+    QVariant::UserType <<
+    QVariant::UserType;
 
     return types.at(static_cast<int>(type));
 }
@@ -346,7 +354,15 @@ QVariant::Type Attribute::typeToVariantType(Attribute::Type type)
 QString Attribute::qtType() const
 {
     Q_D(const Attribute);
-    return Attribute::typeToQtType(d->metaData.type);
+    QString type = Attribute::typeToQtType(d->metaData.type);
+
+    if(this->type() == Attribute::Entity || this->type() == Attribute::EntityList) {
+        EntityType *e = entityType()->context()->storage()->entityType(d->metaData.returnEntityTypeId);
+        if(e)
+            type.replace("LBDatabase::Entity", e->className());
+    }
+
+    return type;
 }
 
 QString Attribute::typeToQtType(Type type)
@@ -355,6 +371,12 @@ QString Attribute::typeToQtType(Type type)
         return Attribute::qtTypeNames().at(0);
 
     return Attribute::qtTypeNames().at(static_cast<int>(type));
+}
+
+EntityType *Attribute::returnEntityType() const
+{
+    Q_D(const Attribute);
+    return entityType()->context()->storage()->entityType(d->metaData.returnEntityTypeId);
 }
 
 QString Attribute::signalSignature() const
@@ -384,7 +406,9 @@ QStringList Attribute::qtTypeNames()
     "bool" << //Bool
     "QColor" << //Color
     "Enum" << //Enum
-    "QStringList"; //StringList
+    "QStringList" << //StringList
+    "LBDatabase::Entity *" <<
+    "QList<LBDatabase::Entity *> ";
     return names;
 }
 

@@ -114,6 +114,7 @@ void CentralWidget::setDoppelkopfLiveGame(DoppelkopfLiveGame *doppelkopfLiveGame
     m_totalPointsTable->setDoppelkopfLiveGame(m_doppelkopfLiveGame);
     m_rightSidebar->setDoppelkopfLiveGame(m_doppelkopfLiveGame);
 
+    m_drinksPage->setLiveGame(m_doppelkopfLiveGame);
     foreach(Player *p, doppelkopfLiveGame->players()) {
         m_drinksPage->addPlayer(p);
     }

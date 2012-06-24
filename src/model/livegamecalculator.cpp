@@ -4,6 +4,9 @@
 #include "player.h"
 #include "round.h"
 #include "storage.h"
+#include "livedrink.h"
+
+#include <LBDatabase/LBDatabase.h>
 
 LiveGameCalculator::LiveGameCalculator(QObject *parent) :
     GameCalculator(parent)
@@ -50,6 +53,26 @@ QVariant LiveGameCalculator::totalPoints(const LBDatabase::Entity *entity) const
         if(!round->currentPlayingPlayers().isEmpty()) {
             result += qAbs(round->points(round->currentPlayingPlayers().first()));
         }
+    }
+
+    return result;
+}
+
+EntityVariantHash LiveGameCalculator::drinksPerPlayer(const LBDatabase::Entity *entity) const
+{
+	const LiveGame *liveGame = static_cast<const LiveGame *>(entity);
+    EntityVariantHash result;
+
+    foreach(Player *p, liveGame->players()) {
+        QList<LiveDrink *> drinks;
+
+        foreach(LiveDrink *drink, p->liveDrinks()) {
+            if(drink->round() && drink->round()->game() == liveGame) {
+                drinks.append(drink);
+            }
+        }
+
+        result.insert(p, QVariant::fromValue<QList<LiveDrink *> >(drinks));
     }
 
     return result;

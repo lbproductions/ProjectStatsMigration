@@ -32,9 +32,9 @@ double Drink::alc() const
 	return value(DrinkProperties::AlcAttribute).value<double>();
 }
 
-QIcon Drink::icon() const
+QPixmap Drink::icon() const
 {
-	return value(DrinkProperties::IconAttribute).value<QIcon>();
+	return QPixmap(value(DrinkProperties::IconAttribute).toString());
 }
 
 int Drink::drinkCount() const

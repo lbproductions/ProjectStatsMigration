@@ -110,8 +110,16 @@ QVariant FunctionValue::dataForModel(int role) const
 
         if(d->values.size() == 1) {
             const Entity *key = v.keys().at(0);
-            QVariant value = v.value(key);
-            return QVariant(key->displayName() + QLatin1String(" = ") + value.toString());
+            QVariant variant = v.value(key);
+            if(function()->type() == Attribute::Entity)
+                return QVariant(key->displayName() + QLatin1String(" = ") + function()->returnEntityType()->displayName());
+            else if(function()->type() == Attribute::EntityList) {
+                return QVariant(key->displayName() + QLatin1String(" = ") +
+                                function()->returnEntityType()->displayNamePlural());
+            }
+            else {
+                return QVariant(key->displayName() + QLatin1String(" = ") + variant.toString());
+            }
         }
 
         return QVariant(QString::number(v.size()) +QLatin1String(" values"));
@@ -173,8 +181,9 @@ void FunctionValue::recalculateAfterDependencyChange()
 
     qDebug() << d->function->identifier() << "of" << d->entity->displayName() << "recalculating.";
 
-    if(d->cached && newValues == d->values)
-        return; // no change
+    if(!function()->returnEntityType()) // cannot compare custom types
+        if(d->cached && newValues == d->values)
+            return; // no change
 
     if(d->function->isCached()) {
         d->values = newValues;

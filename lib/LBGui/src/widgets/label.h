@@ -16,6 +16,14 @@ public:
     void setForegroundColor(const QColor &color);
     void setDropshadowColor(const QColor &color);
 
+signals:
+    void clicked();
+    void doubleClicked();
+
+protected:
+    void mouseReleaseEvent(QMouseEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent* event);
+
 private:
     QColor m_foregroundColor;
     QColor m_dropshadowColor;

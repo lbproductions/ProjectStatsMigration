@@ -2,6 +2,7 @@
 
 #include "round.h"
 #include "player.h"
+#include "livedrink.h"
 
 
 const QString LiveGame::Name("liveGame");
@@ -49,6 +50,11 @@ QList<Player *> LiveGame::currentDealer() const
 int LiveGame::points(const Player *player) const
 {
 	return function(LiveGameProperties::PointsFunction)->value(player).value<int>();
+}
+
+QList<LiveDrink *>  LiveGame::drinksPerPlayer(const Player *player) const
+{
+	return function(LiveGameProperties::DrinksPerPlayerFunction)->value(player).value<QList<LiveDrink *> >();
 }
 
 int LiveGame::placement(const Player *player) const

@@ -3,6 +3,8 @@
 #include <model/player.h>
 #include <model/drink.h>
 #include <model/livedrink.h>
+#include <model/livegame.h>
+#include <model/livedrinkscontext.h>
 
 namespace LiveGameWindowNS {
 
@@ -17,13 +19,12 @@ void DrinkLabel::setDrink(LiveDrink *drink)
 {
     m_drink = drink;
     Drink* d = drink->drink();
-//    QImage image = d->icon().pixmap(45);
-//    if(image.isNull())
-//    {
-//        image = QImage(":graphics/drinks/default");
-//    }
-//    setPixmap(QPixmap::fromImage(image.scaled(20,45,Qt::KeepAspectRatio,Qt::SmoothTransformation)));
-//    setToolTip(d->name() + QLatin1String(" ") + QString::number(d->size()) + tr("l - doubleclick to drink another"));
+    QPixmap pixmap = d->icon();
+    if(pixmap.isNull())
+        pixmap = QPixmap(":/drinks/beer_default");
+
+    setPixmap(pixmap.scaled(20,45,Qt::KeepAspectRatio,Qt::SmoothTransformation));
+    setToolTip(d->name() + QLatin1String(" ") + QString::number(d->size()) + tr("l - doubleclick to drink another"));
 }
 
 void DrinkLabel::on_doubleClicked()
@@ -32,7 +33,9 @@ void DrinkLabel::on_doubleClicked()
 }
 
 PlayerDrinksGroupBox::PlayerDrinksGroupBox(QWidget *parent) :
-    GroupBox(parent)
+    GroupBox(parent),
+    m_player(0),
+    m_liveGame(0)
 {
     setStyle(GroupBox::IphotoDark);
 
@@ -48,22 +51,30 @@ PlayerDrinksGroupBox::PlayerDrinksGroupBox(QWidget *parent) :
     m_nameLabel->setFont(QFont("Lucida Grande", 12, QFont::Bold));
     l->addWidget(m_nameLabel);
 
-    QFrame *line = new QFrame(this);
-    line->setGeometry(QRect(320, 150, 118, 1));
-    line->setFrameShape(QFrame::HLine);
-    line->setFrameShadow(QFrame::Sunken);
-    l->addWidget(line);
-
-    layout()->addWidget(centralWidget);
+//    QFrame *line = new QFrame(this);
+//    line->setGeometry(QRect(320, 150, 118, 1));
+//    line->setFrameShape(QFrame::HLine);
+//    line->setFrameShadow(QFrame::Sunken);
+//    l->addWidget(line);
 
     m_drinksLayout = new QGridLayout();
     l->addLayout(m_drinksLayout);
+
+    layout()->addWidget(centralWidget);
 }
 
 void PlayerDrinksGroupBox::setPlayer(Player *player)
 {
     m_player = player;
     setName(player->name());
+    updateDrinks();
+    connect(player, SIGNAL(liveDrinksLiveDrinkAdded(LiveDrink*)), this, SLOT(updateDrinks()));
+}
+
+void PlayerDrinksGroupBox::setLiveGame(LiveGame *liveGame)
+{
+    m_liveGame = liveGame;
+    updateDrinks();
 }
 
 void PlayerDrinksGroupBox::setName(const QString &name)
@@ -73,15 +84,33 @@ void PlayerDrinksGroupBox::setName(const QString &name)
 
 void PlayerDrinksGroupBox::updateDrinks()
 {
+    if(!m_player || !m_liveGame)
+        return;
+
+    QLayoutItem *item;
+    while((item = m_drinksLayout->takeAt(0))) {
+        if(item->widget()) {
+            item->widget()->setVisible(false);
+            item->widget()->deleteLater();
+        }
+    }
+
     int drinks = 0;
-//    foreach(LiveDrink* drink, livegame->drinksPerPlayer(player))
-//    {
-//        DrinkLabel* drinkIcon = new DrinkLabel(this);
-//        drinkIcon->setDrink(drink);
-//        connect(drinkIcon,SIGNAL(drinkDoubleClicked(::Database::LiveGameDrink*)),this,SLOT(ondrinkdoubleClicked(::Database::LiveGameDrink*)));
-//    ui->gridLayoutDrinks->addWidget(drinkIcon,(drinks/5),drinks%5,Qt::AlignCenter);
-//        drinks++;
-//    }
+    foreach(LiveDrink* drink, m_liveGame->drinksPerPlayer(m_player)) {
+        DrinkLabel* drinkIcon = new DrinkLabel(this);
+        drinkIcon->setDrink(drink);
+        connect(drinkIcon,SIGNAL(drinkDoubleClicked(LiveDrink*)),this,SLOT(onDrinkDoubleClicked(LiveDrink*)));
+        m_drinksLayout->addWidget(drinkIcon,(drinks/5),drinks%5,Qt::AlignCenter);
+        drinks++;
+    }
+}
+
+void PlayerDrinksGroupBox::onDrinkDoubleClicked(LiveDrink *drink)
+{
+    LiveDrink *newDrink = static_cast<LiveDrinksContext *>(drink->context())->createLiveDrink();
+    newDrink->setDrink(drink->drink());
+    newDrink->setRound(m_liveGame->rounds().last());
+    m_player->addLiveDrink(newDrink);
 }
 
 }

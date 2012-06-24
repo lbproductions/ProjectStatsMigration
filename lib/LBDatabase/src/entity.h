@@ -85,6 +85,7 @@ public:
 
 } // namespace LBDatabase
 
+Q_DECLARE_METATYPE(LBDatabase::Entity *)
 Q_DECLARE_METATYPE(QList<LBDatabase::Entity *>)
 
 #endif // LBDATABASE_ENTITY_H

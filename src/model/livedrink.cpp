@@ -31,6 +31,11 @@ Round *LiveDrink::round() const
 	return relation<Round>(LiveDrinkProperties::RoundRelation)->firstEntity();
 }
 
+void LiveDrink::setRound(Round *round)
+{
+	relation<Round>(LiveDrinkProperties::RoundRelation)->addEntity(round);
+}
+
 Player *LiveDrink::player() const
 {
 	return relation<Player>(LiveDrinkProperties::PlayerRelation)->firstEntity();
@@ -39,6 +44,11 @@ Player *LiveDrink::player() const
 Drink *LiveDrink::drink() const
 {
 	return relation<Drink>(LiveDrinkProperties::DrinkRelation)->firstEntity();
+}
+
+void LiveDrink::setDrink(Drink *drink)
+{
+	relation<Drink>(LiveDrinkProperties::DrinkRelation)->addEntity(drink);
 }
 
 

@@ -16,6 +16,8 @@ public:
 	
 	Q_INVOKABLE EntityVariantHash points(const LBDatabase::Entity *entity) const;
 	
+	Q_INVOKABLE EntityVariantHash drinksPerPlayer(const LBDatabase::Entity *entity) const;
+	
 	Q_INVOKABLE EntityVariantHash placement(const LBDatabase::Entity *entity) const;
 };
 

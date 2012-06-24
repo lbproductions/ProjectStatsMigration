@@ -33,8 +33,10 @@ public:
 
 
 	Round *round() const;
+	void setRound(Round *round);
 	Player *player() const;
 	Drink *drink() const;
+	void setDrink(Drink *drink);
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START

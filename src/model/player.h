@@ -90,6 +90,7 @@ public:
 
 	QList<Schmeisserei *> schmeissereien() const;
 	QList<LiveDrink *> liveDrinks() const;
+	void addLiveDrink(LiveDrink *liveDrinks);
 	QList<DoppelkopfRound *> dokoHochzeiten() const;
 	QList<DoppelkopfRound *> dokoReRounds1() const;
 	QList<DoppelkopfRound *> dokoReRounds2() const;
@@ -124,6 +125,7 @@ signals:
 	void averagePlacementChanged();
 	void lastWinChanged();
 	void lastGameChanged();
+	void liveDrinksLiveDrinkAdded(LiveDrink *liveDrink);
 	void roundsChanged();
 	void roundsDealtChanged();
 	void gamesCurrentDealerChanged();

@@ -39,6 +39,16 @@ void EntityTypeWriter::writeNeededHeaders(QString &source) const
 
     source.append(QLatin1String("\n"));
 
+    foreach(Attribute *attribute, m_entityType->nonInhertitedAttributes()) {
+        if(attribute->returnEntityType()) {
+            name = attribute->returnEntityType()->className();
+            if(!declaredTypes.contains(name)) {
+                declaredTypes << name;
+                writeInclude(name, source);
+            }
+        }
+    }
+
     foreach(Relation *relation, m_entityType->nonInhertitedRelations()) {
         if(relation->entityType() == m_entityType) {
             name = makeClassname(relation->entityTypeOther()->identifier());
@@ -58,6 +68,14 @@ void EntityTypeWriter::writeNeededHeaders(QString &source) const
         if(!declaredTypes.contains(name)) {
             declaredTypes << name;
             writeInclude(name, source);
+        }
+
+        if(function->returnEntityType()) {
+            name = function->returnEntityType()->className();
+            if(!declaredTypes.contains(name)) {
+                declaredTypes << name;
+                writeInclude(name, source);
+            }
         }
     }
 
@@ -120,6 +138,17 @@ void EntityTypeWriter::writeForwardDeclarations(QString &header) const
 {
     QStringList declaredTypes;
     QString name;
+
+    foreach(Attribute *attribute, m_entityType->nonInhertitedAttributes()) {
+        if(attribute->returnEntityType()) {
+            name = attribute->returnEntityType()->className();
+            if(!declaredTypes.contains(name)) {
+                declaredTypes << name;
+                header.append(QLatin1String("class ") + name + QLatin1String(";\n"));
+            }
+        }
+    }
+
     foreach(Relation *relation, m_entityType->nonInhertitedRelations()) {
         if(relation->entityType() == m_entityType) {
             name = makeClassname(relation->entityTypeOther()->identifier());
@@ -139,6 +168,14 @@ void EntityTypeWriter::writeForwardDeclarations(QString &header) const
         if(!declaredTypes.contains(name)) {
             declaredTypes << name;
             header.append(QLatin1String("class ") + name + QLatin1String(";\n"));
+        }
+
+        if(function->returnEntityType()) {
+            name = function->returnEntityType()->className();
+            if(!declaredTypes.contains(name)) {
+                declaredTypes << name;
+                header.append(QLatin1String("class ") + name + QLatin1String(";\n"));
+            }
         }
     }
 }
@@ -346,6 +383,14 @@ void EntityTypeWriter::writeAttributeGetterImplementation(Attribute *attribute, 
                                     "{\n"
                                     "\treturn static_cast<")+makeClassname(attributeType)+QLatin1String(">(value(")+m_classname+
                       QLatin1String("Properties::")+attributeName.left(1).toUpper() + attributeName.mid(1) + QLatin1String("Attribute).value<int>());\n"
+                                                  "}\n\n"));
+    }
+    else if(attribute->type() == Attribute::Pixmap){
+        source.append(attributeType+QLatin1String(" ")+m_classname+QLatin1String("::")+makeMethodName(attributeName)+
+                      QLatin1String("() const\n"
+                                    "{\n"
+                                    "\treturn QPixmap(value(")+m_classname+
+                      QLatin1String("Properties::")+attributeName.left(1).toUpper() + attributeName.mid(1) + QLatin1String("Attribute).toString());\n"
                                                   "}\n\n"));
     }
     else {
