@@ -19,6 +19,7 @@ public:
     void setDropshadowColor(const QColor &color);
 
     void mousePressEvent(QMouseEvent *);
+    void mouseMoveEvent(QMouseEvent *event);
 
     void setDragEnabled(bool enabled);
     void setMimeType(const QString &mimeType);
@@ -38,6 +39,8 @@ private:
 
     QString m_mimeType;
     QVariant m_mimeData;
+
+    QPoint m_dragStartPosition;
 
     bool m_dragEnabled;
 };
