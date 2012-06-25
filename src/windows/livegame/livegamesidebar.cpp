@@ -81,8 +81,14 @@ void LiveGameSidebar::insertPage(int index, const QString &title, SidebarPage *s
     setCurrentPage(id);
 }
 
+int LiveGameSidebar::currentPage() const
+{
+    return m_stackedLayout->currentIndex();
+}
+
 void LiveGameSidebar::setCurrentPage(int id)
 {
+    m_buttonGroup->button(id)->setChecked(true);
     m_stackedLayout->setCurrentIndex(id);
 }
 

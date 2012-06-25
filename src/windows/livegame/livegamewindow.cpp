@@ -155,8 +155,6 @@ void LiveGameWindow::reflectState(LiveGame::State state)
 
 void LiveGameWindow::showAddDrinkDialog()
 {
-    LiveGameWindowNS::AddDrinkWidget addDrinkDialog(static_cast<Storage *>(m_liveGame->entityType()->context()->storage()));
-    addDrinkDialog.exec();
 }
 
 void LiveGameWindow::showNewRoundDialog()

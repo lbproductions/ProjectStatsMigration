@@ -26,14 +26,14 @@ AddDrinkWidget::AddDrinkWidget(Storage *storage, QWidget *parent) :
     QMultiMap<QString, Drink *> drinks = storage->drinksContext()->drinksByType();
     foreach(QString type, storage->drinksContext()->availableDrinkTypes()) {
         QWidget *w = new QWidget(this);
-        QGridLayout* grid = new QGridLayout(this);
+        QGridLayout* grid = new QGridLayout(w);
         w->setLayout(grid);
         //grid->addWidget(new QLabel(type,this),0,0);
 
         QList<Drink *> drinksOfType = drinks.values(type);
         int j = 0;
         foreach(Drink *d, drinksOfType) {
-            QVBoxLayout* drink = new QVBoxLayout(this);
+            QVBoxLayout* drink = new QVBoxLayout();
 
             LBGui::Label* name = new LBGui::Label(d->name(), this);
             name->setDragEnabled(true);

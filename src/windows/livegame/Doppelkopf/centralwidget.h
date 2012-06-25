@@ -26,6 +26,8 @@ public:
 
     void setDoppelkopfLiveGame(DoppelkopfLiveGame *doppelkopfLiveGame);
 
+    StatisticsSidebar *statisticsSidebar() const;
+
 private:
     DoppelkopfLiveGame *m_doppelkopfLiveGame;
 

@@ -19,6 +19,7 @@ public:
 protected slots:
     virtual void showEndGameDialog();
     virtual void showNewRoundDialog();
+    virtual void showAddDrinkDialog();
     virtual void reflectState(LiveGame::State state);
 
 protected:
@@ -34,7 +35,6 @@ private slots:
     void setFullScreen(bool fullScreen);
     void pauseLiveGame(bool pause);
 
-    void showAddDrinkDialog();
 
 private:
     void setupToolBar();
