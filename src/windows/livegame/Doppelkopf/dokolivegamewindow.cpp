@@ -39,13 +39,6 @@ void DokoLiveGameWindow::setDoppelkopfLiveGame(DoppelkopfLiveGame *doppelkopfLiv
     setLiveGame(m_doppelkopfLiveGame);
 }
 
-void DokoLiveGameWindow::openNewInstance()
-{
-    DokoLiveGameWindow *window = new DokoLiveGameWindow();
-    window->setDoppelkopfLiveGame(m_doppelkopfLiveGame);
-    window->show();
-}
-
 void DokoLiveGameWindow::reflectState(LiveGame::State state)
 {
     m_actionShowSchmeissereiDialog->setEnabled(true);
