@@ -1,5 +1,7 @@
 #include "livegamewindow.h"
 
+#include "adddrinkwidget.h"
+
 #include <model/livegame.h>
 
 #include <QAction>
@@ -36,11 +38,11 @@ void LiveGameWindow::setLiveGame(LiveGame *liveGame)
 void LiveGameWindow::setupToolBar()
 {
     m_toolBar = new QToolBar(tr("Live Game"));
-    m_toolBar->setIconSize(QSize(50,44));
-    m_toolBar->setFixedHeight(72);
+    m_toolBar->setIconSize(QSize(36,36));
+    m_toolBar->setFixedHeight(55);
     m_toolBar->setMovable(false);
     m_toolBar->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    addToolBar(m_toolBar);
+    addToolBar(Qt::BottomToolBarArea, m_toolBar);
 
     m_actionPause = new QAction(QIcon(":/graphics/icons/livegame/pause"),tr("Pause"),m_toolBar);
     m_actionPause->setCheckable(true);
@@ -148,9 +150,8 @@ void LiveGameWindow::reflectState(LiveGame::State state)
 
 void LiveGameWindow::showAddDrinkDialog()
 {
-    //TODO: show addrink dialog
-//    LiveGameDetails::AddDrinkWidget addDrinkDialog(this);
-//    addDrinkDialog.exec();
+    LiveGameWindowNS::AddDrinkWidget addDrinkDialog(this);
+    addDrinkDialog.exec();
 }
 
 void LiveGameWindow::showNewRoundDialog()

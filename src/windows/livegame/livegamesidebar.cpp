@@ -22,16 +22,18 @@ LiveGameSidebar::LiveGameSidebar(QWidget *parent) :
 
     setPalette(QApplication::palette());
 
-    m_stackedLayout = new QStackedLayout(l);
-
     QWidget *pageButtonsWidget = new QWidget(this);
     m_layoutPageButtons = new QHBoxLayout(pageButtonsWidget);
+    m_layoutPageButtons->setContentsMargins(0,0,0,0);
+    m_layoutPageButtons->setSpacing(12);
     pageButtonsWidget->setLayout(m_layoutPageButtons);
     l->addWidget(pageButtonsWidget);
 
     m_buttonGroup = new QButtonGroup(this);
     m_buttonGroup->setExclusive(true);
     connect(m_buttonGroup, SIGNAL(buttonClicked(int)), this, SLOT(setCurrentPage(int)));
+
+    m_stackedLayout = new QStackedLayout(l);
 
 //    QFile stylesheet2(":/stylesheets/livegamesidebar");
 //    stylesheet2.open(QFile::ReadOnly);
@@ -54,8 +56,28 @@ void LiveGameSidebar::insertPage(int index, const QString &title, SidebarPage *s
     int id = m_stackedLayout->addWidget(sidebarPage);
     m_buttonGroup->addButton(button, id);
     m_layoutPageButtons->insertWidget(index, button);
-    m_sidebarPages.append(sidebarPage);
+    m_sidebarPages.insert(index, sidebarPage);
     button->setChecked(true);
+
+    QFile stylesheet2(":/pushbutton/iphotodarktab/stylesheet");
+    stylesheet2.open(QFile::ReadOnly);
+    QString style = stylesheet2.readAll();
+
+    if(index == m_stackedLayout->count() -1) {
+        QLayoutItem *item = m_layoutPageButtons->itemAt(m_stackedLayout->count() - 2);
+        if(item) {
+            QWidget *rightmostButton = item->widget();
+            if(rightmostButton) {
+                rightmostButton->setStyleSheet(style);
+            }
+        }
+        style += QLatin1String("QPushButton {margin-right: -1px; }");
+    }
+
+    button->setStyleSheet(style);
+
+    stylesheet2.close();
+
     setCurrentPage(id);
 }
 

@@ -79,7 +79,8 @@ OTHER_FILES += \
     ressources/itunesApplyBar/stylesheet_button.css \
     ressources/toolbar/black/stylesheet.css \
     ressources/groupbox/iphoto_dark/stylesheet.css \
-    ressources/scrollbar/iphoto_dark/stylesheet.css
+    ressources/scrollbar/iphoto_dark/stylesheet.css \
+    ressources/pushbutton/iphotodarktab/stylesheet.css
 
 RESOURCES += \
     ressources/sidebar/sidebar.qrc \

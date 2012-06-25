@@ -5,4 +5,11 @@
         <file alias="background_pressed">itunes_white/background copy_pressed.png</file>
         <file alias="background">itunes_white/background copy.png</file>
     </qresource>
+    <qresource prefix="/pushbutton/iphotodarktab">
+        <file alias="background_checked_pressed">iphotodarktab/background_checked_pressed.png</file>
+        <file alias="background_checked">iphotodarktab/background_checked.png</file>
+        <file alias="background">iphotodarktab/background.png</file>
+        <file alias="stylesheet">iphotodarktab/stylesheet.css</file>
+        <file alias="background_pressed">iphotodarktab/background_pressed.png</file>
+    </qresource>
 </RCC>

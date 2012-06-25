@@ -34,6 +34,10 @@ private slots:
 
 private:
     QLabel *addLabel(const QString &title, const QString &text);
+    void addSeparator();
+
+
+    QLayout *m_layout;
 
     DoppelkopfLiveGame *m_game;
 

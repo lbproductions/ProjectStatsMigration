@@ -4,22 +4,8 @@
 #include <QDialog>
 #include <QPointer>
 
-namespace Database
-{
-    class LiveGame;
-    class Player;
-}
 
-namespace Gui
-{
-
-namespace Details
-{
-
-namespace LiveGameDetails
-{
-
-class BeerWidget;
+namespace LiveGameWindowNS {
 
 /**
 * Widget zum Hinzufügen von Drinks zu einem LiveGame.
@@ -41,8 +27,5 @@ private slots:
 };
 
 }
-}
-}
-
 
 #endif // ADDDRINKWIDGET_H

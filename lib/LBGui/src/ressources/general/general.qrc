@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/general">
         <file alias="background_linen">background_linen.png</file>
+        <file alias="background_linen_light">background_linen_light.jpg</file>
+        <file alias="background_linen_appkit">NSTexturedFullScreenBackgroundColor.png</file>
+        <file alias="background_linen2">background_linen2.jpg</file>
     </qresource>
 </RCC>

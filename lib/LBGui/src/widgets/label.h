@@ -3,6 +3,8 @@
 
 #include <QLabel>
 
+#include <QVariant>
+
 namespace LBGui {
 
 class Label : public QLabel
@@ -16,6 +18,12 @@ public:
     void setForegroundColor(const QColor &color);
     void setDropshadowColor(const QColor &color);
 
+    void mousePressEvent(QMouseEvent *);
+
+    void setDragEnabled(bool enabled);
+    void setMimeType(const QString &mimeType);
+    void setMimeData(const QVariant &mimeData);
+
 signals:
     void clicked();
     void doubleClicked();
@@ -27,6 +35,11 @@ protected:
 private:
     QColor m_foregroundColor;
     QColor m_dropshadowColor;
+
+    QString m_mimeType;
+    QVariant m_mimeData;
+
+    bool m_dragEnabled;
 };
 
 } // namespace LBGui

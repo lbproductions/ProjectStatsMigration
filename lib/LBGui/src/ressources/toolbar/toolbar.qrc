@@ -4,5 +4,6 @@
         <file alias="stylesheet">black/stylesheet.css</file>
         <file alias="background_72">black/background_72.png</file>
         <file alias="background_72_selfmade">black/background_72_selfmade.png</file>
+        <file alias="background_55">black/background_55.png</file>
     </qresource>
 </RCC>

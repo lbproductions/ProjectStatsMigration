@@ -19,6 +19,8 @@ public:
 
 private:
     LiveGame *m_liveGame;
+
+    QLayout *m_layout;
 };
 
 } // namespace LiveGameWindowNS

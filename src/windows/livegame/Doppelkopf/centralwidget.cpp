@@ -24,7 +24,7 @@ CentralWidget::CentralWidget(DokoLiveGameWindow *parent) :
 {
     setAutoFillBackground(true);
     QPalette p = palette();
-    p.setColor(QPalette::Window, QColor(55,55,55));
+    p.setColor(QPalette::Window, QColor(45,45,45));
     setPalette(p);
 
     // Central
@@ -83,9 +83,13 @@ CentralWidget::CentralWidget(DokoLiveGameWindow *parent) :
 
     LBGui::Splitter* rightSplitter = new LBGui::Splitter(Qt::Horizontal);
     rightSplitter->setStyle(LBGui::Splitter::MacOSFullscreenStyle);
-    rightSplitter->setDirection(LBGui::Splitter::LeftToRight);
+    rightSplitter->setDirection(LBGui::Splitter::RightToLeft);
 
     m_rightSidebar = new StatisticsSidebar(leftSplitter);
+
+    m_rightSidebar->addPage(tr("Drinks"), new LiveGameWindowNS::DrinksSidebarPage(m_rightSidebar));
+    m_rightSidebar->addPage(tr("Comment"), new LiveGameWindowNS::DrinksSidebarPage(m_rightSidebar));
+
     rightSplitter->addWidget(leftSplitter);
     rightSplitter->addWidget(m_rightSidebar);
 

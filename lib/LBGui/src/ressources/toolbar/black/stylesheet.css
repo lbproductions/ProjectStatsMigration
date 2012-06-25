@@ -1,5 +1,6 @@
 QToolBar {
-    background-image: url(:/toolbar/black/background_72_selfmade);
+    background-image: url(:/toolbar/black/background_55);
+    height: 55px;
     border: 0;
 }
 

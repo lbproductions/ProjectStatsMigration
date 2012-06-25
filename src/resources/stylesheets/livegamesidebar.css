@@ -1,3 +1,5 @@
-QWidget {
-    background-image: url(:/general/background_linen) repeat;
+QWidget#background {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1,
+                                        stop:0 rgba(75, 75, 75, 255),
+                                        stop:1 rgba(52, 52, 52, 255) );
 }
