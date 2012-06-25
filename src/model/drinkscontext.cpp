@@ -22,10 +22,32 @@ QList<Drink*> DrinksContext::drinks() const
 	QList<Drink *> drinks;
 	foreach(LBDatabase::Entity *entity, entities())
 		drinks.append(static_cast<Drink *>(entity));
-	return drinks;
+    return drinks;
 }
 
 
 	// Write anything you want to remain unchanged between these comments: 
 	//START
+
+QStringList DrinksContext::availableDrinkTypes()
+{
+    static QStringList list;
+    foreach(LBDatabase::Entity *entity, entities()) {
+        Drink *d = static_cast<Drink *>(entity);
+        if(!list.contains(d->type()))
+            list.append(d->type());
+    }
+    return list;
+}
+
+QMultiMap<QString, Drink *> DrinksContext::drinksByType()
+{
+    QMultiMap<QString, Drink *> hash;
+    foreach(LBDatabase::Entity *entity, entities()) {
+        Drink *d = static_cast<Drink *>(entity);
+        hash.insert(d->type(), d);
+    }
+    return hash;
+}
+
 	// END

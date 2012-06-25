@@ -17,6 +17,12 @@ NewSchmeissereiDialog::NewSchmeissereiDialog(QWidget *parent) :
     m_round(0)
 {
     ui->setupUi(this);
+
+    setWindowFlags(Qt::FramelessWindowHint);
+
+    this->setObjectName("dialog");
+    this->setStyleSheet("QWidget#dialog { background-image: url(:/general/background_linen); } QLabel { color: white; }");
+
     on_comboBoxPlayer_currentIndexChanged(0);
 }
 

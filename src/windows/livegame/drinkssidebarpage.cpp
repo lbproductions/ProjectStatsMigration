@@ -27,6 +27,10 @@ DrinksSidebarPage::DrinksSidebarPage(LiveGameSidebar *parent) :
     w->setLayout(m_layout);
     l->addWidget(w);
 
+    m_spacer = new QWidget(this);
+    m_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    m_layout->addWidget(m_spacer);
+
     setLayout(l);
 }
 
@@ -37,10 +41,12 @@ void DrinksSidebarPage::setLiveGame(LiveGame *liveGame)
 
 void DrinksSidebarPage::addPlayer(Player *player)
 {
+    m_layout->removeWidget(m_spacer);
     PlayerDrinksGroupBox *gb = new PlayerDrinksGroupBox(this);
     gb->setPlayer(player);
     gb->setLiveGame(m_liveGame);
     m_layout->addWidget(gb);
+    m_layout->addWidget(m_spacer);
 }
 
 } // namespace LiveGameWindowNS

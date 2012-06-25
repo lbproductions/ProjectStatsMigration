@@ -17,6 +17,8 @@ public:
 
     void setDoppelkopfLiveGame(DoppelkopfLiveGame *doppelkopfLiveGame);
 
+    void openNewInstance();
+
 private slots:
     void reflectState(LiveGame::State state);
 

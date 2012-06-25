@@ -21,6 +21,8 @@ protected slots:
     virtual void showNewRoundDialog();
     virtual void reflectState(LiveGame::State state);
 
+    virtual void openNewInstance();
+
 protected:
     enum ToolBarPosition {
         LeftToolBarPosition,

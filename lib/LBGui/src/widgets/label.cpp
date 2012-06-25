@@ -2,6 +2,8 @@
 
 #include <QPainter>
 #include <QPaintEvent>
+#include <QDrag>
+#include <QMimeData>
 
 namespace LBGui {
 

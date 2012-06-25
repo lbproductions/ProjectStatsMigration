@@ -3,6 +3,7 @@
 #include "adddrinkwidget.h"
 
 #include <model/livegame.h>
+#include <model/storage.h>
 
 #include <QAction>
 #include <QToolBar>
@@ -17,6 +18,8 @@ LiveGameWindow::LiveGameWindow(QWidget *parent) :
     setupToolBar();
 
     setAttribute(Qt::WA_DeleteOnClose);
+
+    setWindowFlags(windowFlags() | Qt::WindowMaximizeButtonHint);
 }
 
 LiveGameWindow::~LiveGameWindow()
@@ -91,10 +94,9 @@ void LiveGameWindow::setFullScreen(bool fullScreen)
         m_actionFullScreen->setText(tr("Exit Fullscreen"));
     }
     else {
-        showNormal();
-
-        m_actionFullScreen->setIcon(QIcon(":/graphics/icons/livegame/fullscreen"));
-        m_actionFullScreen->setText(tr("Fullscreen"));
+        setVisible(false);
+        openNewInstance(); //DIIIIRTY workaround for problems with fullscreen, like drag'n'drop: simply open a new window!
+        deleteLater();
     }
 }
 
@@ -148,9 +150,13 @@ void LiveGameWindow::reflectState(LiveGame::State state)
     }
 }
 
+void LiveGameWindow::openNewInstance()
+{
+}
+
 void LiveGameWindow::showAddDrinkDialog()
 {
-    LiveGameWindowNS::AddDrinkWidget addDrinkDialog(this);
+    LiveGameWindowNS::AddDrinkWidget addDrinkDialog(static_cast<Storage *>(m_liveGame->entityType()->context()->storage()));
     addDrinkDialog.exec();
 }
 

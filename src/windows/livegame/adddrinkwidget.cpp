@@ -1,46 +1,82 @@
 #include "adddrinkwidget.h"
 #include "ui_adddrinkwidget.h"
+
+#include <model/storage.h>
+#include <model/drink.h>
+#include <model/drinkscontext.h>
+
+#include <LBGui/LBGui.h>
+
+#include <QDialogButtonBox>
+
 namespace LiveGameWindowNS {
 
-AddDrinkWidget::AddDrinkWidget(QWidget *parent) :
+AddDrinkWidget::AddDrinkWidget(Storage *storage, QWidget *parent) :
     QDialog(parent)
 {
+    setWindowFlags(Qt::FramelessWindowHint);
 
-    QPalette p(this->palette());
-    p.setColor(QPalette::Background, QColor(55,55,55));
-    this->setPalette(p);
+    QString mimeType("application/projectstats.livegame/drink");
 
-    this->setStyleSheet("QFrame{margin: 0px; padding: 0px; background: transparent; color: white; border: none; font-weight: bold;}");
+    setObjectName("dialog");
+    this->setStyleSheet("QWidget#dialog { background-image: url(:/general/background_linen); } QLabel { color: white; } QGroupBox { color: white; }");
 
     QVBoxLayout* layout = new QVBoxLayout(this);
 
+    QMultiMap<QString, Drink *> drinks = storage->drinksContext()->drinksByType();
+    foreach(QString type, storage->drinksContext()->availableDrinkTypes()) {
+        QWidget *w = new QWidget(this);
+        QGridLayout* grid = new QGridLayout(this);
+        w->setLayout(grid);
+        //grid->addWidget(new QLabel(type,this),0,0);
+
+        QList<Drink *> drinksOfType = drinks.values(type);
+        int j = 0;
+        foreach(Drink *d, drinksOfType) {
+            QVBoxLayout* drink = new QVBoxLayout(this);
+
+            LBGui::Label* name = new LBGui::Label(d->name(), this);
+            name->setDragEnabled(true);
+            name->setAlignment(Qt::AlignCenter);
+            name->setMimeType(mimeType);
+            name->setMimeData(d->id());
+
+            LBGui::Label* icon = new LBGui::Label(QString(),this);
+            icon->setDragEnabled(true);
+            if(!d->icon().isNull())
+                icon->setPixmap(d->icon().scaled(30,55,Qt::KeepAspectRatio,Qt::SmoothTransformation));
+            else
+                icon->setPixmap(QPixmap(":/drinks/beer_default").scaled(30,55,Qt::KeepAspectRatio,Qt::SmoothTransformation));
+            icon->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            icon->setAlignment(Qt::AlignCenter);
+            icon->setMimeType(mimeType);
+            icon->setMimeData(d->id());
+
+            drink->addWidget(icon);
+            drink->addWidget(name);
+
+            grid->addLayout(drink,(j/7)+1,j%7);
+            ++j;
+        }
+        for(; j%7 != 0; ++j) {
+            QWidget *spacer = new QWidget(this);
+            spacer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
+            grid->addWidget(spacer,(j/7)+1,j%7);
+        }
+
+        LBGui::GroupBox* box = new LBGui::GroupBox(this);
+        box->setTitle(type);
+        box->layout()->addWidget(w);
+        layout->addWidget(box);
+    }
+
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(this);
+    buttonBox->setStandardButtons(QDialogButtonBox::Close);
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    layout->addWidget(buttonBox);
+
 //    foreach(QString type, Database::Drinks::instance()->types->value()){
-//        QGridLayout* grid = new QGridLayout(this);
-//        grid->addWidget(new QLabel(type,this),0,0);
-//        QList<Database::Drink*> list =  Database::Drinks::instance()->drinksOfType->value(type);
-//        for(int i = 0; i<list.size();i++){
-//            QVBoxLayout* drink = new QVBoxLayout(this);
-
-//            DraggableLabel* name = new DraggableLabel(list.at(i),this);
-//            name->setText(list.at(i)->name->value());
-//            //name->setStyleSheet("QLabel{color:white;}");
-
-//            QHBoxLayout* iconlayout = new QHBoxLayout(this);
-//            iconlayout->addStretch();
-//            DraggableLabel* icon = new DraggableLabel(list.at(i),this);
-//            icon->setPixmap(QPixmap::fromImage(list.at(i)->icon->value().scaled(30,55,Qt::KeepAspectRatio,Qt::SmoothTransformation)));
-//            icon->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
-//            iconlayout->addWidget(icon);
-//            iconlayout->addStretch();
-
-//            drink->addLayout(iconlayout);
-//            drink->addWidget(name);
-
-//            grid->addLayout(drink,(i/7)+1,i%7);
-
-//        }
-//        Gui::Misc::GroupBox* box = new Gui::Misc::GroupBox(grid,this);
-//        layout->addWidget(box);
 //    }
 
 //    QHBoxLayout* close = new QHBoxLayout(this);
@@ -77,18 +113,6 @@ AddDrinkWidget::AddDrinkWidget(QWidget *parent) :
     }
 
     */
-
-    setWindowModality(Qt::WindowModal);
-}
-
-AddDrinkWidget::~AddDrinkWidget()
-{
-
-}
-
-void AddDrinkWidget::buttonCloseClicked()
-{
-    this->reject();
 }
 
 }

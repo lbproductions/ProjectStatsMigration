@@ -40,6 +40,7 @@ StatisticsGeneralPage::StatisticsGeneralPage(StatisticsSidebar *parent) :
 
     m_spacer = new QWidget(this);
     m_spacer->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
     m_currentTimeLabel = addLabel(tr("Current Time"), QTime::currentTime().toString("h:mm:ss"));
     m_lengthLabel = addLabel(tr("Length"), QString());
     addSeparator();

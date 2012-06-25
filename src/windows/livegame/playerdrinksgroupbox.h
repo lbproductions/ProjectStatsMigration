@@ -6,6 +6,7 @@
 class Player;
 class LiveDrink;
 class LiveGame;
+class Drink;
 
 namespace LiveGameWindowNS {
 
@@ -36,6 +37,12 @@ public:
     void setPlayer(Player *player);
     void setLiveGame(LiveGame *liveGame);
 
+protected:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
+    void dragMoveEvent(QDragMoveEvent *);
+    void dragLeaveEvent(QDragLeaveEvent *);
+
 private slots:
     void updateDrinks();
     void onDrinkDoubleClicked(LiveDrink*);
@@ -43,11 +50,14 @@ private slots:
 private:
     void setName(const QString &name);
 
+    void addDrink(Drink *drink);
+
     LBGui::Label *m_nameLabel;
     Player *m_player;
     LiveGame *m_liveGame;
 
     QGridLayout *m_drinksLayout;
+    QWidget *m_centralWidget;
 };
 
 }

@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QPointer>
 
+class Storage;
 
 namespace LiveGameWindowNS {
 
@@ -18,12 +19,7 @@ public:
     /**
     * Erstellt eine neue Instanz des AddDrinkWidgets für das übergebene LiveGame. Dieses wird dabei mit den Playern des Spiels und den existierenden Drinks befüllt.
     */
-    explicit AddDrinkWidget(QWidget *parent = 0);
-
-    ~AddDrinkWidget();
-
-private slots:
-    void buttonCloseClicked();
+    explicit AddDrinkWidget(Storage *storage, QWidget *parent = 0);
 };
 
 }

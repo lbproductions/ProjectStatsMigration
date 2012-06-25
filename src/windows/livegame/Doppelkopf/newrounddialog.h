@@ -35,6 +35,8 @@ private slots:
     void saveSoloRound();
     void saveTrumpfabgabeRound();
 
+    void on_buttonBox_rejected();
+
 private:
     Ui::NewRoundDialog *ui;
     DoppelkopfRound *m_doppelkopfRound;

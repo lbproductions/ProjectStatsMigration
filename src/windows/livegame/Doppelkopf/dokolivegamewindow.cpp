@@ -39,6 +39,13 @@ void DokoLiveGameWindow::setDoppelkopfLiveGame(DoppelkopfLiveGame *doppelkopfLiv
     setLiveGame(m_doppelkopfLiveGame);
 }
 
+void DokoLiveGameWindow::openNewInstance()
+{
+    DokoLiveGameWindow *window = new DokoLiveGameWindow();
+    window->setDoppelkopfLiveGame(m_doppelkopfLiveGame);
+    window->show();
+}
+
 void DokoLiveGameWindow::reflectState(LiveGame::State state)
 {
     m_actionShowSchmeissereiDialog->setEnabled(true);
@@ -59,14 +66,14 @@ void DokoLiveGameWindow::reflectState(LiveGame::State state)
 
 void DokoLiveGameWindow::showNewSchmeissereiDialog()
 {
-    DokoLiveGameWindowNS::NewSchmeissereiDialog dialog(this);
+    DokoLiveGameWindowNS::NewSchmeissereiDialog dialog;
     dialog.setDoppelkopfRound(static_cast<DoppelkopfRound *>(m_doppelkopfLiveGame->rounds().last()));
     dialog.exec();
 }
 
 void DokoLiveGameWindow::showNewRoundDialog()
 {
-    DokoLiveGameWindowNS::NewRoundDialog dialog(this);
+    DokoLiveGameWindowNS::NewRoundDialog dialog;
     dialog.setDoppelkopfRound(static_cast<DoppelkopfRound *>(m_doppelkopfLiveGame->rounds().last()));
     dialog.exec();
 }

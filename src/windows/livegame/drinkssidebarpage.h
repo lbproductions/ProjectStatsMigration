@@ -21,6 +21,7 @@ private:
     LiveGame *m_liveGame;
 
     QLayout *m_layout;
+    QWidget *m_spacer;
 };
 
 } // namespace LiveGameWindowNS

@@ -24,7 +24,7 @@
         <file alias="veltins_033">drinks/veltins_033.png</file>
         <file alias="warsteiner_cola_033">drinks/warsteiner_cola_033.png</file>
         <file alias="whiskey_cola">drinks/whiskeycola.png</file>
-        <file alias="wickingerblut">drinks/wickingerblut.png</file>
+        <file alias="wikingerblut">drinks/wickingerblut.png</file>
         <file alias="wickueler_033">drinks/wickueler_033.png</file>
     </qresource>
 </RCC>

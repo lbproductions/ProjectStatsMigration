@@ -64,20 +64,20 @@ CentralWidget::CentralWidget(DokoLiveGameWindow *parent) :
     groupBoxTotalPointsTable->setFixedHeight(40);
 
     // Left
-    LBGui::Splitter* leftSplitter = new LBGui::Splitter(Qt::Horizontal);
-    leftSplitter->setStyle(LBGui::Splitter::MacOSFullscreenStyle);
-    leftSplitter->setDirection(LBGui::Splitter::LeftToRight);
+//    LBGui::Splitter* leftSplitter = new LBGui::Splitter(Qt::Horizontal);
+//    leftSplitter->setStyle(LBGui::Splitter::MacOSFullscreenStyle);
+//    leftSplitter->setDirection(LBGui::Splitter::LeftToRight);
 
-    LiveGameWindowNS::LiveGameSidebar *leftSideBar = new LiveGameWindowNS::LiveGameSidebar(leftSplitter);
-    m_drinksPage = new LiveGameWindowNS::DrinksSidebarPage(leftSideBar);
+//    LiveGameWindowNS::LiveGameSidebar *leftSideBar = new LiveGameWindowNS::LiveGameSidebar(leftSplitter);
+//    m_drinksPage = new LiveGameWindowNS::DrinksSidebarPage(leftSideBar);
 
-    leftSideBar->addPage(tr("Drinks"), m_drinksPage);
-    //leftSideBar->addPage(tr("Statistics"), new LiveGameWindowNS::SidebarPage(leftSideBar));
+//    leftSideBar->addPage(tr("Drinks"), m_drinksPage);
+//    //leftSideBar->addPage(tr("Statistics"), new LiveGameWindowNS::SidebarPage(leftSideBar));
 
-    leftSplitter->addWidget(leftSideBar);
-    leftSplitter->addWidget(centralWidget);
-    leftSplitter->setStretchFactor(0,0);
-    leftSplitter->setStretchFactor(1,1);
+//    leftSplitter->addWidget(leftSideBar);
+//    leftSplitter->addWidget(centralWidget);
+//    leftSplitter->setStretchFactor(0,0);
+//    leftSplitter->setStretchFactor(1,1);
 
 
 
@@ -85,12 +85,14 @@ CentralWidget::CentralWidget(DokoLiveGameWindow *parent) :
     rightSplitter->setStyle(LBGui::Splitter::MacOSFullscreenStyle);
     rightSplitter->setDirection(LBGui::Splitter::RightToLeft);
 
-    m_rightSidebar = new StatisticsSidebar(leftSplitter);
+    m_rightSidebar = new StatisticsSidebar(rightSplitter);
 
-    m_rightSidebar->addPage(tr("Drinks"), new LiveGameWindowNS::DrinksSidebarPage(m_rightSidebar));
+    m_drinksPage = new LiveGameWindowNS::DrinksSidebarPage(m_rightSidebar);
+
+    m_rightSidebar->addPage(tr("Drinks"), m_drinksPage);
     m_rightSidebar->addPage(tr("Comment"), new LiveGameWindowNS::DrinksSidebarPage(m_rightSidebar));
 
-    rightSplitter->addWidget(leftSplitter);
+    rightSplitter->addWidget(centralWidget);
     rightSplitter->addWidget(m_rightSidebar);
 
     rightSplitter->setStretchFactor(0,1);

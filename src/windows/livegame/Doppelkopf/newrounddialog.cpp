@@ -6,6 +6,8 @@
 #include <model/doppelkopflivegame.h>
 #include <model/roundscontext.h>
 
+#include <QFile>
+
 namespace DokoLiveGameWindowNS {
 
 NewRoundDialog::NewRoundDialog(QWidget *parent) :
@@ -15,10 +17,26 @@ NewRoundDialog::NewRoundDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->layout()->setContentsMargins(0,0,0,0);
+
+    setWindowFlags(Qt::FramelessWindowHint);
+
     ui->buttonGroup->setId(ui->pushButtonNormal, 0);
     ui->buttonGroup->setId(ui->pushButtonHochzeit, 1);
     ui->buttonGroup->setId(ui->pushButtonSolo, 2);
     ui->buttonGroup->setId(ui->pushButtonTrumpfabgabe, 3);
+
+    this->setObjectName("dialog");
+    this->setStyleSheet("QWidget#dialog { background-image: url(:/general/background_linen); } QLabel { color: white; }");
+
+    QFile stylesheet2(":/pushbutton/iphotodarktab/stylesheet");
+    stylesheet2.open(QFile::ReadOnly);
+    QString style = stylesheet2.readAll();
+
+    ui->pushButtonNormal->setStyleSheet(style);
+    ui->pushButtonHochzeit->setStyleSheet(style);
+    ui->pushButtonSolo->setStyleSheet(style);
+    ui->pushButtonTrumpfabgabe->setStyleSheet(style + QLatin1String("QPushButton {margin-right: -5px; }"));
 
     ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
     connect(ui->comboBoxNormalRe1, SIGNAL(currentIndexChanged(int)), this, SLOT(checkNormalRoundContents()));
@@ -292,6 +310,7 @@ void NewRoundDialog::save()
     default:
         break;
     }
+    accept();
 }
 
 void NewRoundDialog::saveNormalRound()
@@ -425,4 +444,9 @@ void NewRoundDialog::saveTrumpfabgabeRound()
     game->addRound();
 }
 
+}
+
+void DokoLiveGameWindowNS::NewRoundDialog::on_buttonBox_rejected()
+{
+    reject();
 }
