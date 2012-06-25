@@ -4,6 +4,7 @@
 #include <QPaintEvent>
 #include <QDrag>
 #include <QMimeData>
+#include <QApplication>
 
 namespace LBGui {
 
@@ -61,20 +62,33 @@ void Label::mousePressEvent(QMouseEvent *event)
 {
     Q_UNUSED(event)
 
-    if(m_dragEnabled) {
-        QDrag *drag = new QDrag(this);
-        QMimeData *mimeData = new QMimeData;
+    if(!m_dragEnabled || event->button() != Qt::LeftButton)
+        return;
 
-        QByteArray encodedData;
-        QDataStream stream(&encodedData, QIODevice::WriteOnly);
-        stream << m_mimeData;
+    m_dragStartPosition = event->pos();
+}
 
-        mimeData->setData(m_mimeType, encodedData);
-        drag->setMimeData(mimeData);
-        if(pixmap())
-            drag->setPixmap(pixmap()->scaled(20,45,Qt::KeepAspectRatio,Qt::SmoothTransformation));
-        drag->exec();
-    }
+void Label::mouseMoveEvent(QMouseEvent *event)
+{
+    if (!(event->buttons() & Qt::LeftButton))
+        return;
+    if ((event->pos() - m_dragStartPosition).manhattanLength() < QApplication::startDragDistance())
+        return;
+
+    QDrag *drag = new QDrag(this);
+    QMimeData *mimeData = new QMimeData;
+
+    QByteArray encodedData;
+    QDataStream stream(&encodedData, QIODevice::WriteOnly);
+    stream << m_mimeData;
+
+    mimeData->setData(m_mimeType, encodedData);
+    drag->setMimeData(mimeData);
+
+    if(pixmap())
+        drag->setPixmap(pixmap()->scaled(20,45,Qt::KeepAspectRatio,Qt::SmoothTransformation));
+
+    drag->exec(Qt::CopyAction);
 }
 
 void Label::setDragEnabled(bool enabled)
