@@ -89,14 +89,17 @@ void LiveGameWindow::setFullScreen(bool fullScreen)
 {
     if (fullScreen) {
         showFullScreen();
+        setAcceptDrops(true);
 
         m_actionFullScreen->setIcon(QIcon(":/graphics/icons/livegame/normalmode"));
         m_actionFullScreen->setText(tr("Exit Fullscreen"));
     }
     else {
-        setVisible(false);
-        openNewInstance(); //DIIIIRTY workaround for problems with fullscreen, like drag'n'drop: simply open a new window!
-        deleteLater();
+        showNormal();
+        setAcceptDrops(true);
+
+        m_actionFullScreen->setIcon(QIcon(":/graphics/icons/livegame/normalmode"));
+        m_actionFullScreen->setText(tr("Exit Fullscreen"));
     }
 }
 
@@ -148,10 +151,6 @@ void LiveGameWindow::reflectState(LiveGame::State state)
         m_actionShowNewRoundDialog->setEnabled(false);
         break;
     }
-}
-
-void LiveGameWindow::openNewInstance()
-{
 }
 
 void LiveGameWindow::showAddDrinkDialog()
