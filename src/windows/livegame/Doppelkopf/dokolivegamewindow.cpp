@@ -3,9 +3,12 @@
 #include "centralwidget.h"
 #include "newrounddialog.h"
 #include "newschmeissereidialog.h"
+#include "../adddrinkwidget.h"
+#include "statisticssidebar.h"
 
 #include <model/doppelkopflivegame.h>
 #include <model/doppelkopfround.h>
+#include <model/storage.h>
 
 #include <QAction>
 
@@ -73,4 +76,14 @@ void DokoLiveGameWindow::showNewRoundDialog()
 
 void DokoLiveGameWindow::showEndGameDialog()
 {
+}
+
+void DokoLiveGameWindow::showAddDrinkDialog()
+{
+    int oldPage = m_centralWidget->statisticsSidebar()->currentPage();
+    LiveGameWindowNS::AddDrinkWidget addDrinkDialog(static_cast<Storage *>(m_doppelkopfLiveGame->entityType()->context()->storage()));
+    m_centralWidget->statisticsSidebar()->setCurrentPage(1);
+    addDrinkDialog.exec();
+    m_centralWidget->statisticsSidebar()->setCurrentPage(oldPage);
+
 }

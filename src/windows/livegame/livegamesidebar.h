@@ -19,8 +19,10 @@ public:
     
     void addPage(const QString &title, SidebarPage *sidebarPage);
     void insertPage(int index, const QString &title, SidebarPage *sidebarPage);
-    
-private slots:
+
+    int currentPage() const;
+
+public slots:
     void setCurrentPage(int id);
 
 private:

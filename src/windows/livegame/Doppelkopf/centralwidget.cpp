@@ -103,6 +103,8 @@ CentralWidget::CentralWidget(DokoLiveGameWindow *parent) :
     l->setSpacing(0);
     l->addWidget(rightSplitter);
     setLayout(l);
+
+    m_rightSidebar->setCurrentPage(0);
 }
 
 CentralWidget::~CentralWidget()
@@ -124,6 +126,11 @@ void CentralWidget::setDoppelkopfLiveGame(DoppelkopfLiveGame *doppelkopfLiveGame
     foreach(Player *p, doppelkopfLiveGame->players()) {
         m_drinksPage->addPlayer(p);
     }
+}
+
+StatisticsSidebar *CentralWidget::statisticsSidebar() const
+{
+    return m_rightSidebar;
 }
 
 }

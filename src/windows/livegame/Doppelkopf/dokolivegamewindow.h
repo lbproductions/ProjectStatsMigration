@@ -23,6 +23,7 @@ private slots:
     void showNewSchmeissereiDialog();
     void showNewRoundDialog();
     void showEndGameDialog();
+    void showAddDrinkDialog();
 
 private:
     DoppelkopfLiveGame *m_doppelkopfLiveGame;
