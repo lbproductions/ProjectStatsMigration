@@ -5,7 +5,8 @@
 #include <QAction>
 #include <QStackedWidget>
 
-#ifdef Q_OS_MAC
+#if true
+#   define TOOLBAR
 #   include <QToolBar>
 #endif
 
@@ -26,7 +27,7 @@ private:
     QStackedWidget *centralWidget;
     QList<PreferencesPage *> pages;
 
-#ifdef Q_OS_MAC
+#ifdef TOOLBAR
     QToolBar *toolBar;
 #endif
 
@@ -34,7 +35,7 @@ private:
     Q_DECLARE_PUBLIC(PreferencesWindow)
 };
 
-#ifdef Q_OS_MAC
+#ifdef TOOLBAR
 
 void PreferencesWindowPrivate::addPage(PreferencesPage *page)
 {
@@ -61,7 +62,7 @@ void PreferencesWindowPrivate::setCurrentPage(PreferencesPage *page)
     }
 }
 
-#elif defined Q_WS_WIN
+#elif defined TOOLBAR
 #   error PreferencesWindowPrivate::addPage has to be implemented on windows.
 #endif
 

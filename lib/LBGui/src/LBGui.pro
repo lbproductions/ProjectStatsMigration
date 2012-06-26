@@ -1,7 +1,10 @@
 TARGET = lbgui
 TEMPLATE = lib
 
-QT += sql widgets
+QT += sql
+contains(QT_VERSION, ^5) {
+QT += widgets
+}
 
 OBJECTS_DIR = $$OUT_PWD/../build/
 DESTDIR = $$OUT_PWD/../
@@ -97,10 +100,10 @@ RESOURCES += \
     ressources/scrollbar/scrollbar.qrc \
     ressources/general/general.qrc
 
-macx {
+#macx {
     HEADERS += \
         mainwindow/sidebar/sidebaritemdelegatemac.h
 
     SOURCES += \
         mainwindow/sidebar/sidebaritemdelegatemac.cpp
-}
+#}

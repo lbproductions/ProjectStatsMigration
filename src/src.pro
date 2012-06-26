@@ -1,4 +1,8 @@
-QT       += core gui sql widgets
+QT       += core gui sql
+
+contains(QT_VERSION, ^5) {
+QT += widgets
+}
 
 TARGET = ProjectStats
 TEMPLATE = app
@@ -110,6 +114,32 @@ macx {
                              rm -Rf $$DESTDIR/deploy/Contents
     }
 }
+
+win32 {
+SOURCES +=  \
+    misc/winsparkleupdater.cpp
+
+HEADERS +=  \
+    misc/winsparkleupdater.h
+
+CONFIG += windows
+
+LIBS += -L$$OUT_PWD/../lib/LBDatabase -llbdatabase \
+        -L$$OUT_PWD/../lib/LBGui -llbgui \
+        -L$$PWD/../frameworks/WinSparkle-0.3 -lWinSparkle
+
+DDIR = $$DESTDIR
+DDIR ~= s,/,\\,g
+PWDDIR = $$PWD
+PWDDIR ~= s,/,\\,g
+
+     CONFIG(release, debug|release) {
+        QMAKE_POST_LINK += $$PWD/../util/deployment/win/deploy.bat "$$DDIR" "$${TARGET}.exe" $$PWDDIR
+    }
+QMAKE_LFLAGS = -Wl,-enable-auto-import
+}
+
+
 
 SOURCES += main.cpp \
     mainwindow/mainwindow.cpp \

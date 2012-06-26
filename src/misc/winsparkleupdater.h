@@ -11,8 +11,11 @@ class WinSparkleUpdater : public Updater
         WinSparkleUpdater(const QString& url);
         ~WinSparkleUpdater();
 
-        virtual void checkForUpdates();
-        virtual void checkForUpdatesInBackground();
+        void checkForUpdates();
+        void checkForUpdatesInBackground();
+
+        void setAutomaticallyChecksForUpdates(bool check);
+        void setAutomaticallyDownloadsUpdates(bool download);
 };
 
 #endif // WINSPARKLEUPDATER_H
