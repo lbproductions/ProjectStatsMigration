@@ -15,6 +15,8 @@
 #include <QxtWeb/QxtWebPageEvent>
 #include <QxtWeb/QxtWebRequestEvent>
 
+#include <QxtCore/QxtJSON>
+
 #include <QDebug>
 
 namespace LBDatabase {
@@ -67,18 +69,27 @@ void MyService::pageRequestedEvent(QxtWebRequestEvent *event)
 
 void MyService::respondRoot(QxtWebRequestEvent *event)
 {
-    QString json = QLatin1String("{\n"
-                                 "\"contexts\": {");
+    QxtJSON json;
 
+    QStringList contexts;
+    contexts.reserve(storage->contexts().size());
     foreach(Context *context, storage->contexts()) {
-        json += QLatin1String("\"") + context->identifier() + QLatin1String("\": {\n");
-        json += QLatin1String("\"url\": \"/") + context->identifier() + QLatin1String("\"\n");
-        json += QLatin1String("},\n");
+        contexts.append(context->identifier());
     }
-    json.remove(json.length()-2,1);
-    json += QLatin1String("}\n}");
 
-    QxtWebPageEvent* respond = new QxtWebPageEvent(event->sessionID, event->requestID, json.toAscii());
+
+//    QString json = QLatin1String("{\n"
+//                                 "\"contexts\": {");
+
+//    foreach(Context *context, storage->contexts()) {
+//        json += QLatin1String("\"") + context->identifier() + QLatin1String("\": {\n");
+//        json += QLatin1String("\"url\": \"/") + context->identifier() + QLatin1String("\"\n");
+//        json += QLatin1String("},\n");
+//    }
+//    json.remove(json.length()-2,1);
+//    json += QLatin1String("}\n}");
+
+    QxtWebPageEvent* respond = new QxtWebPageEvent(event->sessionID, event->requestID, json.stringify(contexts).toUtf8());
     respond->contentType = QByteArray("application/json");
     postEvent(respond);
 }
@@ -158,7 +169,7 @@ void MyService::respondEntity(QxtWebRequestEvent *event)
             json += QLatin1String("\"");
             json += attribute->identifier();
             json += QLatin1String("\": \"");
-            json += entity->attributeValue(attribute->identifier())->dataForModel().toString().replace("\"","\\\"");
+//            json += entity->attributeValue(attribute->identifier())->dataForModel().toString().replace("\"","\\\"");
             json += QLatin1String("\"");
         }
         json += QLatin1String("\n},\n\"functions\": {\n");
@@ -242,9 +253,9 @@ RestServer::~RestServer()
 
 void RestServer::start()
 {
-    m_connector = new QxtHttpServerConnector;
+    m_connector = new QxtHttpServerConnector(this);
 
-    m_session = new QxtHttpSessionManager;
+    m_session = new QxtHttpSessionManager(this);
     m_session->setPort(8080);
     m_session->setConnector(m_connector);
 

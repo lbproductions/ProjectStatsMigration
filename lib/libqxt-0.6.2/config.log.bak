@@ -1,0 +1,31 @@
+
+ 
+
+ qt4
+
+rm -f main.o
+rm -f *~ core *.core
+compiling main.cpp
+linking qt4
+ld: warning: directory not found for option '-L/usr/local/pgsql/lib'
+ld: warning: directory not found for option '-L/tmp/qt-stuff-85167/source/qt-everywhere-opensource-src-4.8.1/Desktop/Qt/4.8.1/gcc/lib'
+ld: warning: directory not found for option '-L/usr/local/pgsql/lib'
+ld: warning: directory not found for option '-L/tmp/qt-stuff-85167/source/qt-everywhere-opensource-src-4.8.1/Desktop/Qt/4.8.1/gcc/lib'
+ld: warning: ignoring file /Users/niklas/QtSDK/Desktop/Qt/4.8.1/gcc/lib/QtCore.framework/QtCore, file was built for unsupported file format which is not the architecture being linked (i386)
+Undefined symbols for architecture i386:
+  "QObject::QObject(QObject*)", referenced from:
+      _main in main.o
+  "QObject::~QObject()", referenced from:
+      _main in main.o
+ld: symbol(s) not found for architecture i386
+collect2: ld returned 1 exit status
+lipo: can't open input file: /var/folders/ny/xmgr0cz90fl7bl206w15wq2h0000gn/T//cczt2MPE.out (No such file or directory)
+make: *** [qt4] Error 1
+Reading /Users/niklas/Documents/Programming/ProjectStats/ProjectStatsMigration/lib/libqxt-0.6.2/tools/3rdparty/qdoc3/qdoc3.pro
+Reading /Users/niklas/Documents/Programming/ProjectStats/ProjectStatsMigration/lib/libqxt-0.6.2/src/core/core.pro
+Reading /Users/niklas/Documents/Programming/ProjectStats/ProjectStatsMigration/lib/libqxt-0.6.2/src/gui/gui.pro
+Reading /Users/niklas/Documents/Programming/ProjectStats/ProjectStatsMigration/lib/libqxt-0.6.2/src/designer/designer.pro
+Reading /Users/niklas/Documents/Programming/ProjectStats/ProjectStatsMigration/lib/libqxt-0.6.2/src/network/network.pro
+Reading /Users/niklas/Documents/Programming/ProjectStats/ProjectStatsMigration/lib/libqxt-0.6.2/src/sql/sql.pro
+Reading /Users/niklas/Documents/Programming/ProjectStats/ProjectStatsMigration/lib/libqxt-0.6.2/src/zeroconf/zeroconf.pro
+Reading /Users/niklas/Documents/Programming/ProjectStats/ProjectStatsMigration/lib/libqxt-0.6.2/src/web/web.pro

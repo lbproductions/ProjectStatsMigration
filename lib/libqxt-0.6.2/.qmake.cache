@@ -1,0 +1,14 @@
+CONFIG += silent
+QXT_MODULES = docs berkeley core designer gui network sql web zeroconf
+CONFIG += debug
+CONFIG += x86_64
+QXT_INSTALL_PREFIX = ./
+QXT_INSTALL_LIBS = /Library/Frameworks
+QXT_INSTALL_BINS = .//bin
+QXT_INSTALL_HEADERS = .//include
+QXT_INSTALL_FEATURES = /Users/niklas/QtSDK/Desktop/Qt/4.8.1/gcc//mkspecs/features
+QXT_INSTALL_DOCS = .//doc
+QXT_SOURCE_TREE = /Users/niklas/Documents/Programming/ProjectStats/ProjectStatsMigration/lib/libqxt-0.6.2
+QXT_BUILD_TREE = /Users/niklas/Documents/Programming/ProjectStats/ProjectStatsMigration/lib/libqxt-0.6.2
+DEFINES+=HAVE_QT
+DEFINES+=HAVE_ZEROCONF

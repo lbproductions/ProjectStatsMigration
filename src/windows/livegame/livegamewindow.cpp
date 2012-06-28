@@ -98,8 +98,8 @@ void LiveGameWindow::setFullScreen(bool fullScreen)
         showNormal();
         setAcceptDrops(true);
 
-        m_actionFullScreen->setIcon(QIcon(":/graphics/icons/livegame/normalmode"));
-        m_actionFullScreen->setText(tr("Exit Fullscreen"));
+        m_actionFullScreen->setIcon(QIcon(":/graphics/icons/livegame/fullscreen"));
+        m_actionFullScreen->setText(tr("Fullscreen"));
     }
 }
 

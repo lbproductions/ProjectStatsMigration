@@ -1,11 +1,93 @@
-TARGET = lbgui
+TARGET = LBGui
 TEMPLATE = lib
 
-QT += sql widgets
+QT += sql
+
+contains(QT, ^5) {
+    QT += widgets
+}
 
 OBJECTS_DIR = $$OUT_PWD/../build/
-DESTDIR = $$OUT_PWD/../
-INCLUDEPATH += $$PWD/include
+DESTDIR = $$PWD/../lib/
+
+COPY_HEADERS.target = copyHeaders
+COPY_HEADERS.commands = cp -R $$PWD/*.h $$PWD/../include/$$TARGET
+QMAKE_EXTRA_TARGETS += copyHeaders
+PRE_TARGETDEPS += copyHeaders
+
+macx {
+    HEADERS += \
+        mainwindow/sidebar/sidebaritemdelegatemac.h
+
+    SOURCES += \
+        mainwindow/sidebar/sidebaritemdelegatemac.cpp
+
+    CONFIG += lib_bundle
+
+
+    FRAMEWORK_HEADERS.version = Versions
+    FRAMEWORK_HEADERS.files +=  \
+        LBGui.h \
+        mainwindow/mainwindow.h \
+        mainwindow/sidebar/sidebar.h \
+        mainwindow/sidebar/sidebarstatusbar.h \
+        mainwindow/sidebar/sidebarstatusbardragbutton.h \
+        mainwindow/sidebar/sidebartreeview.h \
+        widgets/splitter.h \
+        widgets/tabwidget.h \
+        mainwindow/sidebar/sidebarparentcategorie.h \
+        mainwindow/sidebar/sidebarchildcategorie.h \
+        mainwindow/menubar.h \
+        shared/actionsmanager.h \
+        shared/action.h \
+        shared/global.h \
+        shared/recentfilesmanager.h \
+        mainwindow/toolbar.h \
+        widgets/groupbox.h \
+        widgets/treeview.h \
+        widgets/treeviewheader.h \
+        widgets/listeditbuttonswidget.h \
+        widgets/backgroundwidget.h \
+        shared/autosavefile.h \
+        preferenceswindow/preferenceswindow.h \
+        preferenceswindow/preferencespage.h \
+        widgets/sheet.h \
+        mainwindow/view.h \
+        widgets/itunesapplybar.h \
+        widgets/label.h
+    FRAMEWORK_HEADERS.path = Headers
+    QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
+
+    CONFIG += qxt
+    QXT     += gui
+    QXT_DIR = $$PWD/../../libqxt-0.6.2
+
+    LIBS += -F$$QXT_DIR/lib \
+        -framework QxtCore \
+        -framework QxtGui
+
+    INCLUDEPATH += $${QXT_DIR}/include
+    INCLUDEPATH += $${QXT_DIR}/src/core
+    INCLUDEPATH += $${QXT_DIR}/src/gui
+
+    FRAMEWORKNAME = $${TARGET}.framework
+    DYLIBNAME = $$FRAMEWORKNAME/$$TARGET
+    DESTDYLIB = $$DESTDIR/$$DYLIBNAME
+    FRAMEWORKSPATH = @loader_path/../Frameworks
+
+    defineReplace( nc  ) {
+        return( $$escape_expand(\\n\\t)$$1    )
+    }
+    defineReplace( installNameTool  ) {
+        return( $$nc( install_name_tool -change $${1}.framework/$${1} $$FRAMEWORKSPATH/$${1}.framework/$${1} $$DESTDYLIB ) )
+    }
+
+    QMAKE_POST_LINK += install_name_tool -id $$FRAMEWORKSPATH/$$DYLIBNAME $$DESTDYLIB
+    QMAKE_POST_LINK += $$installNameTool(QxtCore)
+    QMAKE_POST_LINK += $$installNameTool(QxtGui)
+    QMAKE_POST_LINK += $$installNameTool(QtGui)
+    QMAKE_POST_LINK += $$installNameTool(QtCore)
+}
 
 HEADERS += \
     LBGui.h \
@@ -97,10 +179,3 @@ RESOURCES += \
     ressources/scrollbar/scrollbar.qrc \
     ressources/general/general.qrc
 
-macx {
-    HEADERS += \
-        mainwindow/sidebar/sidebaritemdelegatemac.h
-
-    SOURCES += \
-        mainwindow/sidebar/sidebaritemdelegatemac.cpp
-}
