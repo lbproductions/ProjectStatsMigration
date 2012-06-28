@@ -1,7 +1,7 @@
 QT       += core gui sql
 
 contains(QT_VERSION, ^5) {
-QT += widgets
+    QT += widgets
 }
 
 TARGET = ProjectStats
@@ -21,93 +21,86 @@ INCLUDEPATH += $$PWD/../lib/LBGui/include
 
 CXXFLAGS+=-Wpedantic
 
-# add a build command
-defineReplace( nc  ) {
-    return( $$escape_expand(\\n\\t)$$1    )
-}
-# add a silent build command
-defineReplace( snc ) {
-    return( $$escape_expand(\\n\\t)"@"$$1 )
-}
-# add end of line
-defineReplace( nl  ) {
-    return( $$escape_expand(\\n)         )
-}
-
 macx {
     HEADERS  += \
         misc/sparkleupdater.h \
         misc/cocoainitializer.h
+
     LIBS += \
         -F$$PWD/../frameworks/ \
-        -F$$PWD/../lib/LBDatabase/frameworks/ \
+        -F$$PWD/../lib/LBDatabase/lib/ \
+        -F$$PWD/../lib/LBGui/lib/ \
+        -F$$PWD/../lib/libqxt-0.6.2/lib/ \
         -framework AppKit \
         -framework Sparkle \
-        -framework QxtCore \
-        -framework QxtNetwork \
-        -framework QxtWeb
+        -framework LBGui \
+        -framework LBDatabase
 
     INCLUDEPATH += $$PWD/../frameworks/Sparkle.framework/Headers
-
-    CONFIG += qxt
-    QXT     += core web network
-    QXT_DIR = $${PWD}/../lib/LBDatabase/lib/libqxt-0.6.2
-    LIBS += -F$${QXT_DIR}/lib
-    INCLUDEPATH += $${QXT_DIR}/include
 
     OBJECTIVE_SOURCES += \
         misc/sparkleupdater.mm \
         misc/cocoainitializer.mm
 
-    LIBS += -L$$OUT_PWD/../lib/LBDatabase/
-    LIBS += -llbdatabase
-
-    LIBS += -L$$OUT_PWD/../lib/LBGui/
-    LIBS += -llbgui
-
-    copyFrameworks.target = frameworks
-    copyFrameworks.commands += rm -Rf $$DESTDIR/$${TARGET}.app/Contents/Frameworks/
-    copyFrameworks.commands += $$snc( mkdir -p $$DESTDIR/$${TARGET}.app/Contents/Frameworks/ )
-    copyFrameworks.commands += $$snc( cp -R $$PWD/../lib/LBDatabase/frameworks/* $$DESTDIR/$${TARGET}.app/Contents/Frameworks/ )
-    copyFrameworks.commands += $$snc( cp -R $$PWD/../frameworks/* $$DESTDIR/$${TARGET}.app/Contents/Frameworks/ )
-    copyFrameworks.commands += $$snc( cp -R $$QMAKE_LIBDIR_QT/QtCore.framework $$DESTDIR/$${TARGET}.app/Contents/Frameworks/ )
-    copyFrameworks.commands += $$snc( cp -R $$QMAKE_LIBDIR_QT/QtNetwork.framework $$DESTDIR/$${TARGET}.app/Contents/Frameworks/ )
-
-    copyDylibs.target = dylibs
-    copyDylibs.commands += mkdir -p $$DESTDIR/$${TARGET}.app/Contents/MacOS/
-    copyDylibs.commands += $$snc(   cp $$DESTDIR/lib/LBDatabase/liblbdatabase.1.0.0.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/ )
-    copyDylibs.commands += $$snc(   cp $$DESTDIR/lib/LBDatabase/liblbdatabase.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/ )
-    copyDylibs.commands += $$snc(   cp $$DESTDIR/lib/LBGui/liblbgui.1.0.0.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/ )
-    copyDylibs.commands += $$snc(   cp $$DESTDIR/lib/LBGui/liblbgui.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/ )
-
-    QMAKE_POST_LINK = install_name_tool -id @executable_path/liblbdatabase.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbdatabase.1.dylib &&
-    QMAKE_POST_LINK += install_name_tool -id @executable_path/liblbgui.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbgui.1.dylib &&
-    QMAKE_POST_LINK += install_name_tool -change liblbdatabase.1.dylib @executable_path/liblbdatabase.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
-    QMAKE_POST_LINK += install_name_tool -change liblbgui.1.dylib @executable_path/liblbgui.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
-    QMAKE_POST_LINK += install_name_tool -change liblbdatabase.1.dylib @executable_path/liblbgui.1.dylib $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbgui.1.dylib &&
-
-    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtCore.framework/QxtCore &&
-    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
-    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtWeb.framework/QxtWeb $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
-    QMAKE_POST_LINK += install_name_tool -change QxtWeb.framework/Versions/0/QxtWeb @executable_path/../Frameworks/QxtWeb.framework/QxtWeb $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
-    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtNetwork.framework/QxtNetwork &&
-    QMAKE_POST_LINK += install_name_tool -change QxtNetwork.framework/Versions/0/QxtNetwork @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
-    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtNetwork.framework/QxtNetwork &&
-    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
-    QMAKE_POST_LINK += install_name_tool -change QxtNetwork.framework/Versions/0/QxtNetwork @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
-    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbdatabase.1.dylib &&
-    QMAKE_POST_LINK += install_name_tool -change QxtNetwork.framework/Versions/0/QxtNetwork @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbdatabase.1.dylib &&
-    QMAKE_POST_LINK += install_name_tool -change QxtWeb.framework/Versions/0/QxtWeb @executable_path/../Frameworks/QxtWeb.framework/QxtWeb $$DESTDIR/$${TARGET}.app/Contents/MacOS/liblbdatabase.1.dylib &&
-
-    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QtCore.framework/QtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QtCore.framework/QtCore &&
-    QMAKE_POST_LINK += install_name_tool -change QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/QtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
-
-    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QtNetwork.framework/QtNetwork $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QtNetwork.framework/QtNetwork &&
-    QMAKE_POST_LINK += install_name_tool -change QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork.framework/QtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET
+    FRAMEWORKSPATH = $$DESTDIR/$${TARGET}.app/Contents/Frameworks/
+    TARGETEXECUTABLE = $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET
 
 
-    QMAKE_EXTRA_TARGETS += copyFrameworks copyDylibs
-    PRE_TARGETDEPS += frameworks dylibs
+    defineReplace( nc  ) {
+        return( $$escape_expand(\\n\\t)$$1    )
+    }
+    defineReplace( copyFramework ) {
+        return( $$nc( cp -R -p  $$1 $$FRAMEWORKSPATH ) )
+    }
+    defineReplace( installNameToolOnTarget  ) {
+        return( $$nc( install_name_tool -change $${1}.framework/$${1} @loader_path/../Framworks/$${1}.framework/$${1} $$TARGETEXECUTABLE ) )
+    }
+    defineReplace( installNameToolOnFramework  ) {
+        return( $$nc( install_name_tool -change $${1}.framework/$${1} @loader_path/../Framworks/$${1}.framework/$${1} $$FRAMEWORKSPATH/$${2}.framework/$${2} ) )
+    }
+    COPY_FRAMEWORKS.target = copyFrameworks
+    COPY_FRAMEWORKS.commands += $$nc( rm -Rf $$DESTDIR/$${TARGET}.app/Contents/Frameworks/ )
+    COPY_FRAMEWORKS.commands += $$nc( mkdir -p $$DESTDIR/$${TARGET}.app/Contents/Frameworks/ )
+    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/LBDatabase/lib/LBDatabase.framework )
+    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/LBGui/lib/LBGui.framework )
+    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../frameworks/Sparkle.framework )
+    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/libqxt-0.6.2/lib/QxtCore.framework )
+    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/libqxt-0.6.2/lib/QxtWeb.framework )
+    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/libqxt-0.6.2/lib/QxtGui.framework )
+    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/libqxt-0.6.2/lib/QxtNetwork.framework )
+    COPY_FRAMEWORKS.commands += $$copyFramework($$QMAKE_LIBDIR_QT/QtCore.framework )
+    COPY_FRAMEWORKS.commands += $$copyFramework($$QMAKE_LIBDIR_QT/QtNetwork.framework )
+    COPY_FRAMEWORKS.commands += $$copyFramework($$QMAKE_LIBDIR_QT/QtGui.framework )
+
+    QMAKE_POST_LINK += $$installNameToolOnTarget(LBDatabase)
+    QMAKE_POST_LINK += $$installNameToolOnTarget(LBGui)
+    QMAKE_POST_LINK += $$installNameToolOnTarget(QxtCore)
+    QMAKE_POST_LINK += $$installNameToolOnTarget(QxtNetwork)
+    QMAKE_POST_LINK += $$installNameToolOnTarget(QxtWeb)
+    QMAKE_POST_LINK += $$installNameToolOnTarget(QxtGui)
+    QMAKE_POST_LINK += $$installNameToolOnTarget(QtCore)
+    QMAKE_POST_LINK += $$installNameToolOnTarget(QtGui)
+    QMAKE_POST_LINK += $$installNameToolOnTarget(QtNetwork)
+
+#    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtCore.framework/QxtCore &&
+#    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
+#    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtWeb.framework/QxtWeb $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
+#    QMAKE_POST_LINK += install_name_tool -change QxtWeb.framework/Versions/0/QxtWeb @executable_path/../Frameworks/QxtWeb.framework/QxtWeb $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
+#    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtNetwork.framework/QxtNetwork &&
+#    QMAKE_POST_LINK += install_name_tool -change QxtNetwork.framework/Versions/0/QxtNetwork @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
+#    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtNetwork.framework/QxtNetwork &&
+#    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
+#    QMAKE_POST_LINK += install_name_tool -change QxtNetwork.framework/Versions/0/QxtNetwork @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
+
+#    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QtCore.framework/QtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QtCore.framework/QtCore &&
+#    QMAKE_POST_LINK += install_name_tool -change QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/QtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
+
+#    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QtNetwork.framework/QtNetwork $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QtNetwork.framework/QtNetwork &&
+#    QMAKE_POST_LINK += install_name_tool -change QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork.framework/QtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET
+
+
+    QMAKE_EXTRA_TARGETS += COPY_FRAMEWORKS
+    PRE_TARGETDEPS += copyFrameworks
 
      CONFIG(release, debug|release) {
         QMAKE_POST_LINK += && rm -Rf $$DESTDIR/deploy && $$PWD/../util/deployment/mac/deploy.sh $$PWD $$OUT_PWD/../ $$DEPLOY_DIR $$MYICON $$TARGET $$APPCASTURL && \

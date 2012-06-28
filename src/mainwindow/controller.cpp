@@ -66,7 +66,8 @@ Controller::Controller(MainWindow *mainWindow) :
     }
     qDebug() << "Opening the storage took "+QString::number(timer.elapsed())+"ms.";
 
-    openEntityWindow(m_storage->gamesContext()->game(296));
+    LBDatabase::RestServer *server = new LBDatabase::RestServer(m_storage);
+    server->start();
 }
 
 MainWindow *Controller::mainWindow() const
