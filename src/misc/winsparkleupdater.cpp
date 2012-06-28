@@ -1,6 +1,6 @@
 #include "winsparkleupdater.h"
 
-#include "../frameworks/winsparkle-0.3/winsparkle.h"
+#include "../frameworks/WinSparkle-0.3/winsparkle.h"
 
 WinSparkleUpdater::WinSparkleUpdater(const QString &url)
 {
@@ -20,4 +20,12 @@ void WinSparkleUpdater::checkForUpdates()
 void WinSparkleUpdater::checkForUpdatesInBackground()
 {
     win_sparkle_init();
+}
+
+void WinSparkleUpdater::setAutomaticallyChecksForUpdates(bool check)
+{
+}
+
+void WinSparkleUpdater::setAutomaticallyDownloadsUpdates(bool download)
+{
 }

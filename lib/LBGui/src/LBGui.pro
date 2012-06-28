@@ -3,7 +3,7 @@ TEMPLATE = lib
 
 QT += sql
 
-contains(QT, ^5) {
+contains(QT_VERSION, ^5) {
     QT += widgets
 }
 
@@ -178,4 +178,3 @@ RESOURCES += \
     ressources/toolbar/toolbar.qrc \
     ressources/scrollbar/scrollbar.qrc \
     ressources/general/general.qrc
-

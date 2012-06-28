@@ -9,4 +9,5 @@ SUBDIRS += \
 CONFIG += ordered
 
 OTHER_FILES += README.md  \
-    util/deployment/mac/deploy.sh
+    util/deployment/mac/deploy.sh  \
+    util/deployment/win/deploy.bat

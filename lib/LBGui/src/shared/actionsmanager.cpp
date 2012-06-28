@@ -126,7 +126,7 @@ void ActionsManager::on_windowAction()
     Action *a = static_cast<Action*>(sender());
     QPointer<QWidget> w = a->data().value<QPointer<QWidget> >();
     if(!w.isNull()) {
-        w->setWindowState(w->windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
+        w->setWindowState(w->windowState() & (~Qt::WindowMinimized | Qt::WindowActive));
         w->show();
     }
 }
