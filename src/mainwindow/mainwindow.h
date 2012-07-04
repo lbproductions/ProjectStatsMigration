@@ -12,9 +12,13 @@ class ListView;
 class MainWindow : public LBGui::MainWindow
 {
 public:
-    MainWindow();
+    MainWindow(QWidget *parent = 0);
 
     void closeEvent(QCloseEvent *event);
+
+    MainWindowNS::Controller *controller() const;
+
+    void setup();
 
 private:
     void setupCentralWidgets();

@@ -11,19 +11,13 @@
 #include <QCloseEvent>
 #include <QStackedWidget>
 
-MainWindow::MainWindow() :
-    LBGui::MainWindow(),
+MainWindow::MainWindow(QWidget *parent) :
+    LBGui::MainWindow(parent),
     m_controller(new MainWindowNS::Controller(this)),
     m_sidebar(new MainWindowNS::Sidebar(m_controller))
 {
     setSettingsName(QLatin1String("MainWindow"));
     setTitle(tr("Project Stats"));
-
-
-    setupCentralWidgets();
-    setupSidebar();
-    setupMenuBar();
-    setupToolBar();
 
     //save and restore window size and position
     setSaveSettings(true);
@@ -66,6 +60,7 @@ void MainWindow::setupMenuBar()
     menuBar()->addAction(tr("&File"), m_controller->actions()->newGameAction());
     menuBar()->addAction(tr("&File"), m_controller->actions()->checkForUpdatesAction());
     menuBar()->addAction(tr("&File"), m_controller->actions()->showPreferencesAction());
+    menuBar()->addAction(tr("&File"), m_controller->actions()->connectToServerAction());
 
     menuBar()->addMenu(menuBar()->windowMenu());
     menuBar()->addMenu(menuBar()->helpMenu());
@@ -91,4 +86,17 @@ void MainWindow::closeEvent(QCloseEvent *event)
     else {
         event->ignore();
     }
+}
+
+MainWindowNS::Controller *MainWindow::controller() const
+{
+    return m_controller;
+}
+
+void MainWindow::setup()
+{
+    setupCentralWidgets();
+    setupSidebar();
+    setupMenuBar();
+    setupToolBar();
 }

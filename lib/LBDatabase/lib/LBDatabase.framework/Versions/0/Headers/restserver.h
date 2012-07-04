@@ -8,7 +8,7 @@ class QxtHttpSessionManager;
 
 namespace LBDatabase {
 
-class MyService;
+class ContentsService;
 class Storage;
 
 class RestServer : public QObject
@@ -24,7 +24,7 @@ public:
 private:
     QxtHttpServerConnector *m_connector;
     QxtHttpSessionManager *m_session;
-    MyService *m_service;
+    ContentsService *m_service;
     Storage *m_storage;
 };
 

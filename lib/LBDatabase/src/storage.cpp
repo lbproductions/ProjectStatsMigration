@@ -474,4 +474,16 @@ Property *Storage::property(Property::Type type, int id) const
     return d->property(type, id);
 }
 
+QList<Attribute *> Storage::attributes() const
+{
+    Q_D(const Storage);
+    return d->attributes.values();
+}
+
+QList<Function *> Storage::functions() const
+{
+    Q_D(const Storage);
+    return d->functions.values();
+}
+
 } // namespace LBDatabase

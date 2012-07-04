@@ -17,4 +17,6 @@
 
 #include "server/restserver.h"
 
+#include "restdriver/reststoragedriver.h"
+
 #endif // LBDATABASE_H

@@ -20,6 +20,8 @@ public:
     LBGui::Action *checkForUpdatesAction() const;
     LBGui::Action *showPreferencesAction() const;
 
+    LBGui::Action *connectToServerAction() const;
+
     LBGui::Action *newGameAction() const;
 
 public slots:
@@ -30,6 +32,8 @@ private:
 
     LBGui::Action *m_checkForUpdatesAction;
     LBGui::Action *m_showPreferencesAction;
+
+    LBGui::Action *m_connectToServerAction;
 
     LBGui::Action *m_newGameAction;
 

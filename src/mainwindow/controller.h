@@ -30,11 +30,17 @@ public:
     void showWidget(QWidget *widget);
     void openEntityWindow(LBDatabase::Entity *entity);
 
+    void openLocalStorage();
+
+    void openStorage(Storage *storage);
+
 public slots:
     void checkForUpdates();
     void showPreferences();
 
     void newGame();
+
+    void connectToServer();
 
 signals:
     void somethingChanged();

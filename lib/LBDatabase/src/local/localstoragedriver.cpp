@@ -20,97 +20,6 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
-namespace {
-const QString MetaDataTableName("lbmeta");
-const QString ContextsTableName("lbmeta_contexts");
-const QString EntitiesTableName("lbmeta_entitytypes");
-const QString AttributesTableName("lbmeta_attributes");
-const QString RelationsTableName("lbmeta_relations");
-const QString FunctionsTableName("lbmeta_functions");
-const QString FunctionReimplementationsTable("lbmeta_functionreimplementations");
-const QString RelationReimplementationsTable("lbmeta_relationreimplementations");
-const QString DependenciesTable("lbmeta_dependencies");
-
-namespace ContextColumns {
-const QString Identifier("identifier");
-const QString DisplayName("displayName");
-const QString TableName("tableName");
-}
-namespace EntityTypeColumns {
-const QString Context("context");
-const QString Identifier("identifier");
-const QString ParentEntityType("parentEntityType");
-const QString DisplayName("displayName");
-const QString DisplayNamePlural("displayNamePlural");
-}
-namespace EntityColumns {
-const QString Id("id");
-const QString EntityType("entityTypeId");
-}
-namespace AttributeColumns {
-const QString Identifier("identifier");
-const QString DisplayName("displayName");
-const QString EntityTypeId("entityTypeId");
-const QString Calculated("calculated");
-const QString CacheData("cacheData");
-const QString Type("type");
-const QString ReturnEntityType("returnEntityType");
-const QString Editable("editable");
-const QString DefaultValue("defaultValue");
-}
-namespace FunctionColumns {
-const QString Identifier("identifier");
-const QString TableName("tableName");
-const QString EntityColumnName("entityColumnName");
-const QString KeyEntityColumnName("keyEntityColumnName");
-const QString ValueColumnName("valueColumnName");
-const QString DisplayName("displayName");
-const QString EntityType("entityType");
-const QString KeyEntityType("keyEntityType");
-const QString Calculated("calculated");
-const QString CacheData("cacheData");
-const QString Type("type");
-const QString ReturnEntityType("returnEntityType");
-const QString Editable("editable");
-}
-namespace FunctionReimplementationsColumns {
-const QString ReimplementedFunction("function");
-const QString ReimplementingEntityType("reimplementingEntityType");
-}
-namespace RelationColumns {
-const QString Identifier("identifier");
-const QString IdentifierRight("identifierRight");
-const QString DisplayNameLeft("displayName");
-const QString DisplayNameRight("displayNameRight");
-const QString EntityTypeLeft("entitytypeleft");
-const QString EntityTypeRight("entitytyperight");
-const QString Cardinality("cardinality");
-const QString TableName("tableName");
-const QString ColumnName("columnName");
-const QString ColumnNameRight("columnNameRight");
-const QString Editable("editable");
-const QString EditableTranspose("editableTranspose");
-const QString Calculated("calculated");
-const QString Direction("direction");
-}
-namespace RelationReimplementationsColumns {
-const QString ReimplementedRelation("relation");
-const QString ReimplementingEntityType("reimplementingEntityType");
-}
-namespace EnumAttributeColumns {
-const QString Attribute("attribute");
-const QString Identifier("name");
-const QString Value("value");
-}
-namespace DependenciesColumns {
-const QString DependendPropertyId("dependendPropertyId");
-const QString DependencyPropertyId("dependencyPropertyId");
-const QString DependendPropertyType("dependendPropertyType");
-const QString DependencyPropertyType("dependencyPropertyType");
-const QString EntityRelation("entityRelation");
-}
-}
-
 namespace LBDatabase {
 
 class LocalStorageDriverPrivate
@@ -151,31 +60,31 @@ bool LocalStorageDriverPrivate::init()
     if(!database->open())
         return false;
 
-    metaDataTable = database->table(MetaDataTableName);
+    metaDataTable = database->table(LBMeta::MetaDataTableName);
     if(!metaDataTable)
         return false;
 
-    contextsTable = database->table(ContextsTableName);
+    contextsTable = database->table(LBMeta::ContextsTableName);
     if(!contextsTable)
         return false;
 
-    entityTypesTable = database->table(EntitiesTableName);
+    entityTypesTable = database->table(LBMeta::EntitiesTableName);
     if(!entityTypesTable)
         return false;
 
-    attributesTable = database->table(AttributesTableName);
+    attributesTable = database->table(LBMeta::AttributesTableName);
     if(!attributesTable)
         return false;
 
-    relationsTable = database->table(RelationsTableName);
+    relationsTable = database->table(LBMeta::RelationsTableName);
     if(!relationsTable)
         return false;
 
-    functionsTable = database->table(FunctionsTableName);
+    functionsTable = database->table(LBMeta::FunctionsTableName);
     if(!functionsTable)
         return false;
 
-    dependenciesTable = database->table(DependenciesTable);
+    dependenciesTable = database->table(LBMeta::DependenciesTable);
     if(!dependenciesTable)
         return false;
 
@@ -209,9 +118,9 @@ QList<ContextMetaData> LocalStorageDriver::contexts() const
     foreach(Row *row, d->contextsTable->rows()) {
         ContextMetaData metaData;
         metaData.id = row->id();
-        metaData.identifier = row->data(ContextColumns::Identifier).toString();
-        metaData.displayName = row->data(ContextColumns::DisplayName).toString();
-        metaData.tableName = row->data(ContextColumns::TableName).toString();
+        metaData.identifier = row->data(LBMeta::ContextColumns::Identifier).toString();
+        metaData.displayName = row->data(LBMeta::ContextColumns::DisplayName).toString();
+        metaData.tableName = row->data(LBMeta::ContextColumns::TableName).toString();
         metaDatas.append(metaData);
     }
     return metaDatas;
@@ -225,11 +134,11 @@ QList<EntityTypeMetaData> LocalStorageDriver::entityTypes() const
     foreach(Row *row, d->entityTypesTable->rows()) {
         EntityTypeMetaData metaData;
         metaData.id = row->id();
-        metaData.identifier = row->data(EntityTypeColumns::Identifier).toString();
-        metaData.displayName = row->data(EntityTypeColumns::DisplayName).toString();
-        metaData.displayNamePlural = row->data(EntityTypeColumns::DisplayNamePlural).toString();
-        metaData.contextId = row->data(EntityTypeColumns::Context).toInt();
-        metaData.parentEntityTypeId = row->data(EntityTypeColumns::ParentEntityType).toInt();
+        metaData.identifier = row->data(LBMeta::EntityTypeColumns::Identifier).toString();
+        metaData.displayName = row->data(LBMeta::EntityTypeColumns::DisplayName).toString();
+        metaData.displayNamePlural = row->data(LBMeta::EntityTypeColumns::DisplayNamePlural).toString();
+        metaData.contextId = row->data(LBMeta::EntityTypeColumns::Context).toInt();
+        metaData.parentEntityTypeId = row->data(LBMeta::EntityTypeColumns::ParentEntityType).toInt();
         metaDatas.append(metaData);
     }
     return metaDatas;
@@ -243,15 +152,15 @@ QList<AttributeMetaData> LocalStorageDriver::attributes() const
     foreach(Row *row, d->attributesTable->rows()) {
         AttributeMetaData metaData;
         metaData.id = row->id();
-        metaData.identifier = row->data(AttributeColumns::Identifier).toString();
-        metaData.displayName = row->data(AttributeColumns::DisplayName).toString();
-        metaData.cached = row->data(AttributeColumns::CacheData).toBool();
-        metaData.calculated = row->data(AttributeColumns::Calculated).toBool();
-        metaData.editable = row->data(AttributeColumns::Editable).toBool();
-        metaData.entityTypeId = row->data(AttributeColumns::EntityTypeId).toInt();
-        metaData.type = static_cast<Attribute::Type>(row->data(AttributeColumns::Type).toInt());
-        metaData.returnEntityTypeId = row->data(AttributeColumns::ReturnEntityType).toInt();
-        metaData.defaultValue = row->data(AttributeColumns::DefaultValue);
+        metaData.identifier = row->data(LBMeta::AttributeColumns::Identifier).toString();
+        metaData.displayName = row->data(LBMeta::AttributeColumns::DisplayName).toString();
+        metaData.cached = row->data(LBMeta::AttributeColumns::CacheData).toBool();
+        metaData.calculated = row->data(LBMeta::AttributeColumns::Calculated).toBool();
+        metaData.editable = row->data(LBMeta::AttributeColumns::Editable).toBool();
+        metaData.entityTypeId = row->data(LBMeta::AttributeColumns::EntityTypeId).toInt();
+        metaData.type = static_cast<Attribute::Type>(row->data(LBMeta::AttributeColumns::Type).toInt());
+        metaData.returnEntityTypeId = row->data(LBMeta::AttributeColumns::ReturnEntityType).toInt();
+        metaData.defaultValue = row->data(LBMeta::AttributeColumns::DefaultValue);
         metaDatas.append(metaData);
     }
     return metaDatas;
@@ -265,19 +174,19 @@ QList<FunctionMetaData> LocalStorageDriver::functions() const
     foreach(Row *row, d->functionsTable->rows()) {
         FunctionMetaData metaData;
         metaData.id = row->id();
-        metaData.identifier = row->data(FunctionColumns::Identifier).toString();
-        metaData.cached = row->data(FunctionColumns::CacheData).toBool();
-        metaData.calculated = row->data(FunctionColumns::Calculated).toBool();
-        metaData.displayName = row->data(FunctionColumns::DisplayName).toString();
-        metaData.editable = row->data(FunctionColumns::Editable).toBool();
-        metaData.entityColumnName = row->data(FunctionColumns::EntityColumnName).toString();
-        metaData.entityTypeId = row->data(FunctionColumns::EntityType).toInt();
-        metaData.keyEntityColumnName = row->data(FunctionColumns::KeyEntityColumnName).toString();
-        metaData.keyEntityTypeId = row->data(FunctionColumns::KeyEntityType).toInt();
-        metaData.tableName = row->data(FunctionColumns::TableName).toString();
-        metaData.type = static_cast<Attribute::Type>(row->data(FunctionColumns::Type).toInt());
-        metaData.returnEntityTypeId = row->data(FunctionColumns::ReturnEntityType).toInt();
-        metaData.valueColumnName = row->data(FunctionColumns::ValueColumnName).toString();
+        metaData.identifier = row->data(LBMeta::FunctionColumns::Identifier).toString();
+        metaData.cached = row->data(LBMeta::FunctionColumns::CacheData).toBool();
+        metaData.calculated = row->data(LBMeta::FunctionColumns::Calculated).toBool();
+        metaData.displayName = row->data(LBMeta::FunctionColumns::DisplayName).toString();
+        metaData.editable = row->data(LBMeta::FunctionColumns::Editable).toBool();
+        metaData.entityColumnName = row->data(LBMeta::FunctionColumns::EntityColumnName).toString();
+        metaData.entityTypeId = row->data(LBMeta::FunctionColumns::EntityType).toInt();
+        metaData.keyEntityColumnName = row->data(LBMeta::FunctionColumns::KeyEntityColumnName).toString();
+        metaData.keyEntityTypeId = row->data(LBMeta::FunctionColumns::KeyEntityType).toInt();
+        metaData.tableName = row->data(LBMeta::FunctionColumns::TableName).toString();
+        metaData.type = static_cast<Attribute::Type>(row->data(LBMeta::FunctionColumns::Type).toInt());
+        metaData.returnEntityTypeId = row->data(LBMeta::FunctionColumns::ReturnEntityType).toInt();
+        metaData.valueColumnName = row->data(LBMeta::FunctionColumns::ValueColumnName).toString();
         metaDatas.append(metaData);
     }
     return metaDatas;
@@ -290,20 +199,20 @@ QList<RelationMetaData> LocalStorageDriver::relations() const
     foreach(Row *row, d->relationsTable->rows()) {
         RelationMetaData metaData;
         metaData.id = row->id();
-        metaData.identifier = row->data(RelationColumns::Identifier).toString();
-        metaData.identifierRight = row->data(RelationColumns::IdentifierRight).toString();
-        metaData.displayName = row->data(RelationColumns::DisplayNameLeft).toString();
-        metaData.displayNameRight = row->data(RelationColumns::DisplayNameRight).toString();
-        metaData.cardinality = static_cast<Relation::Cardinality>(row->data(RelationColumns::Cardinality).toInt());
-        metaData.direction = static_cast<Relation::Direction>(row->data(RelationColumns::Direction).toInt());
-        metaData.editable = row->data(RelationColumns::Editable).toBool();
-        metaData.editableTranspose = row->data(RelationColumns::EditableTranspose).toBool();
-        metaData.calculated = row->data(RelationColumns::Calculated).toBool();
-        metaData.entityTypeId = row->data(RelationColumns::EntityTypeLeft).toInt();
-        metaData.entityTypeOtherId = row->data(RelationColumns::EntityTypeRight).toInt();
-        metaData.leftEntityIdColumnName = row->data(RelationColumns::ColumnName).toString();
-        metaData.rightEntityIdColumnName = row->data(RelationColumns::ColumnNameRight).toString();
-        metaData.tableName = row->data(RelationColumns::TableName).toString();
+        metaData.identifier = row->data(LBMeta::RelationColumns::Identifier).toString();
+        metaData.identifierRight = row->data(LBMeta::RelationColumns::IdentifierRight).toString();
+        metaData.displayName = row->data(LBMeta::RelationColumns::DisplayNameLeft).toString();
+        metaData.displayNameRight = row->data(LBMeta::RelationColumns::DisplayNameRight).toString();
+        metaData.cardinality = static_cast<Relation::Cardinality>(row->data(LBMeta::RelationColumns::Cardinality).toInt());
+        metaData.direction = static_cast<Relation::Direction>(row->data(LBMeta::RelationColumns::Direction).toInt());
+        metaData.editable = row->data(LBMeta::RelationColumns::Editable).toBool();
+        metaData.editableTranspose = row->data(LBMeta::RelationColumns::EditableTranspose).toBool();
+        metaData.calculated = row->data(LBMeta::RelationColumns::Calculated).toBool();
+        metaData.entityTypeId = row->data(LBMeta::RelationColumns::EntityTypeLeft).toInt();
+        metaData.entityTypeOtherId = row->data(LBMeta::RelationColumns::EntityTypeRight).toInt();
+        metaData.leftEntityIdColumnName = row->data(LBMeta::RelationColumns::ColumnName).toString();
+        metaData.rightEntityIdColumnName = row->data(LBMeta::RelationColumns::ColumnNameRight).toString();
+        metaData.tableName = row->data(LBMeta::RelationColumns::TableName).toString();
         metaDatas.append(metaData);
     }
     return metaDatas;
@@ -316,9 +225,9 @@ QList<EnumAttributeMetaData> LocalStorageDriver::enumValues() const
     metaDatas.reserve(d->database->table(EnumAttribute::EnumsTable)->rows().count());
     foreach(Row *row, d->database->table(EnumAttribute::EnumsTable)->rows()) {
         EnumAttributeMetaData metaData;
-        metaData.identifier = row->data(EnumAttributeColumns::Identifier).toString();
-        metaData.attributeId = row->data(EnumAttributeColumns::Attribute).toInt();
-        metaData.value = row->data(EnumAttributeColumns::Value).toInt();
+        metaData.identifier = row->data(LBMeta::EnumAttributeColumns::Identifier).toString();
+        metaData.attributeId = row->data(LBMeta::EnumAttributeColumns::Attribute).toInt();
+        metaData.value = row->data(LBMeta::EnumAttributeColumns::Value).toInt();
         metaDatas.append(metaData);
     }
     return metaDatas;
@@ -328,11 +237,11 @@ QList<FunctionReimplementationMetaData> LocalStorageDriver::functionReimplementa
 {
     Q_D(const LocalStorageDriver);
     QList<FunctionReimplementationMetaData> metaDatas;
-    metaDatas.reserve(d->database->table(FunctionReimplementationsTable)->rows().count());
-    foreach(Row *row, d->database->table(FunctionReimplementationsTable)->rows()) {
+    metaDatas.reserve(d->database->table(LBMeta::FunctionReimplementationsTable)->rows().count());
+    foreach(Row *row, d->database->table(LBMeta::FunctionReimplementationsTable)->rows()) {
         FunctionReimplementationMetaData metaData;
-        metaData.reimplementedFunctionId = row->data(FunctionReimplementationsColumns::ReimplementedFunction).toInt();
-        metaData.reimplementingEntityTypeId = row->data(FunctionReimplementationsColumns::ReimplementingEntityType).toInt();
+        metaData.reimplementedFunctionId = row->data(LBMeta::FunctionReimplementationsColumns::ReimplementedFunction).toInt();
+        metaData.reimplementingEntityTypeId = row->data(LBMeta::FunctionReimplementationsColumns::ReimplementingEntityType).toInt();
         metaDatas.append(metaData);
     }
     return metaDatas;
@@ -342,11 +251,11 @@ QList<RelationReimplementationMetaData> LocalStorageDriver::relationReimplementa
 {
     Q_D(const LocalStorageDriver);
     QList<RelationReimplementationMetaData> metaDatas;
-    metaDatas.reserve(d->database->table(RelationReimplementationsTable)->rows().count());
-    foreach(Row *row, d->database->table(RelationReimplementationsTable)->rows()) {
+    metaDatas.reserve(d->database->table(LBMeta::RelationReimplementationsTable)->rows().count());
+    foreach(Row *row, d->database->table(LBMeta::RelationReimplementationsTable)->rows()) {
         RelationReimplementationMetaData metaData;
-        metaData.reimplementedRelationId = row->data(RelationReimplementationsColumns::ReimplementedRelation).toInt();
-        metaData.reimplementingEntityTypeId = row->data(RelationReimplementationsColumns::ReimplementingEntityType).toInt();
+        metaData.reimplementedRelationId = row->data(LBMeta::RelationReimplementationsColumns::ReimplementedRelation).toInt();
+        metaData.reimplementingEntityTypeId = row->data(LBMeta::RelationReimplementationsColumns::ReimplementingEntityType).toInt();
         metaDatas.append(metaData);
     }
     return metaDatas;
@@ -360,13 +269,13 @@ QList<DependencyMetaData> LocalStorageDriver::dependencies() const
     foreach(Row *row, d->dependenciesTable->rows()) {
         DependencyMetaData metaData;
         metaData.id = row->id();
-        metaData.dependendPropertyId = row->data(DependenciesColumns::DependendPropertyId).toInt();
-        metaData.dependencyPropertyId = row->data(DependenciesColumns::DependencyPropertyId).toInt();
+        metaData.dependendPropertyId = row->data(LBMeta::DependenciesColumns::DependendPropertyId).toInt();
+        metaData.dependencyPropertyId = row->data(LBMeta::DependenciesColumns::DependencyPropertyId).toInt();
         metaData.dependendPropertyType =
-                static_cast<Property::Type>(row->data(DependenciesColumns::DependendPropertyType).toInt());
+                static_cast<Property::Type>(row->data(LBMeta::DependenciesColumns::DependendPropertyType).toInt());
         metaData.dependencyPropertyType =
-                static_cast<Property::Type>(row->data(DependenciesColumns::DependencyPropertyType).toInt());
-        metaData.entityRelation = row->data(DependenciesColumns::EntityRelation).toInt();
+                static_cast<Property::Type>(row->data(LBMeta::DependenciesColumns::DependencyPropertyType).toInt());
+        metaData.entityRelation = row->data(LBMeta::DependenciesColumns::EntityRelation).toInt();
         metaDatas.append(metaData);
     }
     return metaDatas;
@@ -378,11 +287,11 @@ void LocalStorageDriver::addDependency(DependencyMetaData &metaData)
     Row *row = d->dependenciesTable->appendRow();
     metaData.id = row->id();
 
-    row->setData(DependenciesColumns::DependendPropertyId, metaData.dependendPropertyId);
-    row->setData(DependenciesColumns::DependencyPropertyId, metaData.dependencyPropertyId);
-    row->setData(DependenciesColumns::DependendPropertyType, metaData.dependendPropertyType);
-    row->setData(DependenciesColumns::DependencyPropertyType, metaData.dependencyPropertyType);
-    row->setData(DependenciesColumns::EntityRelation, metaData.entityRelation);
+    row->setData(LBMeta::DependenciesColumns::DependendPropertyId, metaData.dependendPropertyId);
+    row->setData(LBMeta::DependenciesColumns::DependencyPropertyId, metaData.dependencyPropertyId);
+    row->setData(LBMeta::DependenciesColumns::DependendPropertyType, metaData.dependendPropertyType);
+    row->setData(LBMeta::DependenciesColumns::DependencyPropertyType, metaData.dependencyPropertyType);
+    row->setData(LBMeta::DependenciesColumns::EntityRelation, metaData.entityRelation);
 }
 
 QVariant LocalStorageDriver::attributeValue(const AttributeValue *value) const
@@ -412,14 +321,14 @@ void LocalStorageDriver::addAttribute(EntityType *entityType, AttributeMetaData 
     }
 
     Row *row = d->attributesTable->appendRow();
-    row->setData(AttributeColumns::Identifier, metaData.identifier);
-    row->setData(AttributeColumns::DisplayName, metaData.displayName);
-    row->setData(AttributeColumns::CacheData, metaData.cached);
-    row->setData(AttributeColumns::Calculated, metaData.calculated);
-    row->setData(AttributeColumns::Editable, metaData.editable);
-    row->setData(AttributeColumns::EntityTypeId, QVariant(metaData.entityTypeId));
-    row->setData(AttributeColumns::Type, QVariant(static_cast<int>(metaData.type)));
-    row->setData(AttributeColumns::DefaultValue, metaData.defaultValue);
+    row->setData(LBMeta::AttributeColumns::Identifier, metaData.identifier);
+    row->setData(LBMeta::AttributeColumns::DisplayName, metaData.displayName);
+    row->setData(LBMeta::AttributeColumns::CacheData, metaData.cached);
+    row->setData(LBMeta::AttributeColumns::Calculated, metaData.calculated);
+    row->setData(LBMeta::AttributeColumns::Editable, metaData.editable);
+    row->setData(LBMeta::AttributeColumns::EntityTypeId, QVariant(metaData.entityTypeId));
+    row->setData(LBMeta::AttributeColumns::Type, QVariant(static_cast<int>(metaData.type)));
+    row->setData(LBMeta::AttributeColumns::DefaultValue, metaData.defaultValue);
 
     metaData.id = row->id();
 }
@@ -435,50 +344,50 @@ void LocalStorageDriver::removeAttribute(int attributeId)
 void LocalStorageDriver::setAttributeDisplayName(int id, const QString &displayName)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(AttributesTableName)->row(id);
-    row->setData(AttributeColumns::DisplayName, displayName);
+    Row *row = d->database->table(LBMeta::AttributesTableName)->row(id);
+    row->setData(LBMeta::AttributeColumns::DisplayName, displayName);
 }
 
 void LocalStorageDriver::setAttributeIdentifier(int id, const QString &identifier)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(AttributesTableName)->row(id);
-    row->setData(AttributeColumns::Identifier, identifier);
+    Row *row = d->database->table(LBMeta::AttributesTableName)->row(id);
+    row->setData(LBMeta::AttributeColumns::Identifier, identifier);
 }
 
 void LocalStorageDriver::setAttributeType(int id, Attribute::Type type)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(AttributesTableName)->row(id);
-    row->setData(AttributeColumns::Type, static_cast<int>(type));
+    Row *row = d->database->table(LBMeta::AttributesTableName)->row(id);
+    row->setData(LBMeta::AttributeColumns::Type, static_cast<int>(type));
 }
 
 void LocalStorageDriver::setAttributeEditable(int id, bool editable)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(AttributesTableName)->row(id);
-    row->setData(AttributeColumns::Editable, QVariant(editable));
+    Row *row = d->database->table(LBMeta::AttributesTableName)->row(id);
+    row->setData(LBMeta::AttributeColumns::Editable, QVariant(editable));
 }
 
 void LocalStorageDriver::setAttributeCalculated(int id, bool calculated)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(AttributesTableName)->row(id);
-    row->setData(AttributeColumns::Calculated, QVariant(calculated));
+    Row *row = d->database->table(LBMeta::AttributesTableName)->row(id);
+    row->setData(LBMeta::AttributeColumns::Calculated, QVariant(calculated));
 }
 
 void LocalStorageDriver::setAttributeCached(int id, bool cached)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(AttributesTableName)->row(id);
-    row->setData(AttributeColumns::CacheData, QVariant(cached));
+    Row *row = d->database->table(LBMeta::AttributesTableName)->row(id);
+    row->setData(LBMeta::AttributeColumns::CacheData, QVariant(cached));
 }
 
 void LocalStorageDriver::setAttributeDefaultValue(int id, QVariant defaultValue)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(AttributesTableName)->row(id);
-    row->setData(AttributeColumns::DefaultValue, defaultValue);
+    Row *row = d->database->table(LBMeta::AttributesTableName)->row(id);
+    row->setData(LBMeta::AttributeColumns::DefaultValue, defaultValue);
 }
 
 QList<RelationValueData> LocalStorageDriver::relatedEntities(Relation *relation) const
@@ -568,82 +477,82 @@ void LocalStorageDriver::addRelation(EntityType *entityType, RelationMetaData &m
     Row *row = d->relationsTable->appendRow();
     metaData.id = row->id();
 
-    row->setData(RelationColumns::Identifier, metaData.identifier);
-    row->setData(RelationColumns::IdentifierRight, metaData.identifierRight);
-    row->setData(RelationColumns::DisplayNameLeft, metaData.displayName);
-    row->setData(RelationColumns::DisplayNameRight, metaData.displayNameRight);
-    row->setData(RelationColumns::Cardinality, metaData.cardinality);
-    row->setData(RelationColumns::Direction, metaData.direction);
-    row->setData(RelationColumns::Editable, metaData.editable);
-    row->setData(RelationColumns::Calculated, metaData.calculated);
-    row->setData(RelationColumns::EntityTypeLeft, metaData.entityTypeId);
-    row->setData(RelationColumns::EntityTypeRight, metaData.entityTypeOtherId);
-    row->setData(RelationColumns::ColumnName, metaData.leftEntityIdColumnName);
-    row->setData(RelationColumns::ColumnNameRight, metaData.rightEntityIdColumnName);
-    row->setData(RelationColumns::TableName, metaData.tableName);
+    row->setData(LBMeta::RelationColumns::Identifier, metaData.identifier);
+    row->setData(LBMeta::RelationColumns::IdentifierRight, metaData.identifierRight);
+    row->setData(LBMeta::RelationColumns::DisplayNameLeft, metaData.displayName);
+    row->setData(LBMeta::RelationColumns::DisplayNameRight, metaData.displayNameRight);
+    row->setData(LBMeta::RelationColumns::Cardinality, metaData.cardinality);
+    row->setData(LBMeta::RelationColumns::Direction, metaData.direction);
+    row->setData(LBMeta::RelationColumns::Editable, metaData.editable);
+    row->setData(LBMeta::RelationColumns::Calculated, metaData.calculated);
+    row->setData(LBMeta::RelationColumns::EntityTypeLeft, metaData.entityTypeId);
+    row->setData(LBMeta::RelationColumns::EntityTypeRight, metaData.entityTypeOtherId);
+    row->setData(LBMeta::RelationColumns::ColumnName, metaData.leftEntityIdColumnName);
+    row->setData(LBMeta::RelationColumns::ColumnNameRight, metaData.rightEntityIdColumnName);
+    row->setData(LBMeta::RelationColumns::TableName, metaData.tableName);
 }
 
 void LocalStorageDriver::setRelationIdentifier(int id, const QString &identifier)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(RelationsTableName)->row(id);
-    row->setData(RelationColumns::Identifier, identifier);
+    Row *row = d->database->table(LBMeta::RelationsTableName)->row(id);
+    row->setData(LBMeta::RelationColumns::Identifier, identifier);
 }
 
 void LocalStorageDriver::setRelationIdentifierRight(int id, const QString &identifierRight)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(RelationsTableName)->row(id);
-    row->setData(RelationColumns::IdentifierRight, identifierRight);
+    Row *row = d->database->table(LBMeta::RelationsTableName)->row(id);
+    row->setData(LBMeta::RelationColumns::IdentifierRight, identifierRight);
 }
 
 void LocalStorageDriver::setRelationDisplayName(int id, const QString &displayName)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(RelationsTableName)->row(id);
-    row->setData(RelationColumns::DisplayNameLeft, displayName);
+    Row *row = d->database->table(LBMeta::RelationsTableName)->row(id);
+    row->setData(LBMeta::RelationColumns::DisplayNameLeft, displayName);
 }
 
 void LocalStorageDriver::setRelationDisplayNameRight(int id, const QString &displayNameRight)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(RelationsTableName)->row(id);
-    row->setData(RelationColumns::DisplayNameRight, displayNameRight);
+    Row *row = d->database->table(LBMeta::RelationsTableName)->row(id);
+    row->setData(LBMeta::RelationColumns::DisplayNameRight, displayNameRight);
 }
 
 void LocalStorageDriver::setRelationCardinality(int id, Relation::Cardinality cardinality)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(RelationsTableName)->row(id);
-    row->setData(RelationColumns::Cardinality, cardinality);
+    Row *row = d->database->table(LBMeta::RelationsTableName)->row(id);
+    row->setData(LBMeta::RelationColumns::Cardinality, cardinality);
 }
 
 void LocalStorageDriver::setRelationDirection(int id, Relation::Direction direction)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(RelationsTableName)->row(id);
-    row->setData(RelationColumns::Direction, direction);
+    Row *row = d->database->table(LBMeta::RelationsTableName)->row(id);
+    row->setData(LBMeta::RelationColumns::Direction, direction);
 }
 
 void LocalStorageDriver::setRelationEntityTypeRight(int id, EntityType *entityType)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(RelationsTableName)->row(id);
-    row->setData(RelationColumns::EntityTypeRight, entityType->id());
+    Row *row = d->database->table(LBMeta::RelationsTableName)->row(id);
+    row->setData(LBMeta::RelationColumns::EntityTypeRight, entityType->id());
 }
 
 void LocalStorageDriver::setRelationEditable(int id, bool editable)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(RelationsTableName)->row(id);
-    row->setData(RelationColumns::Editable, editable);
+    Row *row = d->database->table(LBMeta::RelationsTableName)->row(id);
+    row->setData(LBMeta::RelationColumns::Editable, editable);
 }
 
 void LocalStorageDriver::setRelationCalculated(int id, bool calculated)
 {
     Q_D(LocalStorageDriver);
-    Row *row = d->database->table(RelationsTableName)->row(id);
-    row->setData(RelationColumns::Calculated, calculated);
+    Row *row = d->database->table(LBMeta::RelationsTableName)->row(id);
+    row->setData(LBMeta::RelationColumns::Calculated, calculated);
 }
 
 QList<FunctionValueData> LocalStorageDriver::functionValues(Function *function) const
@@ -713,18 +622,18 @@ void LocalStorageDriver::addFunction(EntityType *entityType, FunctionMetaData &m
     }
 
     Row *row = d->functionsTable->appendRow();
-    row->setData(FunctionColumns::Identifier, metaData.identifier);
-    row->setData(FunctionColumns::DisplayName, metaData.displayName);
-    row->setData(FunctionColumns::CacheData, metaData.cached);
-    row->setData(FunctionColumns::Calculated, metaData.calculated);
-    row->setData(FunctionColumns::Editable, metaData.editable);
-    row->setData(FunctionColumns::EntityType, QVariant(metaData.entityTypeId));
-    row->setData(FunctionColumns::Type, QVariant(static_cast<int>(metaData.type)));
-    row->setData(FunctionColumns::KeyEntityType, metaData.keyEntityTypeId);
-    row->setData(FunctionColumns::TableName, metaData.tableName);
-    row->setData(FunctionColumns::EntityColumnName, metaData.entityColumnName);
-    row->setData(FunctionColumns::KeyEntityColumnName, metaData.keyEntityColumnName);
-    row->setData(FunctionColumns::ValueColumnName, metaData.valueColumnName);
+    row->setData(LBMeta::FunctionColumns::Identifier, metaData.identifier);
+    row->setData(LBMeta::FunctionColumns::DisplayName, metaData.displayName);
+    row->setData(LBMeta::FunctionColumns::CacheData, metaData.cached);
+    row->setData(LBMeta::FunctionColumns::Calculated, metaData.calculated);
+    row->setData(LBMeta::FunctionColumns::Editable, metaData.editable);
+    row->setData(LBMeta::FunctionColumns::EntityType, QVariant(metaData.entityTypeId));
+    row->setData(LBMeta::FunctionColumns::Type, QVariant(static_cast<int>(metaData.type)));
+    row->setData(LBMeta::FunctionColumns::KeyEntityType, metaData.keyEntityTypeId);
+    row->setData(LBMeta::FunctionColumns::TableName, metaData.tableName);
+    row->setData(LBMeta::FunctionColumns::EntityColumnName, metaData.entityColumnName);
+    row->setData(LBMeta::FunctionColumns::KeyEntityColumnName, metaData.keyEntityColumnName);
+    row->setData(LBMeta::FunctionColumns::ValueColumnName, metaData.valueColumnName);
     metaData.id = row->id();
 
 }
@@ -733,35 +642,35 @@ void LocalStorageDriver::setFunctionDisplayName(int id, const QString &displayNa
 {
     Q_D(LocalStorageDriver);
     Row *row = d->functionsTable->row(id);
-    row->setData(FunctionColumns::DisplayName, displayName);
+    row->setData(LBMeta::FunctionColumns::DisplayName, displayName);
 }
 
 void LocalStorageDriver::setFunctionIdentifier(int id, const QString &identifier)
 {
     Q_D(LocalStorageDriver);
     Row *row = d->functionsTable->row(id);
-    row->setData(FunctionColumns::Identifier, identifier);
+    row->setData(LBMeta::FunctionColumns::Identifier, identifier);
 }
 
 void LocalStorageDriver::setFunctionType(int id, Attribute::Type type)
 {
     Q_D(LocalStorageDriver);
     Row *row = d->functionsTable->row(id);
-    row->setData(FunctionColumns::Type, static_cast<int>(type));
+    row->setData(LBMeta::FunctionColumns::Type, static_cast<int>(type));
 }
 
 void LocalStorageDriver::setFunctionEditable(int id, bool editable)
 {
     Q_D(LocalStorageDriver);
     Row *row = d->functionsTable->row(id);
-    row->setData(FunctionColumns::Editable, editable);
+    row->setData(LBMeta::FunctionColumns::Editable, editable);
 }
 
 void LocalStorageDriver::setFunctionKeyEntityType(int id, EntityType *entityType)
 {
     Q_D(LocalStorageDriver);
     Row *row = d->functionsTable->row(id);
-    row->setData(FunctionColumns::KeyEntityType, entityType->id());
+    row->setData(LBMeta::FunctionColumns::KeyEntityType, entityType->id());
 }
 
 QList<EntityMetaData> LocalStorageDriver::entities(Context *context) const
@@ -773,8 +682,8 @@ QList<EntityMetaData> LocalStorageDriver::entities(Context *context) const
 
     foreach(Row *row, contextTable->rows()) {
         EntityMetaData metaData;
-        metaData.id = row->data(EntityColumns::Id).toInt();
-        metaData.entityTypeId = row->data(EntityColumns::EntityType).toInt();
+        metaData.id = row->data(LBMeta::EntityColumns::Id).toInt();
+        metaData.entityTypeId = row->data(LBMeta::EntityColumns::EntityType).toInt();
         entities.append(metaData);
     }
 
@@ -786,7 +695,7 @@ EntityMetaData LocalStorageDriver::createEntity(EntityType *type)
     Q_D(LocalStorageDriver);
     Table *table = d->database->table(type->context()->tableName());
     Row *row = table->appendRow();
-    row->setData(EntityColumns::EntityType, QVariant(type->id()));
+    row->setData(LBMeta::EntityColumns::EntityType, QVariant(type->id()));
 
     EntityMetaData metaData;
     metaData.entityTypeId = type->id();

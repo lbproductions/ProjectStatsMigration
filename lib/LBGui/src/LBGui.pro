@@ -1,8 +1,6 @@
 TARGET = LBGui
 TEMPLATE = lib
 
-QT += sql
-
 contains(QT_VERSION, ^5) {
     QT += widgets
 }
@@ -59,34 +57,47 @@ macx {
     QMAKE_BUNDLE_DATA += FRAMEWORK_HEADERS
 
     CONFIG += qxt
-    QXT     += gui
-    QXT_DIR = $$PWD/../../libqxt-0.6.2
-
-    LIBS += -F$$QXT_DIR/lib \
-        -framework QxtCore \
-        -framework QxtGui
-
-    INCLUDEPATH += $${QXT_DIR}/include
-    INCLUDEPATH += $${QXT_DIR}/src/core
-    INCLUDEPATH += $${QXT_DIR}/src/gui
+    QXT     += widgets
 
     FRAMEWORKNAME = $${TARGET}.framework
     DYLIBNAME = $$FRAMEWORKNAME/$$TARGET
     DESTDYLIB = $$DESTDIR/$$DYLIBNAME
-    FRAMEWORKSPATH = @loader_path/../Frameworks
+    FRAMEWORKSPATH = @executable_path/../Frameworks
 
     defineReplace( nc  ) {
         return( $$escape_expand(\\n\\t)$$1    )
     }
-    defineReplace( installNameTool  ) {
-        return( $$nc( install_name_tool -change $${1}.framework/$${1} $$FRAMEWORKSPATH/$${1}.framework/$${1} $$DESTDYLIB ) )
-    }
 
-    QMAKE_POST_LINK += install_name_tool -id $$FRAMEWORKSPATH/$$DYLIBNAME $$DESTDYLIB
-    QMAKE_POST_LINK += $$installNameTool(QxtCore)
-    QMAKE_POST_LINK += $$installNameTool(QxtGui)
-    QMAKE_POST_LINK += $$installNameTool(QtGui)
-    QMAKE_POST_LINK += $$installNameTool(QtCore)
+    ######### Mac Debug ##########
+
+    CONFIG(debug, debug|release) {
+        defineReplace( installNameTool  ) {
+            return( $$nc( install_name_tool -change $$FRAMEWORKSPATH/$${2}.framework/$${2} $$1/$${2}.framework/$${2} $$DESTDYLIB ) )
+        }
+
+        QMAKE_POST_LINK += $$nc( install_name_tool -id $$FRAMEWORKSPATH/$$DYLIBNAME $$DESTDYLIB )
+        QMAKE_POST_LINK += $$installNameTool($$QXT_DIR/lib, QxtCore)
+        QMAKE_POST_LINK += $$installNameTool($$QXT_DIR/lib, QxtGui)
+    }
+    ######### Mac Debug End ##########
+
+    ######### Mac Release ##########
+    CONFIG(release, debug|release) {
+        defineReplace( installNameTool  ) {
+            return( $$nc( install_name_tool -change $${1}.framework/$${1} $$FRAMEWORKSPATH/$${1}.framework/$${1} $$DESTDYLIB ) )
+        }
+        defineReplace( installNameToolQtOnTarget  ) {
+            return( $$nc( install_name_tool -change $$QMAKE_LIBDIR_QT/$${1}.framework/Versions/4/$${1} @executable_path/../Frameworks/$${1}.framework/Versions/4/$${1} $$DESTDYLIB ) )
+        }
+
+        QMAKE_POST_LINK += $$nc( install_name_tool -id $$FRAMEWORKSPATH/$$DYLIBNAME $$DESTDYLIB )
+        QMAKE_POST_LINK += $$installNameTool(QxtCore)
+        QMAKE_POST_LINK += $$installNameTool(QxtGui)
+        QMAKE_POST_LINK += $$installNameToolQtOnTarget(QtGui)
+        QMAKE_POST_LINK += $$installNameToolQtOnTarget(QtCore)
+        QMAKE_POST_LINK += $$installNameToolQtOnTarget(QtSql)
+    }
+    ######### Mac End ##########
 }
 
 HEADERS += \
@@ -179,7 +190,6 @@ RESOURCES += \
     ressources/scrollbar/scrollbar.qrc \
     ressources/general/general.qrc
 
-<<<<<<< HEAD
 #macx {
     HEADERS += \
         mainwindow/sidebar/sidebaritemdelegatemac.h
@@ -187,5 +197,3 @@ RESOURCES += \
     SOURCES += \
         mainwindow/sidebar/sidebaritemdelegatemac.cpp
 #}
-=======
->>>>>>> LBGui und Database werden nun als framwork gebaut.

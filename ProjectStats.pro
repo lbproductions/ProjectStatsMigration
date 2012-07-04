@@ -1,7 +1,8 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    lib/libqxt-0.6.2/libqxt.pro \
+    lib/libs.pro \
+    lib/libqxt \
     lib/LBDatabase/src/LBDatabase.pro \
     lib/LBGui/src/LBGui.pro \
     src/src.pro
