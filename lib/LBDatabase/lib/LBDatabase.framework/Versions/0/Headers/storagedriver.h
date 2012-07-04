@@ -10,6 +10,97 @@
 
 namespace LBDatabase {
 
+namespace LBMeta {
+const QString MetaDataTableName("lbmeta");
+const QString ContextsTableName("lbmeta_contexts");
+const QString EntitiesTableName("lbmeta_entitytypes");
+const QString AttributesTableName("lbmeta_attributes");
+const QString RelationsTableName("lbmeta_relations");
+const QString FunctionsTableName("lbmeta_functions");
+const QString FunctionReimplementationsTable("lbmeta_functionreimplementations");
+const QString RelationReimplementationsTable("lbmeta_relationreimplementations");
+const QString DependenciesTable("lbmeta_dependencies");
+
+namespace ContextColumns {
+const QString Identifier("identifier");
+const QString DisplayName("displayName");
+const QString TableName("tableName");
+}
+namespace EntityTypeColumns {
+const QString Context("context");
+const QString Identifier("identifier");
+const QString ParentEntityType("parentEntityType");
+const QString DisplayName("displayName");
+const QString DisplayNamePlural("displayNamePlural");
+}
+namespace EntityColumns {
+const QString Id("id");
+const QString EntityType("entityTypeId");
+}
+namespace AttributeColumns {
+const QString Identifier("identifier");
+const QString DisplayName("displayName");
+const QString EntityTypeId("entityTypeId");
+const QString Calculated("calculated");
+const QString CacheData("cacheData");
+const QString Type("type");
+const QString ReturnEntityType("returnEntityType");
+const QString Editable("editable");
+const QString DefaultValue("defaultValue");
+}
+namespace FunctionColumns {
+const QString Identifier("identifier");
+const QString TableName("tableName");
+const QString EntityColumnName("entityColumnName");
+const QString KeyEntityColumnName("keyEntityColumnName");
+const QString ValueColumnName("valueColumnName");
+const QString DisplayName("displayName");
+const QString EntityType("entityType");
+const QString KeyEntityType("keyEntityType");
+const QString Calculated("calculated");
+const QString CacheData("cacheData");
+const QString Type("type");
+const QString ReturnEntityType("returnEntityType");
+const QString Editable("editable");
+}
+namespace FunctionReimplementationsColumns {
+const QString ReimplementedFunction("function");
+const QString ReimplementingEntityType("reimplementingEntityType");
+}
+namespace RelationColumns {
+const QString Identifier("identifier");
+const QString IdentifierRight("identifierRight");
+const QString DisplayNameLeft("displayName");
+const QString DisplayNameRight("displayNameRight");
+const QString EntityTypeLeft("entitytypeleft");
+const QString EntityTypeRight("entitytyperight");
+const QString Cardinality("cardinality");
+const QString TableName("tableName");
+const QString ColumnName("columnName");
+const QString ColumnNameRight("columnNameRight");
+const QString Editable("editable");
+const QString EditableTranspose("editableTranspose");
+const QString Calculated("calculated");
+const QString Direction("direction");
+}
+namespace RelationReimplementationsColumns {
+const QString ReimplementedRelation("relation");
+const QString ReimplementingEntityType("reimplementingEntityType");
+}
+namespace EnumAttributeColumns {
+const QString Attribute("attribute");
+const QString Identifier("name");
+const QString Value("value");
+}
+namespace DependenciesColumns {
+const QString DependendPropertyId("dependendPropertyId");
+const QString DependencyPropertyId("dependencyPropertyId");
+const QString DependendPropertyType("dependendPropertyType");
+const QString DependencyPropertyType("dependencyPropertyType");
+const QString EntityRelation("entityRelation");
+}
+}
+
 class AttributeValue;
 class Context;
 class Entity;

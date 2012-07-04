@@ -1,8 +1,0 @@
-QXT_MODULES = docs berkeley core designer gui network sql web zeroconf
-QXT_INSTALL_TYPE = debug
-QXT_INSTALL_PREFIX = ./
-QXT_INSTALL_LIBS = /Library/Frameworks
-QXT_INSTALL_BINS = .//bin
-QXT_INSTALL_HEADERS = .//include
-QXT_INSTALL_FEATURES = /Users/niklas/QtSDK/Desktop/Qt/4.8.1/gcc//mkspecs/features
-QXT_INSTALL_DOCS = .//doc

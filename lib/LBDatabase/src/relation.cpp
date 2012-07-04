@@ -215,6 +215,12 @@ QString Relation::identifier() const
     return d->metaData.identifier;
 }
 
+QString Relation::identifierRight() const
+{
+    Q_D(const Relation);
+    return d->metaData.identifierRight;
+}
+
 /*!
   Returns the display name in the given \a context, if its the left or right
   context or name(), if the context has nothing to do with the relation.
@@ -223,6 +229,12 @@ QString Relation::displayName() const
 {
     Q_D(const Relation);
     return d->metaData.displayName;
+}
+
+QString Relation::displayNameRight() const
+{
+    Q_D(const Relation);
+    return d->metaData.displayNameRight;
 }
 
 QString Relation::tableName() const

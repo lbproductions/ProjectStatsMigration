@@ -29,6 +29,12 @@ Actions::Actions(Controller *controller) :
     m_newGameAction->setShortcut(QKeySequence::New);
     m_newGameAction->setIcon(QIcon(":/graphics/icons/mainwindow/newgame"));
     connect(m_newGameAction, SIGNAL(triggered()), m_controller, SLOT(newGame()));
+
+
+    m_connectToServerAction = new LBGui::Action(this);
+    m_connectToServerAction->setText(tr("&Connect to server..."));
+    connect(m_connectToServerAction, SIGNAL(triggered()), m_controller, SLOT(connectToServer()));
+
 }
 
 LBGui::Action *Actions::checkForUpdatesAction() const
@@ -39,6 +45,11 @@ LBGui::Action *Actions::checkForUpdatesAction() const
 LBGui::Action *Actions::showPreferencesAction() const
 {
     return m_showPreferencesAction;
+}
+
+LBGui::Action *Actions::connectToServerAction() const
+{
+    return m_connectToServerAction;
 }
 
 LBGui::Action *Actions::newGameAction() const

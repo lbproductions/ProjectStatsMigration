@@ -34,7 +34,9 @@ public:
     // Property implementation
     int id() const;
     QString displayName() const;
+    QString displayNameRight() const;
     QString identifier() const;
+    QString identifierRight() const;
     Property::Type propertyType() const;
     bool isEditable() const;
     bool isCalculated() const;

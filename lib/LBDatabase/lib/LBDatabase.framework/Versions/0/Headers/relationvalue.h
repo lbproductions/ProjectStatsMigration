@@ -49,6 +49,8 @@ public:
     template<typename SortType>
     QList<EntityClass *> sort(const QString &sortAttributeName, SortingDirection dir = SortAscending);
 
+    int rowId(EntityClass *entity) const;
+
 private:
     friend class ContextPrivate;
 

@@ -37,6 +37,10 @@ public:
 
     Property *property(Property::Type type, int id) const;
 
+    QList<Attribute *> attributes() const;
+    QList<Function *> functions() const;
+    QList<Relation *> relations() const;
+
 protected:
 
     template<class ContextClass>
@@ -61,8 +65,6 @@ private:
     void removeAttribute(Attribute *attribute);
     void insertRelation(Relation *relation);
     void insertFunction(Function *function);
-
-    QList<Relation *> relations() const;
 
     void registerContextType(const QString &contextName, QMetaObject metaObject);
 

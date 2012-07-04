@@ -13,6 +13,7 @@
 
 #include <preferences/updaterpreferences.h>
 #include <wizards/newgame/newgamewizard.h>
+#include <wizards/serverconnectdialog.h>
 #include <windows/livegame/doppelkopf/dokolivegamewindow.h>
 
 #ifdef Q_OS_MAC
@@ -46,28 +47,6 @@ Controller::Controller(MainWindow *mainWindow) :
 
     if(m_updater)
         UpdaterPreferences::initializeUpdater(m_updater);
-
-    QString storageLocation = QDesktopServices::storageLocation(QDesktopServices::DataLocation).append("/storage.lbstorage");
-    QElapsedTimer timer;
-    timer.start();
-    m_storage = new Storage(this);
-    m_storage->setDriver(
-                new LBDatabase::LocalStorageDriver(
-                    storageLocation,
-                    m_storage)
-                );
-    if(!m_storage->open()) {
-        QMessageBox msgBox;
-        msgBox.setText(tr("The storage could not be opened! ProjectStats will be terminated"));
-        msgBox.setInformativeText(QDesktopServices::storageLocation(QDesktopServices::DataLocation).append("/storage.lbstorage"));
-        msgBox.setStandardButtons(QMessageBox::Ok);
-        msgBox.exec();
-        exit(-1);
-    }
-    qDebug() << "Opening the storage took "+QString::number(timer.elapsed())+"ms.";
-
-    LBDatabase::RestServer *server = new LBDatabase::RestServer(m_storage);
-    server->start();
 }
 
 MainWindow *Controller::mainWindow() const
@@ -114,6 +93,12 @@ void Controller::newGame()
     wizard->show();
 }
 
+void Controller::connectToServer()
+{
+    ServerConnectDialog *dialog = new ServerConnectDialog(m_mainWindow);
+    dialog->exec();
+}
+
 void Controller::showWidget(QWidget *widget)
 {
     m_mainWindow->setCentralWidget(widget);
@@ -128,6 +113,39 @@ void Controller::openEntityWindow(LBDatabase::Entity *entity)
         window->setDoppelkopfLiveGame(game);
         window->show();
     }
+}
+
+void Controller::openLocalStorage()
+{
+    QString storageLocation = QDesktopServices::storageLocation(QDesktopServices::DataLocation).append("/storage.lbstorage");
+    QElapsedTimer timer;
+    timer.start();
+    m_storage = new Storage(this);
+    m_storage->setDriver(
+                new LBDatabase::LocalStorageDriver(
+                    storageLocation,
+                    m_storage)
+                );
+    if(!m_storage->open()) {
+        QMessageBox msgBox;
+        msgBox.setText(tr("The storage could not be opened! ProjectStats will be terminated"));
+        msgBox.setInformativeText(QDesktopServices::storageLocation(QDesktopServices::DataLocation).append("/storage.lbstorage"));
+        msgBox.setStandardButtons(QMessageBox::Ok);
+        msgBox.exec();
+        exit(-1);
+    }
+    qDebug() << "Opening the storage took "+QString::number(timer.elapsed())+"ms.";
+
+    LBDatabase::RestServer *server = new LBDatabase::RestServer(m_storage);
+    server->start();
+
+    m_mainWindow->setup();
+}
+
+void Controller::openStorage(Storage *storage)
+{
+    m_storage = storage;
+    m_mainWindow->setup();
 }
 
 } // namespace MainWindowNS

@@ -1,7 +1,7 @@
 #ifndef LBDATABASE_LOCALSTORAGEDRIVER_H
 #define LBDATABASE_LOCALSTORAGEDRIVER_H
 
-#include "../storagedriver.h"
+#include "storagedriver.h"
 
 namespace LBDatabase {
 

@@ -1,12 +1,7 @@
 QT       += core gui sql
 
-<<<<<<< HEAD
-contains(QT, ^5) {
-    QT += widgets
-=======
 contains(QT_VERSION, ^5) {
-QT += widgets
->>>>>>> c66e475ac5567d26ecc89da91ede091aa00d9884
+    QT += widgets
 }
 
 TARGET = ProjectStats
@@ -26,6 +21,9 @@ INCLUDEPATH += $$PWD/../lib/LBGui/include
 
 CXXFLAGS+=-Wpedantic
 
+CONFIG += qxt
+QXT = core widgets network web
+
 macx {
     HEADERS  += \
         misc/sparkleupdater.h \
@@ -35,7 +33,6 @@ macx {
         -F$$PWD/../frameworks/ \
         -F$$PWD/../lib/LBDatabase/lib/ \
         -F$$PWD/../lib/LBGui/lib/ \
-        -F$$PWD/../lib/libqxt-0.6.2/lib/ \
         -framework AppKit \
         -framework Sparkle \
         -framework LBGui \
@@ -47,94 +44,139 @@ macx {
         misc/sparkleupdater.mm \
         misc/cocoainitializer.mm
 
-    FRAMEWORKSPATH = $$DESTDIR/$${TARGET}.app/Contents/Frameworks/
-    TARGETEXECUTABLE = $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET
+    APPCONTENTSPATH = $$DESTDIR/$${TARGET}.app/Contents
+    PLUGINSPATH = $$APPCONTENTSPATH/PlugIns
+    FRAMEWORKSPATH = $$APPCONTENTSPATH/Frameworks
+    TARGETEXECUTABLE = $$APPCONTENTSPATH/MacOS/$$TARGET
+    RESOURCESPATH = $$APPCONTENTSPATH/Resources
 
+    QXT_DIR = $$PWD/../lib/libqxt
 
     defineReplace( nc  ) {
         return( $$escape_expand(\\n\\t)$$1    )
     }
-    defineReplace( copyFramework ) {
-        return( $$nc( cp -R -p  $$1 $$FRAMEWORKSPATH ) )
+
+    ######### Mac Debug ##########
+
+    CONFIG(debug, debug|release) {
+        defineReplace( symlinkFramework ) {
+            return( $$nc( rm -Rf $$FRAMEWORKSPATH/$$2 && mkdir -p $$FRAMEWORKSPATH/$$2 && rm -R $$FRAMEWORKSPATH/$$2 && ln -s $$1/$$2 $$FRAMEWORKSPATH/$$2 ) )
+        }
+        defineReplace( installNameToolOnTarget  ) {
+            return( $$nc( install_name_tool -change $${1}.framework/Versions/0/$${1} @executable_path/../Frameworks/$${1}.framework/$${1} $$TARGETEXECUTABLE ) )
+        }
+
+        QMAKE_POST_LINK += $$symlinkFramework($$PWD/../lib/LBDatabase/lib, LBDatabase.framework/LBDatabase)
+        QMAKE_POST_LINK += $$symlinkFramework($$PWD/../lib/LBGui/lib, LBGui.framework/LBGui)
+        QMAKE_POST_LINK += $$nc( install_name_tool -change @loader_path/../Frameworks/Sparkle.framework/Versions/A/Sparkle $$PWD/../frameworks/Sparkle.framework/Sparkle $$TARGETEXECUTABLE )
+        QMAKE_POST_LINK += $$symlinkFramework($$QXT_DIR/lib, QxtCore.framework/QxtCore)
+        QMAKE_POST_LINK += $$symlinkFramework($$QXT_DIR/lib, QxtNetwork.framework/QxtNetwork)
+        QMAKE_POST_LINK += $$symlinkFramework($$QXT_DIR/lib, QxtWeb.framework/QxtWeb)
+        QMAKE_POST_LINK += $$symlinkFramework($$QXT_DIR/lib, QxtGui.framework/QxtGui)
+
+        QMAKE_POST_LINK += $$symlinkFramework($$QMAKE_LIBDIR_QT, QtCore.framework/Versions/4/QtCore )
+        QMAKE_POST_LINK += $$symlinkFramework($$QMAKE_LIBDIR_QT, QtGui.framework/Versions/4/QtGui )
+        QMAKE_POST_LINK += $$symlinkFramework($$QMAKE_LIBDIR_QT, QtNetwork.framework/Versions/4/QtNetwork )
+        QMAKE_POST_LINK += $$symlinkFramework($$QMAKE_LIBDIR_QT, QtSql.framework/Versions/4/QtSql )
+
+        QMAKE_POST_LINK += $$installNameToolOnTarget(QxtCore)
+        QMAKE_POST_LINK += $$installNameToolOnTarget(QxtNetwork)
+        QMAKE_POST_LINK += $$installNameToolOnTarget(QxtWeb)
+        QMAKE_POST_LINK += $$installNameToolOnTarget(QxtGui)
     }
-    defineReplace( installNameToolOnTarget  ) {
-        return( $$nc( install_name_tool -change $${1}.framework/$${1} @loader_path/../Framworks/$${1}.framework/$${1} $$TARGETEXECUTABLE ) )
+    ######### Mac Debug End ##########
+
+    ######### Mac Release ##########
+    CONFIG(release, debug|release) {
+        defineReplace( copyFramework ) {
+            return( $$nc( mkdir -p $$FRAMEWORKSPATH/$$2 && rm -R $$FRAMEWORKSPATH/$$2 && cp -R -p $$1/$$2 $$FRAMEWORKSPATH/$$2 ) )
+        }
+        defineReplace( copyPlugin ) {
+            return( $$nc( mkdir -p $$PLUGINSPATH/$$1 && cp -R -p  $$QMAKE_LIBDIR_QT/../plugins/$$1/$$2 $$PLUGINSPATH/$$1 ) )
+        }
+        defineReplace( installNameToolOnTarget  ) {
+            return( $$nc( install_name_tool -change $${1}.framework/$${1} @executable_path/../Frameworks/$${1}.framework/$${1} $$TARGETEXECUTABLE ) )
+        }
+        defineReplace( installNameToolOnFramework  ) {
+            return( $$nc( install_name_tool -change $${1}.framework/$${1} @executable_path/../Frameworks/$${1}.framework/$${1} $$FRAMEWORKSPATH/$${2}.framework/$${2} ) )
+        }
+        defineReplace( installNameToolQtOnTarget  ) {
+            return( $$nc( install_name_tool -change $$QMAKE_LIBDIR_QT/$${1}.framework/Versions/4/$${1} @executable_path/../Frameworks/$${1}.framework/Versions/4/$${1} $$TARGETEXECUTABLE ) )
+        }
+        defineReplace( installNameToolQtOnQt  ) {
+            return( $$nc( install_name_tool -change $$QMAKE_LIBDIR_QT/$${1}.framework/Versions/4/$${1} @executable_path/../Frameworks/$${1}.framework/Versions/4/$${1} $$FRAMEWORKSPATH/$${2}.framework/Versions/4/$${2} ) )
+        }
+
+        COPY_CONTENTS.target = copyContents
+        COPY_CONTENTS.commands += $$nc( rm -Rf $$DESTDIR/$${TARGET}.app/Contents/Frameworks/ )
+        COPY_CONTENTS.commands += $$nc( mkdir -p $$DESTDIR/$${TARGET}.app/Contents/Frameworks/ )
+        COPY_CONTENTS.commands += $$copyFramework($$PWD/../lib/LBDatabase/lib, LBDatabase.framework )
+        COPY_CONTENTS.commands += $$copyFramework($$PWD/../lib/LBGui/lib, LBGui.framework )
+        COPY_CONTENTS.commands += $$copyFramework($$PWD/../frameworks, Sparkle.framework )
+        COPY_CONTENTS.commands += $$copyFramework($$QXT_DIR/lib, QxtCore.framework )
+        COPY_CONTENTS.commands += $$copyFramework($$QXT_DIR/lib, QxtWeb.framework )
+        COPY_CONTENTS.commands += $$copyFramework($$QXT_DIR/lib, QxtGui.framework )
+        COPY_CONTENTS.commands += $$copyFramework($$QXT_DIR/lib, QxtNetwork.framework )
+
+        COPY_CONTENTS.commands += $$copyFramework($$QMAKE_LIBDIR_QT, QtCore.framework/Versions/4/QtCore )
+        COPY_CONTENTS.commands += $$copyFramework($$QMAKE_LIBDIR_QT, QtGui.framework/Versions/4/QtGui )
+        COPY_CONTENTS.commands += $$copyFramework($$QMAKE_LIBDIR_QT, QtNetwork.framework/Versions/4/QtNetwork )
+        COPY_CONTENTS.commands += $$copyFramework($$QMAKE_LIBDIR_QT, QtSql.framework/Versions/4/QtSql )
+        COPY_CONTENTS.commands += $$copyFramework($$QMAKE_LIBDIR_QT, QtGui.framework/Resources/qt_menu.nib/classes.nib )
+        COPY_CONTENTS.commands += $$copyFramework($$QMAKE_LIBDIR_QT, QtGui.framework/Resources/qt_menu.nib/info.nib )
+        COPY_CONTENTS.commands += $$copyFramework($$QMAKE_LIBDIR_QT, QtGui.framework/Resources/qt_menu.nib/keyedobjects.nib )
+
+        COPY_CONTENTS.commands += $$copyPlugin(sqldrivers, libqsqlite.dylib)
+        COPY_CONTENTS.commands += $$copyPlugin(imageformats, libqgif.dylib)
+        COPY_CONTENTS.commands += $$copyPlugin(imageformats, libqjpeg.dylib)
+
+        COPY_CONTENTS.commands += $$nc(cp $$PWD/../util/deployment/mac/qt.conf $$RESOURCESPATH)
+
+        QMAKE_EXTRA_TARGETS += COPY_CONTENTS
+        PRE_TARGETDEPS += copyContents
+
+        QMAKE_POST_LINK += $$installNameToolOnTarget(LBDatabase)
+        QMAKE_POST_LINK += $$installNameToolOnTarget(LBGui)
+        QMAKE_POST_LINK += $$nc( install_name_tool -change @loader_path/../Frameworks/Sparkle.framework/Versions/A/Sparkle @executable_path/../Frameworks/Sparkle.framework/Versions/A/Sparkle $$TARGETEXECUTABLE )
+        QMAKE_POST_LINK += $$installNameToolOnTarget(QxtCore)
+        QMAKE_POST_LINK += $$installNameToolOnTarget(QxtNetwork)
+        QMAKE_POST_LINK += $$installNameToolOnTarget(QxtWeb)
+        QMAKE_POST_LINK += $$installNameToolOnTarget(QxtGui)
+
+        QMAKE_POST_LINK += $$installNameToolQtOnTarget(QtCore)
+        QMAKE_POST_LINK += $$installNameToolQtOnTarget(QtGui)
+        QMAKE_POST_LINK += $$installNameToolQtOnTarget(QtNetwork)
+        QMAKE_POST_LINK += $$installNameToolQtOnTarget(QtSql)
+
+        QMAKE_POST_LINK += $$installNameToolQtOnQt(QtCore, QtSql)
+        QMAKE_POST_LINK += $$installNameToolQtOnQt(QtCore, QtGui)
+        QMAKE_POST_LINK += $$installNameToolQtOnQt(QtCore, QtNetwork)
+        QMAKE_POST_LINK += $$installNameToolQtOnQt(QtNetwork, QtSql)
     }
-    defineReplace( installNameToolOnFramework  ) {
-        return( $$nc( install_name_tool -change $${1}.framework/$${1} @loader_path/../Framworks/$${1}.framework/$${1} $$FRAMEWORKSPATH/$${2}.framework/$${2} ) )
-    }
-    COPY_FRAMEWORKS.target = copyFrameworks
-    COPY_FRAMEWORKS.commands += $$nc( rm -Rf $$DESTDIR/$${TARGET}.app/Contents/Frameworks/ )
-    COPY_FRAMEWORKS.commands += $$nc( mkdir -p $$DESTDIR/$${TARGET}.app/Contents/Frameworks/ )
-    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/LBDatabase/lib/LBDatabase.framework )
-    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/LBGui/lib/LBGui.framework )
-    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../frameworks/Sparkle.framework )
-    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/libqxt-0.6.2/lib/QxtCore.framework )
-    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/libqxt-0.6.2/lib/QxtWeb.framework )
-    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/libqxt-0.6.2/lib/QxtGui.framework )
-    COPY_FRAMEWORKS.commands += $$copyFramework($$PWD/../lib/libqxt-0.6.2/lib/QxtNetwork.framework )
-    COPY_FRAMEWORKS.commands += $$copyFramework($$QMAKE_LIBDIR_QT/QtCore.framework )
-    COPY_FRAMEWORKS.commands += $$copyFramework($$QMAKE_LIBDIR_QT/QtNetwork.framework )
-    COPY_FRAMEWORKS.commands += $$copyFramework($$QMAKE_LIBDIR_QT/QtGui.framework )
-
-    QMAKE_POST_LINK += $$installNameToolOnTarget(LBDatabase)
-    QMAKE_POST_LINK += $$installNameToolOnTarget(LBGui)
-    QMAKE_POST_LINK += $$installNameToolOnTarget(QxtCore)
-    QMAKE_POST_LINK += $$installNameToolOnTarget(QxtNetwork)
-    QMAKE_POST_LINK += $$installNameToolOnTarget(QxtWeb)
-    QMAKE_POST_LINK += $$installNameToolOnTarget(QxtGui)
-    QMAKE_POST_LINK += $$installNameToolOnTarget(QtCore)
-    QMAKE_POST_LINK += $$installNameToolOnTarget(QtGui)
-    QMAKE_POST_LINK += $$installNameToolOnTarget(QtNetwork)
-
-#    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtCore.framework/QxtCore &&
-#    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
-#    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtWeb.framework/QxtWeb $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
-#    QMAKE_POST_LINK += install_name_tool -change QxtWeb.framework/Versions/0/QxtWeb @executable_path/../Frameworks/QxtWeb.framework/QxtWeb $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
-#    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtNetwork.framework/QxtNetwork &&
-#    QMAKE_POST_LINK += install_name_tool -change QxtNetwork.framework/Versions/0/QxtNetwork @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
-#    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtNetwork.framework/QxtNetwork &&
-#    QMAKE_POST_LINK += install_name_tool -change QxtCore.framework/Versions/0/QxtCore @executable_path/../Frameworks/QxtCore.framework/QxtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
-#    QMAKE_POST_LINK += install_name_tool -change QxtNetwork.framework/Versions/0/QxtNetwork @executable_path/../Frameworks/QxtNetwork.framework/QxtNetwork $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QxtWeb.framework/QxtWeb &&
-
-#    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QtCore.framework/QtCore $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QtCore.framework/QtCore &&
-#    QMAKE_POST_LINK += install_name_tool -change QtCore.framework/Versions/4/QtCore @executable_path/../Frameworks/QtCore.framework/QtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET &&
-
-#    QMAKE_POST_LINK += install_name_tool -id @executable_path/../Frameworks/QtNetwork.framework/QtNetwork $$DESTDIR/$${TARGET}.app/Contents/Frameworks/QtNetwork.framework/QtNetwork &&
-#    QMAKE_POST_LINK += install_name_tool -change QtNetwork.framework/Versions/4/QtNetwork @executable_path/../Frameworks/QtNetwork.framework/QtCore $$DESTDIR/$${TARGET}.app/Contents/MacOS/$$TARGET
-
-
-    QMAKE_EXTRA_TARGETS += COPY_FRAMEWORKS
-    PRE_TARGETDEPS += copyFrameworks
-
-     CONFIG(release, debug|release) {
-        QMAKE_POST_LINK += && rm -Rf $$DESTDIR/deploy && $$PWD/../util/deployment/mac/deploy.sh $$PWD $$OUT_PWD/../ $$DEPLOY_DIR $$MYICON $$TARGET $$APPCASTURL && \
-                             rm -Rf $$DESTDIR/deploy/Contents
-    }
+    ######### End Mac Release ##########
 }
 
 win32 {
-SOURCES +=  \
-    misc/winsparkleupdater.cpp
+    SOURCES +=  \
+        misc/winsparkleupdater.cpp
+    HEADERS +=  \
+        misc/winsparkleupdater.h
 
-HEADERS +=  \
-    misc/winsparkleupdater.h
+    CONFIG += windows
 
-CONFIG += windows
+    LIBS += -L$$OUT_PWD/../lib/LBDatabase -llbdatabase \
+            -L$$OUT_PWD/../lib/LBGui -llbgui \
+            -L$$PWD/../frameworks/WinSparkle-0.3 -lWinSparkle
 
-LIBS += -L$$OUT_PWD/../lib/LBDatabase -llbdatabase \
-        -L$$OUT_PWD/../lib/LBGui -llbgui \
-        -L$$PWD/../frameworks/WinSparkle-0.3 -lWinSparkle
+    DDIR = $$DESTDIR
+    DDIR ~= s,/,\\,g
+    PWDDIR = $$PWD
+    PWDDIR ~= s,/,\\,g
 
-DDIR = $$DESTDIR
-DDIR ~= s,/,\\,g
-PWDDIR = $$PWD
-PWDDIR ~= s,/,\\,g
-
-     CONFIG(release, debug|release) {
+    CONFIG(release, debug|release) {
         QMAKE_POST_LINK += $$PWD/../util/deployment/win/deploy.bat "$$DDIR" "$${TARGET}.exe" $$PWDDIR
     }
-QMAKE_LFLAGS = -Wl,-enable-auto-import
+    QMAKE_LFLAGS += -Wl,-enable-auto-import
 }
 
 
@@ -214,7 +256,8 @@ SOURCES += main.cpp \
     windows/livegame/playerdrinksgroupbox.cpp \
     windows/livegame/doppelkopf/statisticssidebar.cpp \
     windows/livegame/doppelkopf/statisticsgeneralpage.cpp \
-    windows/livegame/adddrinkwidget.cpp
+    windows/livegame/adddrinkwidget.cpp \
+    wizards/serverconnectdialog.cpp
 
 HEADERS  += \
     mainwindow/mainwindow.h \
@@ -294,7 +337,8 @@ HEADERS  += \
     windows/livegame/playerdrinksgroupbox.h \
     windows/livegame/doppelkopf/statisticssidebar.h \
     windows/livegame/doppelkopf/statisticsgeneralpage.h \
-    windows/livegame/adddrinkwidget.h
+    windows/livegame/adddrinkwidget.h \
+    wizards/serverconnectdialog.h
 
 RESOURCES += \
     resources/resources.qrc \
@@ -308,7 +352,8 @@ FORMS += \
     wizards/newgame/chooseunfinishedgamedialog.ui \
     windows/livegame/doppelkopf/newrounddialog.ui \
     windows/livegame/doppelkopf/newschmeissereidialog.ui \
-    windows/livegame/adddrinkwidget.ui
+    windows/livegame/adddrinkwidget.ui \
+    wizards/serverconnectdialog.ui
 
 OTHER_FILES += \
     resources/stylesheets/pointstable.css \

@@ -1,6 +1,7 @@
 #include <QApplication>
 
 #include "mainwindow/mainwindow.h"
+#include "mainwindow/controller.h"
 #include "misc/logger.h"
 #ifdef Q_OS_MAC
 #   include "misc/cocoainitializer.h"
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName(QLatin1String("LBProductions"));
 
     MainWindow window;
+    window.controller()->openLocalStorage();
     window.show();
 
     return a.exec();
