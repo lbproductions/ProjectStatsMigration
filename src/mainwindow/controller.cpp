@@ -136,8 +136,8 @@ void Controller::openLocalStorage()
     }
     qDebug() << "Opening the storage took "+QString::number(timer.elapsed())+"ms.";
 
-    LBDatabase::RestServer *server = new LBDatabase::RestServer(m_storage);
-    server->start();
+    //LBDatabase::RestServer *server = new LBDatabase::RestServer(m_storage);
+    //server->start();
 
     m_mainWindow->setup();
 }

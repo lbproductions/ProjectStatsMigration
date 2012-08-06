@@ -30,35 +30,35 @@ ServerConnectDialog::~ServerConnectDialog()
 
 void ServerConnectDialog::onConnect()
 {
-    m_remoteDriver = new LBDatabase::RestStorageDriver(QUrl("http://localhost:8080"), this);
-    m_remoteDriver->init();
-    connect(m_remoteDriver, SIGNAL(progress(int)), this, SLOT(progressChanged()));
-    connect(m_remoteDriver, SIGNAL(finished()), this, SLOT(finished()));
+//    m_remoteDriver = new LBDatabase::RestStorageDriver(QUrl("http://localhost:8080"), this);
+//    m_remoteDriver->init();
+//    connect(m_remoteDriver, SIGNAL(progress(int)), this, SLOT(progressChanged()));
+//    connect(m_remoteDriver, SIGNAL(finished()), this, SLOT(finished()));
 }
 
 void ServerConnectDialog::progressChanged()
 {
-    ui->progressBar->setMaximum(m_remoteDriver->totalRequests());
-    ui->progressBar->setValue(m_remoteDriver->requestsDone());
-    ui->label->setText(tr("Request %1 of %2").arg(m_remoteDriver->requestsDone()).arg(m_remoteDriver->totalRequests()));
+//    ui->progressBar->setMaximum(m_remoteDriver->totalRequests());
+//    ui->progressBar->setValue(m_remoteDriver->requestsDone());
+//    ui->label->setText(tr("Request %1 of %2").arg(m_remoteDriver->requestsDone()).arg(m_remoteDriver->totalRequests()));
 }
 
 void ServerConnectDialog::finished()
 {
-    ui->label->setText(tr("Opening storage"));
-    ui->progressBar->setRange(0,0);
+//    ui->label->setText(tr("Opening storage"));
+//    ui->progressBar->setRange(0,0);
 
-    MainWindow *window = new MainWindow(parentWidget());
+//    MainWindow *window = new MainWindow(parentWidget());
 
-    Storage *storage = new Storage(window);
-    storage->setDriver(m_remoteDriver);
+//    Storage *storage = new Storage(window);
+//    storage->setDriver(m_remoteDriver);
 
-    QElapsedTimer timer;
-    timer.start();
-    storage->open();
-    qDebug() << "Opening the storage took "+QString::number(timer.elapsed())+"ms.";
+//    QElapsedTimer timer;
+//    timer.start();
+//    storage->open();
+//    qDebug() << "Opening the storage took "+QString::number(timer.elapsed())+"ms.";
 
-    window->controller()->openStorage(storage);
-    window->show();
-    accept();
+//    window->controller()->openStorage(storage);
+//    window->show();
+//    accept();
 }

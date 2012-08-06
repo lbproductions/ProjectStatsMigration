@@ -11,6 +11,7 @@ DESTDIR = $$PWD/../lib/
 
 CONFIG += qxt
 QXT     += web
+INCLUDEPATH += $$PWD/../../libqxt/include
 
 macx {
     CONFIG += lib_bundle
@@ -114,14 +115,10 @@ HEADERS += \
     local/localstoragedriver.h \
     relationvaluebase.h \
     relationvaluebase_p.h \
-    server/restserver.h \
-    server/contentsservice.h \
-<<<<<<< HEAD
-    restdriver/reststoragedriver.h
-=======
-    restdriver/reststoragedriver.h \
-    server/jsonexporter.h
->>>>>>> refs/heads/uncommited
+    #server/restserver.h \
+    #server/contentsservice.h \
+    #restdriver/reststoragedriver.h \
+    #server/jsonexporter.h
 
 SOURCES += \
     local/column.cpp \
@@ -145,11 +142,7 @@ SOURCES += \
     local/localstoragedriver.cpp \
     relationvaluebase.cpp \
     relationvalue.cpp \
-    server/restserver.cpp \
-    server/contentsservice.cpp \
-<<<<<<< HEAD
-    restdriver/reststoragedriver.cpp
-=======
-    restdriver/reststoragedriver.cpp \
-    server/jsonexporter.cpp
->>>>>>> refs/heads/uncommited
+    #server/restserver.cpp \
+    #server/contentsservice.cpp \
+    #restdriver/reststoragedriver.cpp \
+    #server/jsonexporter.cpp

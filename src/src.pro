@@ -1,4 +1,4 @@
-QT       += core gui sql
+QT       += core gui sql network
 
 contains(QT_VERSION, ^5) {
     QT += widgets

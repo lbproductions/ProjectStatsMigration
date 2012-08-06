@@ -91,9 +91,6 @@ private slots:
     void contextContentsReplyFinished();
     void entityReplyFinished();
 
-<<<<<<< HEAD
-private:
-=======
     void onError(QNetworkReply::NetworkError);
 
 private:
@@ -101,7 +98,6 @@ private:
     QUrl entityUrl(Entity *entity) const;
     QUrl relationValueUrl(RelationValueBase *value) const;
 
->>>>>>> refs/heads/uncommited
     bool m_initialized;
     QNetworkAccessManager *m_nam;
 

@@ -1,10 +1,7 @@
 #include "contentsservice.h"
 
-<<<<<<< HEAD
-=======
 #include "jsonexporter.h"
 
->>>>>>> refs/heads/uncommited
 #include "../attributevalue.h"
 #include "../context.h"
 #include "../entity.h"
@@ -20,11 +17,8 @@
 #include <QxtWeb/QxtWebRequestEvent>
 #include <QxtCore/QxtJSON>
 
-<<<<<<< HEAD
-=======
 #define COMMA ,
 
->>>>>>> refs/heads/uncommited
 namespace LBDatabase {
 
 ContentsService::ContentsService(Storage *storage, QxtAbstractWebSessionManager *sm, QObject *parent) :
