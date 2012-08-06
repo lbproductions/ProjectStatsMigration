@@ -52,6 +52,8 @@ public:
 
     EntityType *returnEntityType() const;
 
+    QString signalSignature() const;
+
 Q_SIGNALS:
     void identifierChanged(QString);
     void typeChanged(Attribute::Type);

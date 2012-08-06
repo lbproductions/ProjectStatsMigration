@@ -33,6 +33,7 @@ Actions::Actions(Controller *controller) :
 
     m_connectToServerAction = new LBGui::Action(this);
     m_connectToServerAction->setText(tr("&Connect to server..."));
+    m_connectToServerAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_K));
     connect(m_connectToServerAction, SIGNAL(triggered()), m_controller, SLOT(connectToServer()));
 
 }

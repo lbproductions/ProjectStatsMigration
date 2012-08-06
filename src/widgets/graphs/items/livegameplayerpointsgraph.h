@@ -44,6 +44,7 @@ public slots:
       Dieser Slot wird aufgerufen, wenn im Spiel eine Runde beendet wird. Dann wird die Punktzahl des Spielers berechnet und als Punkt hinzugefügt.
       */
     virtual void addRound(Round*);
+    void addRound();
 
 protected:
     /*!

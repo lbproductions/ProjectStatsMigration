@@ -31,6 +31,9 @@ public:
 Q_SIGNALS:
     void valueChanged(const Entity *key, QVariant value);
 
+private Q_SLOTS:
+    void onValueChanged(const Entity *key, QVariant value);
+
 private:
     friend class FunctionPrivate;
 

@@ -2,10 +2,7 @@
 
 #include "calculatorwriter.h"
 
-#include <LBDatabase/attribute.h>
-#include <LBDatabase/entitytype.h>
-#include <LBDatabase/enumattribute.h>
-#include <LBDatabase/function.h>
+#include <LBDatabase/LBDatabase.h>
 
 #include <QStringList>
 
@@ -516,7 +513,7 @@ void EntityTypeWriter::writeRelationImplementation(Relation *relation, QString &
              source.append("void "+m_classname+"::add"+entityType+"("+entityType+" *"+makeMethodName(entityType)+")\n"
              "{\n"
                            "\trelation<"+entityType+">("+m_classname+"Properties::"+relationName+"Relation)->addEntity("+makeMethodName(entityType)+");\n"
-                           "\temit " + makeMethodName(relation->identifier()) + entityType + QLatin1String("Added(") + makeMethodName(entityType) + QLatin1String(");\n"
+                           "\temit " + relation->signalSignature() + QLatin1String(";\n"
              "}\n\n"));
          }
     }
@@ -540,16 +537,7 @@ void EntityTypeWriter::writeRelationImplementation(Relation *relation, QString &
 
 void EntityTypeWriter::writeRelationChangedSignal(Relation *relation, QString &header) const
 {
-    QString entityType = makeRelationType(relation);
-    if(relation->isCalculated()) {
-        header.append(QLatin1String("\tvoid ") +
-                  makeMethodName(relation->identifier()) + QLatin1String("Changed();\n"));
-    }
-    else {
-        header.append(QLatin1String("\tvoid ") +
-                  makeMethodName(relation->identifier()) + entityType + QLatin1String("Added(") + entityType + QLatin1String(" *")
-                  + makeMethodName(entityType) + QLatin1String(");\n"));
-    }
+    header.append(QLatin1String("\tvoid ") + relation->signalSignature() + QLatin1String(";\n"));
 }
 
 void EntityTypeWriter::writeFunctionGetterDeclaration(Function *function, QString &header) const
@@ -614,11 +602,7 @@ void EntityTypeWriter::writeFunctionSetterImplementation(Function *function, QSt
 
 void EntityTypeWriter::writeFunctionChangedSignal(Function *function, QString &header) const
 {
-    header.append(QLatin1String("\tvoid ") +
-                  makeMethodName(function->identifier()) + QLatin1String("Changed(const ")+
-                  makeClassname(function->keyEntityType()->identifier())+QLatin1String(" *")+
-                  makeMethodName(function->keyEntityType()->identifier())+QLatin1String(",") + function->qtTypeName() + QLatin1String(" ")
-                  + makeMethodName(function->identifier()) + QLatin1String(");\n"));
+    header.append(function->signalSignature());
 }
 
 void EntityTypeWriter::exportHeader() const

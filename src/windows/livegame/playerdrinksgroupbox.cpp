@@ -77,7 +77,7 @@ void PlayerDrinksGroupBox::setPlayer(Player *player)
     m_player = player;
     setName(player->name());
     updateDrinks();
-    connect(player, SIGNAL(liveDrinksLiveDrinkAdded(LiveDrink*)), this, SLOT(updateDrinks()));
+    connect(player, SIGNAL(liveDrinksChanged()), this, SLOT(updateDrinks()));
 }
 
 void PlayerDrinksGroupBox::setLiveGame(LiveGame *liveGame)

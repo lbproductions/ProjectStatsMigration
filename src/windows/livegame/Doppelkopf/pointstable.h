@@ -24,7 +24,8 @@ public:
     PointsTableItem *itemAtIndex(const QModelIndex &index);
 
 private slots:
-    void addRound(Round *round);
+    void onRoundsChanged();
+    void addRound(Round* round);
     void addLastRound();
 
 private:

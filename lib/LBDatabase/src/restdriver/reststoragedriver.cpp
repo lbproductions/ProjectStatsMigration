@@ -12,6 +12,7 @@
 #include <QxtCore/QxtJSON>
 
 #include <QDebug>
+#include <QEventLoop>
 
 namespace LBDatabase {
 
@@ -234,8 +235,13 @@ QVariant RestStorageDriver::attributeValue(const AttributeValue *value) const
 
 void RestStorageDriver::setAttributeValue(const AttributeValue *value, const QVariant &data)
 {
-    Q_UNUSED(value)
-    Q_UNUSED(data)
+    QList<QPair<QString, QString> > queryItems;
+    queryItems.append(QPair<QString, QString>(value->attribute()->identifier(), data.toString()));
+
+    QUrl url(entityUrl(value->entity()));
+    url.setQueryItems(queryItems);
+    QNetworkReply* reply = m_nam->sendCustomRequest(QNetworkRequest(url), QByteArray("PATCH"));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
 }
 
 void RestStorageDriver::addAttribute(EntityType *entityType, AttributeMetaData &metaData)
@@ -311,8 +317,14 @@ QList<RelationValueData> RestStorageDriver::relatedEntities(Relation *relation) 
 
 int RestStorageDriver::addRelatedEntity(RelationValueBase *value, const RelationValueData &data)
 {
-    Q_UNUSED(value)
-    Q_UNUSED(data)
+    QList<QPair<QString, QString> > queryItems;
+    queryItems.append(QPair<QString, QString>(QLatin1String("entity"), QString::number(data.rightId)));
+
+    QUrl url(relationValueUrl(value));
+    url.setQueryItems(queryItems);
+    QNetworkReply* reply = m_nam->post(QNetworkRequest(url), QByteArray());
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
+
     return 0;
 }
 
@@ -401,8 +413,15 @@ QList<FunctionValueData> RestStorageDriver::functionValues(Function *function) c
 
 void RestStorageDriver::setFunctionValue(FunctionValue *value, const FunctionValueData &data)
 {
-    Q_UNUSED(value)
-    Q_UNUSED(data)
+    QList<QPair<QString, QString> > queryItems;
+    queryItems.append(QPair<QString, QString>(QLatin1String("functionIdentifier"), value->function()->identifier()));
+    queryItems.append(QPair<QString, QString>(QLatin1String("keyId"), QString::number(data.keyEntityId)));
+    queryItems.append(QPair<QString, QString>(QLatin1String("value"), data.value.toString()));
+
+    QUrl url(entityUrl(value->entity()));
+    url.setQueryItems(queryItems);
+    QNetworkReply* reply = m_nam->post(QNetworkRequest(url), QByteArray());
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
 }
 
 void RestStorageDriver::addFunction(EntityType *entityType, FunctionMetaData &metaData)
@@ -459,8 +478,22 @@ QList<EntityMetaData> RestStorageDriver::entities(Context *context) const
 
 EntityMetaData RestStorageDriver::createEntity(EntityType *type)
 {
-    Q_UNUSED(type)
-    return EntityMetaData();
+    QList<QPair<QString, QString> > queryItems;
+    queryItems.append(QPair<QString, QString>(QLatin1String("entityType"), QString::number(type->id())));
+
+    QUrl url(contextUrl(type->context()));
+    url.setQueryItems(queryItems);
+    QNetworkReply* reply = m_nam->sendCustomRequest(QNetworkRequest(url), QByteArray("POST"));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
+
+    QEventLoop loop;
+    connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    EntityMetaData data;
+    data.id  = QString::fromUtf8(reply->readAll().data()).toInt();
+    data.entityTypeId = type->id();
+    return data;
 }
 
 int RestStorageDriver::totalRequests() const
@@ -476,7 +509,7 @@ int RestStorageDriver::requestsDone() const
 void RestStorageDriver::metaDataReplyFinished()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    m_metaData = QxtJSON::parse(QString(reply->readAll())).toMap();
+    m_metaData = QxtJSON::parse(QString::fromUtf8(reply->readAll().data())).toMap();
 
     foreach(QVariant contextData, m_metaData.value(LBMeta::ContextsTableName).toList()) {
         ++m_totalRequests;
@@ -484,36 +517,41 @@ void RestStorageDriver::metaDataReplyFinished()
         QUrl contextUrl(m_serverUrl.toString() +'/'+ metaData.value(LBMeta::ContextColumns::Identifier).toString());
         QNetworkReply *contextContentsReply = m_nam->get(QNetworkRequest(contextUrl));
         connect(contextContentsReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(networkError(QNetworkReply::NetworkError)));
+        connect(contextContentsReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
         connect(contextContentsReply, SIGNAL(finished()), this, SLOT(contextContentsReplyFinished()));
     }
+    reply->deleteLater();
 }
 
 void RestStorageDriver::contextContentsReplyFinished()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    QVariantMap data = QxtJSON::parse(QString(reply->readAll())).toMap();
+    QVariantMap data = QxtJSON::parse(QString::fromUtf8(reply->readAll().data())).toMap();
 
     foreach(QVariant v, data.value("entities").toList()) {
         ++m_totalRequests;
         QUrl entitiyUrl(m_serverUrl.toString() +'/'+
                         data.value(LBMeta::ContextColumns::Identifier).toString() +'/'+
                         QString::number(v.toInt()));
-        QNetworkReply *entityUrl = m_nam->get(QNetworkRequest(entitiyUrl));
-        connect(entityUrl, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(networkError(QNetworkReply::NetworkError)));
-        connect(entityUrl, SIGNAL(finished()), this, SLOT(entityReplyFinished()));
+        QNetworkReply *entityReply = m_nam->get(QNetworkRequest(entitiyUrl));
+        connect(entityReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(networkError(QNetworkReply::NetworkError)));
+        connect(entityReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
+        connect(entityReply, SIGNAL(finished()), this, SLOT(entityReplyFinished()));
     }
     ++m_requestsDone;
+    reply->deleteLater();
 }
 
 void RestStorageDriver::entityReplyFinished()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
-    QVariantMap data = QxtJSON::parse(QString(reply->readAll())).toMap();
+    QVariantMap data = QxtJSON::parse(QString::fromUtf8(reply->readAll().data())).toMap();
     QString contextIdentifier = data.value("context").toString();
     QHash<int, QVariantMap> entities(m_entities.value(contextIdentifier));
     entities.insert(data.value("id").toInt(), data);
     m_entities.insert(contextIdentifier, entities);
     ++m_requestsDone;
+    reply->deleteLater();
 
     if(m_requestsDone == m_totalRequests) {
         emit progress(m_requestsDone);
@@ -521,6 +559,29 @@ void RestStorageDriver::entityReplyFinished()
     }
     else
         emit progress(m_requestsDone);
+}
+
+void RestStorageDriver::onError(QNetworkReply::NetworkError error)
+{
+    qWarning() << error;
+}
+
+QUrl RestStorageDriver::contextUrl(Context *context) const
+{
+    return QUrl(m_serverUrl.toString() +'/'+
+                    context->identifier());
+}
+
+QUrl RestStorageDriver::entityUrl(Entity *entity) const
+{
+    return QUrl(contextUrl(entity->context()).toString() +'/'+
+                QString::number(entity->id()));
+}
+
+QUrl RestStorageDriver::relationValueUrl(RelationValueBase *value) const
+{
+    return QUrl(entityUrl(value->entity()).toString() +'/'+
+                    value->relation()->identifier());
 }
 
 } // namespace LBDatabase

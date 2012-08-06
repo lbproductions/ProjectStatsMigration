@@ -3,9 +3,7 @@
 #include "cppexporter.h"
 #include "contextwriter.h"
 
-#include <LBDatabase/context.h>
-#include <LBDatabase/storage.h>
-#include <LBDatabase/entitytype.h>
+#include <LBDatabase/LBDatabase.h>
 
 namespace LBDatabase {
 

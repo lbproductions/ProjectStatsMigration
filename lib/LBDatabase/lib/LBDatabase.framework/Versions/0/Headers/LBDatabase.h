@@ -9,6 +9,7 @@
 #include "functionvalue.h"
 #include "entity.h"
 #include "entitytype.h"
+#include "enumattribute.h"
 #include "relation.h"
 #include "relationvalue.h"
 #include "storage.h"

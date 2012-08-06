@@ -17,7 +17,7 @@ LiveGamePlayerPointsGraph::LiveGamePlayerPointsGraph(Player *player, LiveGame *l
     m_liveGame(liveGame),
     m_totalPoints(0)
 {
-    connect(liveGame, SIGNAL(roundsRoundAdded(Round*)), this, SLOT(addRound(Round*)));
+    connect(liveGame, SIGNAL(roundsChanged()), this, SLOT(addRound()));
 }
 
 void LiveGamePlayerPointsGraph::setupGraph()
@@ -47,7 +47,14 @@ void LiveGamePlayerPointsGraph::addRound(Round *r)
                                  "<span style=\"font-size: 22pt;\">"
                                  "<b>"+tr("Points")+":</b> "+QString::number(r->points(m_player))+"<br>"+
                                  "<b>"+tr("Total")+":</b> "+QString::number(m_totalPoints)+
-                                 "</span>");
+                                "</span>");
+}
+
+void LiveGamePlayerPointsGraph::addRound()
+{
+    LiveGame* game = static_cast<LiveGame*>(sender());
+    Round *round = static_cast<Round*>(game->rounds().last());
+    addRound(round);
 }
 
 Player* LiveGamePlayerPointsGraph::player()

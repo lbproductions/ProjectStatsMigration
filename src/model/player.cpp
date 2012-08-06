@@ -149,7 +149,7 @@ QList<LiveDrink *> Player::liveDrinks() const
 void Player::addLiveDrink(LiveDrink *liveDrink)
 {
 	relation<LiveDrink>(PlayerProperties::LiveDrinksRelation)->addEntity(liveDrink);
-	emit liveDrinksLiveDrinkAdded(liveDrink);
+	emit liveDrinksChanged();
 }
 
 QList<DoppelkopfRound *> Player::dokoHochzeiten() const
