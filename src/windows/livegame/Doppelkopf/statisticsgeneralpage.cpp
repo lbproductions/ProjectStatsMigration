@@ -79,7 +79,7 @@ void StatisticsGeneralPage::setDoppelkopfLiveGame(DoppelkopfLiveGame *game)
 
     connect(game, SIGNAL(lengthChanged(QTime)), this, SLOT(updateLengthLabel()));
     connect(game, SIGNAL(currentDealerChanged()), this, SLOT(updateDealerLabel()));
-    connect(game, SIGNAL(roundsRoundAdded(Round*)), this, SLOT(updateNumberOfRoundsLabel()));
+    connect(game, SIGNAL(roundsChanged()), this, SLOT(updateNumberOfRoundsLabel()));
     connect(game, SIGNAL(reWinsChanged()), this, SLOT(updateReVsContraLabel()));
     connect(game, SIGNAL(contraWinsChanged()), this, SLOT(updateReVsContraLabel()));
     connect(game, SIGNAL(hochzeitenCountChanged()), this, SLOT(updateHochzeitenLabel()));

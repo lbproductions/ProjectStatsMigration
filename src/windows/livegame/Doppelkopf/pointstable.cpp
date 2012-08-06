@@ -41,7 +41,7 @@ void PointsTable::setDoppelkopfLiveGame(DoppelkopfLiveGame *doppelkopfLiveGame)
         return;
 
     m_doppelkopfLiveGame = doppelkopfLiveGame;
-    connect(m_doppelkopfLiveGame, SIGNAL(roundsRoundAdded(Round*)), this, SLOT(addRound(Round*)));
+    connect(m_doppelkopfLiveGame, SIGNAL(roundsChanged()), this, SLOT(onRoundsChanged()));
 
     foreach(Player *player, m_doppelkopfLiveGame->players()) {
         insertColumn(columnCount());
@@ -104,6 +104,13 @@ void PointsTable::addLastRound()
 PointsTableItem* PointsTable::itemAtIndex(const QModelIndex& index)
 {
     return static_cast<PointsTableItem*>(item(index.row(),index.column()));
+}
+
+void PointsTable::onRoundsChanged()
+{
+    DoppelkopfLiveGame* game = static_cast<DoppelkopfLiveGame*>(sender());
+    DoppelkopfRound *round = static_cast<DoppelkopfRound*>(game->rounds().last());
+    addRound(round);
 }
 
 void PointsTable::resizeEvent(QResizeEvent* event)

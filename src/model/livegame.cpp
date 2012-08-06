@@ -39,7 +39,7 @@ QList<Round *> LiveGame::rounds() const
 void LiveGame::addRound(Round *round)
 {
 	relation<Round>(LiveGameProperties::RoundsRelation)->addEntity(round);
-	emit roundsRoundAdded(round);
+	emit roundsChanged();
 }
 
 QList<Player *> LiveGame::currentDealer() const

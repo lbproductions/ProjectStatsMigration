@@ -9,6 +9,7 @@
 #include "storagedriver.h"
 
 #include <QDebug>
+#include <QMetaMethod>
 
 #define COMMA ,
 Q_DECLARE_METATYPE(QHash<const LBDatabase::Entity * COMMA QVariant>)
@@ -191,6 +192,16 @@ void FunctionValue::recalculateAfterDependencyChange()
     }
 
     emit changed();
+}
+
+void FunctionValue::onValueChanged(const Entity *key, QVariant value)
+{
+    int i = entity()->metaObject()->indexOfMethod(function()->signalSignature().toAscii());
+    if(i < 0)
+        return;
+
+    QMetaMethod trueSignal = entity()->metaObject()->method(i);
+    trueSignal.invoke(entity(), Q_ARG(const Entity*, key), Q_ARG(QVariant, value));
 }
 
 } // namespace LBDatabase

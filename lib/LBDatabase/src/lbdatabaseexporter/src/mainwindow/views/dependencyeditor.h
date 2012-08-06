@@ -2,7 +2,7 @@
 #define MAINWINDOWNS_DEPENDENCYEDITOR_H
 
 #include <QDialog>
-#include <LBDatabase/property.h>
+#include <LBDatabase/LBDatabase.h>
 
 namespace LBDatabase {
 class DependencyMetaData;

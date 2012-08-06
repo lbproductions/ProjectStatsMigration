@@ -482,6 +482,11 @@ QList<EntityType *> Relation::reimplementingEntityTypes() const
     return d->reimplementingEntityTypes;
 }
 
+QString Relation::signalSignature() const
+{
+    return QString(identifier() + "Changed()");
+}
+
 TransposeRelation::TransposeRelation(Relation *relation) :
     Relation(*new TransposeRelationPrivate, relation->d_ptr->metaData, relation->storage())
 {

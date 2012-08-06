@@ -3,8 +3,7 @@
 #include "calculatorwriter.h"
 #include "entitytypewriter.h"
 
-#include <LBDatabase/context.h>
-#include <LBDatabase/entitytype.h>
+#include <LBDatabase/LBDatabase.h>
 
 #include <QDebug>
 

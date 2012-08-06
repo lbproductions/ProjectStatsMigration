@@ -19,7 +19,7 @@ RelationValue<EntityClass>::RelationValue(Relation *relation, Entity *parent) :
         if(i < 0)
             return;
         QMetaMethod changedSignal = metaObject()->method(i);
-        i = parent->metaObject()->indexOfMethod(QString(relation->identifier() + "Changed()").toAscii());
+        i = parent->metaObject()->indexOfMethod(relation->signalSignature().toAscii());
         if(i < 0)
             return;
         QMetaMethod trueSignal = parent->metaObject()->method(i);

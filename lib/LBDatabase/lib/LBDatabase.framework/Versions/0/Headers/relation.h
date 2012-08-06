@@ -71,6 +71,10 @@ public:
 
     // Used for export
     QList<EntityType *> reimplementingEntityTypes() const;
+<<<<<<< HEAD
+=======
+    QString signalSignature() const;
+>>>>>>> refs/heads/uncommited
 
 Q_SIGNALS:
     void identifierChanged(const QString &identifier);

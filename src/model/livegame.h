@@ -56,7 +56,7 @@ public:
 signals:
 	void stateChanged(LiveGame::State);
 	void totalPointsChanged();
-	void roundsRoundAdded(Round *round);
+	void roundsChanged();
 	void currentDealerChanged();
 };
 

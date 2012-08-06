@@ -95,7 +95,7 @@ QList<Game *> Place::games() const
 void Place::addGame(Game *game)
 {
 	relation<Game>(PlaceProperties::GamesRelation)->addEntity(game);
-	emit gamesGameAdded(game);
+	emit gamesChanged();
 }
 
 QList<Player *> Place::players() const

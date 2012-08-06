@@ -125,7 +125,7 @@ signals:
 	void averagePlacementChanged();
 	void lastWinChanged();
 	void lastGameChanged();
-	void liveDrinksLiveDrinkAdded(LiveDrink *liveDrink);
+	void liveDrinksChanged();
 	void roundsChanged();
 	void roundsDealtChanged();
 	void gamesCurrentDealerChanged();

@@ -22,7 +22,7 @@ QList<Drink*> DrinksContext::drinks() const
 	QList<Drink *> drinks;
 	foreach(LBDatabase::Entity *entity, entities())
 		drinks.append(static_cast<Drink *>(entity));
-    return drinks;
+	return drinks;
 }
 
 

@@ -284,6 +284,14 @@ EntityType *Function::returnEntityType() const
     return entityType()->context()->storage()->entityType(d->metaData.returnEntityTypeId);
 }
 
+QString Function::signalSignature() const
+{
+    return QLatin1String("\tvoid ") +
+                  identifier() + QLatin1String("Changed(const ")+
+                  keyEntityType()->identifier().left(1).toUpper()+keyEntityType()->identifier().mid(1)+QLatin1String(" *")+QLatin1String(",") +
+                  qtTypeName() + QLatin1String(");\n");
+}
+
 void Function::addPropertyValueToEntities()
 {
     Q_D(Function);

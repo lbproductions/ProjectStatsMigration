@@ -9,6 +9,10 @@
 #include "functionvalue.h"
 #include "entity.h"
 #include "entitytype.h"
+<<<<<<< HEAD
+=======
+#include "enumattribute.h"
+>>>>>>> refs/heads/uncommited
 #include "relation.h"
 #include "relationvalue.h"
 #include "storage.h"

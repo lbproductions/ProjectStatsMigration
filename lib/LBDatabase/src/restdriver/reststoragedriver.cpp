@@ -12,6 +12,10 @@
 #include <QxtCore/QxtJSON>
 
 #include <QDebug>
+<<<<<<< HEAD
+=======
+#include <QEventLoop>
+>>>>>>> refs/heads/uncommited
 
 namespace LBDatabase {
 
@@ -234,8 +238,18 @@ QVariant RestStorageDriver::attributeValue(const AttributeValue *value) const
 
 void RestStorageDriver::setAttributeValue(const AttributeValue *value, const QVariant &data)
 {
+<<<<<<< HEAD
     Q_UNUSED(value)
     Q_UNUSED(data)
+=======
+    QList<QPair<QString, QString> > queryItems;
+    queryItems.append(QPair<QString, QString>(value->attribute()->identifier(), data.toString()));
+
+    QUrl url(entityUrl(value->entity()));
+    url.setQueryItems(queryItems);
+    QNetworkReply* reply = m_nam->sendCustomRequest(QNetworkRequest(url), QByteArray("PATCH"));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
+>>>>>>> refs/heads/uncommited
 }
 
 void RestStorageDriver::addAttribute(EntityType *entityType, AttributeMetaData &metaData)
@@ -311,8 +325,19 @@ QList<RelationValueData> RestStorageDriver::relatedEntities(Relation *relation) 
 
 int RestStorageDriver::addRelatedEntity(RelationValueBase *value, const RelationValueData &data)
 {
+<<<<<<< HEAD
     Q_UNUSED(value)
     Q_UNUSED(data)
+=======
+    QList<QPair<QString, QString> > queryItems;
+    queryItems.append(QPair<QString, QString>(QLatin1String("entity"), QString::number(data.rightId)));
+
+    QUrl url(relationValueUrl(value));
+    url.setQueryItems(queryItems);
+    QNetworkReply* reply = m_nam->post(QNetworkRequest(url), QByteArray());
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
+
+>>>>>>> refs/heads/uncommited
     return 0;
 }
 
@@ -401,8 +426,20 @@ QList<FunctionValueData> RestStorageDriver::functionValues(Function *function) c
 
 void RestStorageDriver::setFunctionValue(FunctionValue *value, const FunctionValueData &data)
 {
+<<<<<<< HEAD
     Q_UNUSED(value)
     Q_UNUSED(data)
+=======
+    QList<QPair<QString, QString> > queryItems;
+    queryItems.append(QPair<QString, QString>(QLatin1String("functionIdentifier"), value->function()->identifier()));
+    queryItems.append(QPair<QString, QString>(QLatin1String("keyId"), QString::number(data.keyEntityId)));
+    queryItems.append(QPair<QString, QString>(QLatin1String("value"), data.value.toString()));
+
+    QUrl url(entityUrl(value->entity()));
+    url.setQueryItems(queryItems);
+    QNetworkReply* reply = m_nam->post(QNetworkRequest(url), QByteArray());
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
+>>>>>>> refs/heads/uncommited
 }
 
 void RestStorageDriver::addFunction(EntityType *entityType, FunctionMetaData &metaData)
@@ -459,8 +496,27 @@ QList<EntityMetaData> RestStorageDriver::entities(Context *context) const
 
 EntityMetaData RestStorageDriver::createEntity(EntityType *type)
 {
+<<<<<<< HEAD
     Q_UNUSED(type)
     return EntityMetaData();
+=======
+    QList<QPair<QString, QString> > queryItems;
+    queryItems.append(QPair<QString, QString>(QLatin1String("entityType"), QString::number(type->id())));
+
+    QUrl url(contextUrl(type->context()));
+    url.setQueryItems(queryItems);
+    QNetworkReply* reply = m_nam->sendCustomRequest(QNetworkRequest(url), QByteArray("POST"));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
+
+    QEventLoop loop;
+    connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+    loop.exec();
+
+    EntityMetaData data;
+    data.id  = QString::fromUtf8(reply->readAll().data()).toInt();
+    data.entityTypeId = type->id();
+    return data;
+>>>>>>> refs/heads/uncommited
 }
 
 int RestStorageDriver::totalRequests() const
@@ -476,7 +532,11 @@ int RestStorageDriver::requestsDone() const
 void RestStorageDriver::metaDataReplyFinished()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
+<<<<<<< HEAD
     m_metaData = QxtJSON::parse(QString(reply->readAll())).toMap();
+=======
+    m_metaData = QxtJSON::parse(QString::fromUtf8(reply->readAll().data())).toMap();
+>>>>>>> refs/heads/uncommited
 
     foreach(QVariant contextData, m_metaData.value(LBMeta::ContextsTableName).toList()) {
         ++m_totalRequests;
@@ -484,36 +544,65 @@ void RestStorageDriver::metaDataReplyFinished()
         QUrl contextUrl(m_serverUrl.toString() +'/'+ metaData.value(LBMeta::ContextColumns::Identifier).toString());
         QNetworkReply *contextContentsReply = m_nam->get(QNetworkRequest(contextUrl));
         connect(contextContentsReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(networkError(QNetworkReply::NetworkError)));
+<<<<<<< HEAD
         connect(contextContentsReply, SIGNAL(finished()), this, SLOT(contextContentsReplyFinished()));
     }
+=======
+        connect(contextContentsReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
+        connect(contextContentsReply, SIGNAL(finished()), this, SLOT(contextContentsReplyFinished()));
+    }
+    reply->deleteLater();
+>>>>>>> refs/heads/uncommited
 }
 
 void RestStorageDriver::contextContentsReplyFinished()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
+<<<<<<< HEAD
     QVariantMap data = QxtJSON::parse(QString(reply->readAll())).toMap();
+=======
+    QVariantMap data = QxtJSON::parse(QString::fromUtf8(reply->readAll().data())).toMap();
+>>>>>>> refs/heads/uncommited
 
     foreach(QVariant v, data.value("entities").toList()) {
         ++m_totalRequests;
         QUrl entitiyUrl(m_serverUrl.toString() +'/'+
                         data.value(LBMeta::ContextColumns::Identifier).toString() +'/'+
                         QString::number(v.toInt()));
+<<<<<<< HEAD
         QNetworkReply *entityUrl = m_nam->get(QNetworkRequest(entitiyUrl));
         connect(entityUrl, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(networkError(QNetworkReply::NetworkError)));
         connect(entityUrl, SIGNAL(finished()), this, SLOT(entityReplyFinished()));
     }
     ++m_requestsDone;
+=======
+        QNetworkReply *entityReply = m_nam->get(QNetworkRequest(entitiyUrl));
+        connect(entityReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SIGNAL(networkError(QNetworkReply::NetworkError)));
+        connect(entityReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onError(QNetworkReply::NetworkError)));
+        connect(entityReply, SIGNAL(finished()), this, SLOT(entityReplyFinished()));
+    }
+    ++m_requestsDone;
+    reply->deleteLater();
+>>>>>>> refs/heads/uncommited
 }
 
 void RestStorageDriver::entityReplyFinished()
 {
     QNetworkReply *reply = static_cast<QNetworkReply *>(sender());
+<<<<<<< HEAD
     QVariantMap data = QxtJSON::parse(QString(reply->readAll())).toMap();
+=======
+    QVariantMap data = QxtJSON::parse(QString::fromUtf8(reply->readAll().data())).toMap();
+>>>>>>> refs/heads/uncommited
     QString contextIdentifier = data.value("context").toString();
     QHash<int, QVariantMap> entities(m_entities.value(contextIdentifier));
     entities.insert(data.value("id").toInt(), data);
     m_entities.insert(contextIdentifier, entities);
     ++m_requestsDone;
+<<<<<<< HEAD
+=======
+    reply->deleteLater();
+>>>>>>> refs/heads/uncommited
 
     if(m_requestsDone == m_totalRequests) {
         emit progress(m_requestsDone);
@@ -523,4 +612,30 @@ void RestStorageDriver::entityReplyFinished()
         emit progress(m_requestsDone);
 }
 
+<<<<<<< HEAD
+=======
+void RestStorageDriver::onError(QNetworkReply::NetworkError error)
+{
+    qWarning() << error;
+}
+
+QUrl RestStorageDriver::contextUrl(Context *context) const
+{
+    return QUrl(m_serverUrl.toString() +'/'+
+                    context->identifier());
+}
+
+QUrl RestStorageDriver::entityUrl(Entity *entity) const
+{
+    return QUrl(contextUrl(entity->context()).toString() +'/'+
+                QString::number(entity->id()));
+}
+
+QUrl RestStorageDriver::relationValueUrl(RelationValueBase *value) const
+{
+    return QUrl(entityUrl(value->entity()).toString() +'/'+
+                    value->relation()->identifier());
+}
+
+>>>>>>> refs/heads/uncommited
 } // namespace LBDatabase

@@ -1,7 +1,6 @@
 #include "calculatorwriter.h"
 
-#include <LBDatabase/entitytype.h>
-#include <LBDatabase/function.h>
+#include <LBDatabase/LBDatabase.h>
 
 #include <QDebug>
 

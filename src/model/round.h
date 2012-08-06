@@ -73,7 +73,7 @@ signals:
 	void startTimeChanged(QDateTime);
 	void lengthChanged(QTime);
 	void stateChanged(Round::State);
-	void pointsChanged(const Player *player,int points);
+	void pointsChanged(const Player *,int);
 	void currentPlayingPlayersChanged();
 	void dealerChanged();
 };

@@ -61,7 +61,7 @@ signals:
 	void nummerChanged(int);
 	void commentChanged(QString);
 	void gameCountChanged();
-	void gamesGameAdded(Game *game);
+	void gamesChanged();
 };
 
 Q_DECLARE_METATYPE(QList<Place *>)

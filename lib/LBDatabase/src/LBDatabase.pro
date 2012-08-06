@@ -116,7 +116,12 @@ HEADERS += \
     relationvaluebase_p.h \
     server/restserver.h \
     server/contentsservice.h \
+<<<<<<< HEAD
     restdriver/reststoragedriver.h
+=======
+    restdriver/reststoragedriver.h \
+    server/jsonexporter.h
+>>>>>>> refs/heads/uncommited
 
 SOURCES += \
     local/column.cpp \
@@ -142,4 +147,9 @@ SOURCES += \
     relationvalue.cpp \
     server/restserver.cpp \
     server/contentsservice.cpp \
+<<<<<<< HEAD
     restdriver/reststoragedriver.cpp
+=======
+    restdriver/reststoragedriver.cpp \
+    server/jsonexporter.cpp
+>>>>>>> refs/heads/uncommited

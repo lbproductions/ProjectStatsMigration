@@ -31,6 +31,12 @@ public:
 Q_SIGNALS:
     void valueChanged(const Entity *key, QVariant value);
 
+<<<<<<< HEAD
+=======
+private Q_SLOTS:
+    void onValueChanged(const Entity *key, QVariant value);
+
+>>>>>>> refs/heads/uncommited
 private:
     friend class FunctionPrivate;
 

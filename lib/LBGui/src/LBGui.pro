@@ -190,10 +190,3 @@ RESOURCES += \
     ressources/scrollbar/scrollbar.qrc \
     ressources/general/general.qrc
 
-#macx {
-    HEADERS += \
-        mainwindow/sidebar/sidebaritemdelegatemac.h
-
-    SOURCES += \
-        mainwindow/sidebar/sidebaritemdelegatemac.cpp
-#}
